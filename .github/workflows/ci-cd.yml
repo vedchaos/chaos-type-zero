@@ -137,14 +137,26 @@ jobs:
       - name: Run Bandit Security Linter
         run: |
           pip install bandit
-          bandit -r bridge_core/ mcp_servers/ -ll -ii || true
+          bandit -r bridge_core/ mcp_servers/ -ll -ii -f json -o bandit-report.json || true
+          bandit -r bridge_core/ mcp_servers/ -ll -ii
           echo "Bandit scan complete"
 
       - name: Run Safety Check
         run: |
           pip install safety
-          safety check -r requirements.txt || true
+          safety check -r requirements.txt --output json > safety-report.json || true
+          safety check -r requirements.txt
           echo "Safety check complete"
+
+      - name: Upload Security Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-reports
+          path: |
+            bandit-report.json
+            safety-report.json
+          retention-days: 30
 
   # ============================================================
   # DOCKER BUILD (runs on main, push only with secrets)
@@ -264,13 +276,12 @@ jobs:
             ## CHAOS TYPE ZERO v${{ env.CTZ_VERSION }}
 
             ### What's New
-            - Kubernetes manifests (11 YAMLs)
-            - Terraform AWS IaC
-            - Prometheus metrics endpoint
-            - Grafana monitoring dashboard
-            - CI/CD GitHub Actions pipeline
-            - 42 MCP servers, 316 tools
-            - 88 tests passing
+            - Security-hardened scanner (input validation, audit logging)
+            - Runtime telemetry (no hardcoded values)
+            - MCP test harness exits non-zero on failure
+            - CI/CD security gates enforced
+            - 44 MCP servers, 251 tools
+            - 88+ tests passing
 
             ### Quick Start
             ```bash

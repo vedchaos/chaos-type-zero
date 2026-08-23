@@ -38,9 +38,20 @@ except ImportError:
 NEXUS_DIR = Path(__file__).parent.parent
 PORT = int(os.environ.get("CTZ_PORT", 9000))
 HOST = os.environ.get("CTZ_HOST", "0.0.0.0")
-API_KEY = os.environ.get("CTZ_API_KEY", "ctz-dev-key-change-in-production")
+_env_key = os.environ.get("CTZ_API_KEY", "")
+if not _env_key:
+    _env_key = secrets.token_urlsafe(32)
+    import warnings
+    warnings.warn(
+        "CTZ_API_KEY not set — generated random key for this session. "
+        "Set CTZ_API_KEY environment variable for persistent access.",
+        stacklevel=2,
+    )
+API_KEY = _env_key
 CTZ_VERSION = "3.3"
 START_TIME = time.time()
+_DATA_DIR = NEXUS_DIR / "data"
+_TELEMETRY_FILE = _DATA_DIR / "telemetry.json"
 
 # ─── WEBSOCKET MANAGER ──────────────────────────────────
 class ConnectionManager:
@@ -188,14 +199,76 @@ def get_memory_data():
         "cache_hits": 0,
     }
 
+def _load_telemetry():
+    """Load persistent telemetry from disk."""
+    if _TELEMETRY_FILE.exists():
+        try:
+            return json.loads(_TELEMETRY_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {
+        "automation_runs": {},
+        "total_requests": 0,
+        "total_tokens": 0,
+        "total_cost_usd": 0.0,
+        "daily_requests": 0,
+        "daily_tokens": 0,
+        "daily_cost_usd": 0.0,
+        "daily_date": "",
+    }
+
+def _save_telemetry(telemetry):
+    """Persist telemetry to disk."""
+    _DATA_DIR.mkdir(parents=True, exist_ok=True)
+    try:
+        _TELEMETRY_FILE.write_text(json.dumps(telemetry, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+
+def _record_request(tokens_in, tokens_out, cost):
+    """Record a single API request to telemetry."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    telemetry = _load_telemetry()
+    if telemetry.get("daily_date") != today:
+        telemetry["daily_requests"] = 0
+        telemetry["daily_tokens"] = 0
+        telemetry["daily_cost_usd"] = 0.0
+        telemetry["daily_date"] = today
+    telemetry["total_requests"] += 1
+    telemetry["total_tokens"] += tokens_in + tokens_out
+    telemetry["total_cost_usd"] += cost
+    telemetry["daily_requests"] += 1
+    telemetry["daily_tokens"] += tokens_in + tokens_out
+    telemetry["daily_cost_usd"] += cost
+    _save_telemetry(telemetry)
+
+def _record_automation(automation_name):
+    """Record an automation execution."""
+    telemetry = _load_telemetry()
+    runs = telemetry.get("automation_runs", {})
+    key = automation_name
+    entry = runs.get(key, {"count": 0, "last_run": ""})
+    entry["count"] += 1
+    entry["last_run"] = datetime.now().strftime("%H:%M:%S")
+    runs[key] = entry
+    telemetry["automation_runs"] = runs
+    _save_telemetry(telemetry)
+
 def get_automations_data():
-    return [
-        {"name": "Memory Consolidation", "schedule": "Every 6h", "active": True, "last_run": datetime.now().strftime("%H:%M:%S"), "run_count": 142},
-        {"name": "Log Rotation", "schedule": "Daily 03:00", "active": True, "last_run": "03:00:00", "run_count": 47},
-        {"name": "Health Ping", "schedule": "Every 5m", "active": True, "last_run": datetime.now().strftime("%H:%M:%S"), "run_count": 2880},
-        {"name": "Backup Vault", "schedule": "Daily 04:00", "active": False, "last_run": "04:00:00", "run_count": 47},
-        {"name": "Session Sync", "schedule": "Every 15m", "active": True, "last_run": datetime.now().strftime("%H:%M:%S"), "run_count": 960},
+    telemetry = _load_telemetry()
+    runs = telemetry.get("automation_runs", {})
+    automations = [
+        {"name": "Memory Consolidation", "schedule": "Every 6h", "active": True},
+        {"name": "Log Rotation", "schedule": "Daily 03:00", "active": True},
+        {"name": "Health Ping", "schedule": "Every 5m", "active": True},
+        {"name": "Backup Vault", "schedule": "Daily 04:00", "active": False},
+        {"name": "Session Sync", "schedule": "Every 15m", "active": True},
     ]
+    for a in automations:
+        info = runs.get(a["name"], {"count": 0, "last_run": "never"})
+        a["run_count"] = info["count"]
+        a["last_run"] = info["last_run"]
+    return automations
 
 def get_providers_data():
     providers = []
@@ -241,12 +314,25 @@ def get_skills_data():
     return skills
 
 def get_costs_data():
+    telemetry = _load_telemetry()
+    today = datetime.now().strftime("%Y-%m-%d")
+    if telemetry.get("daily_date") != today:
+        daily_tokens = 0
+        daily_cost = 0.0
+        daily_requests = 0
+    else:
+        daily_tokens = telemetry.get("daily_tokens", 0)
+        daily_cost = telemetry.get("daily_cost_usd", 0.0)
+        daily_requests = telemetry.get("daily_requests", 0)
+    avg_tokens = (daily_tokens // daily_requests) if daily_requests > 0 else 0
     return {
-        "estimated_tokens_today": 45200,
-        "estimated_cost_usd": 0.1356,
-        "requests_today": 38,
-        "avg_tokens_per_request": 1189,
-        "breakdown": {"input_tokens": 28400, "output_tokens": 16800},
+        "estimated_tokens_today": daily_tokens,
+        "estimated_cost_usd": round(daily_cost, 6),
+        "requests_today": daily_requests,
+        "avg_tokens_per_request": avg_tokens,
+        "total_tokens_all_time": telemetry.get("total_tokens", 0),
+        "total_cost_all_time": round(telemetry.get("total_cost_usd", 0.0), 4),
+        "note": "Runtime telemetry — values reset daily. Set CTZ_API_KEY env var.",
     }
 
 def get_health_data():
@@ -318,12 +404,17 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+_cors_origins = os.environ.get("CTZ_CORS_ORIGINS", "").split(",")
+_cors_origins = [o.strip() for o in _cors_origins if o.strip()]
+if not _cors_origins:
+    _cors_origins = ["http://localhost:9000", "http://localhost:8080", "http://127.0.0.1:9000"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Authorization", "Content-Type", "X-API-Key"],
 )
 
 
@@ -354,7 +445,7 @@ h1{{color:#ff0041;}} a{{color:#00aaff;}}</style></head>
 <p><a href="/docs">Swagger Docs</a> | <a href="/redoc">ReDoc</a></p>
 <p><a href="/api/health">Health</a> | <a href="/api/status">Status</a> | <a href="/api/full">Full Data</a></p>
 <p>WebSocket: ws://localhost:{PORT}/ws</p>
-<p>API Key: Set CTZ_API_KEY env var (default: ctz-dev-key-change-in-production)</p>
+<p>API Key: Set CTZ_API_KEY env var (auto-generated if not set)</p>
 </body></html>"""
 
 @app.get("/api/health")

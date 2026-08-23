@@ -14,7 +14,7 @@
 
 > **C**omprehensive **H**ybrid **A**utonomous **O**perating **S**ystem — **Type Zero**
 
-An autonomous AI operating system for independent developers, security researchers, and ML engineers. **42 MCP servers, 316 tools, 14 LLM providers, 31 skills, Kubernetes, Terraform, Prometheus, Grafana, CI/CD** — self-healing, multi-provider, memory-aware, with full automation.
+An autonomous AI operating system for independent developers, security researchers, and ML engineers. **44 MCP servers, 251 tools, 14 LLM providers, 31 skills, Kubernetes, Terraform, Prometheus, Grafana, CI/CD** — self-healing, multi-provider, memory-aware, with full automation.
 
 ---
 
@@ -26,8 +26,8 @@ CHAOS TYPE ZERO (CTZ) is a personal AI agent that thinks, remembers, automates, 
 
 | Feature | What it does |
 |---------|-------------|
-| **42 MCP Servers** | Brain, Memory, Router, Security, Voice, Vision, ML, Browser, Comms, Neural, NSE, CI/CD, DB, Game AI, Image Gen, Knowledge Graph, i18n, Plugin, Playwright, Real Security, and more |
-| **316 Tools** | Every tool you need — from web scraping to real Nmap/Nuclei scanning to image generation |
+| **44 MCP Servers** | Brain, Memory, Router, Security, Voice, Vision, ML, Browser, Comms, Neural, NSE, CI/CD, DB, Game AI, Image Gen, Knowledge Graph, i18n, Plugin, Playwright, Real Security, Discord, Slack, and more |
+| **251 Tools** | Every tool you need — from web scraping to real Nmap/Nuclei scanning to image generation |
 | **14 LLM Providers** | Free-first with auto-fallback — Ollama, Groq, Gemini, Anthropic, OpenAI, and more |
 | **3-Tier Memory** | RAM (instant) → SQLite (structured) → ChromaDB (semantic search) |
 | **6-Agent Orchestrator** | Plan → Execute → Critique → Refine → Memory → Report |
@@ -74,7 +74,7 @@ chmod +x install.sh && ./install.sh
 # Or manual install
 pip install -r requirements.txt
 
-# Run all tests (88 tests)
+# Run all tests (88+ tests)
 python -m pytest tests/ -v
 
 # Run MCP server tests
@@ -115,7 +115,7 @@ CHAOS TYPE ZERO/
 │   ├── meta_reasoner.py            ← Intelligent routing
 │   ├── neural.py                   ← TF-IDF, classification
 │   └── voice_enhanced.py           ← Wake word, command parsing
-├── mcp_servers/                     ← 42 MCP tool servers
+├── mcp_servers/                     ← 44 MCP tool servers
 │   ├── llm_fallback.py            ← Brain (3 tools)
 │   ├── memory_mcp.py              ← Memory (3 tools)
 │   ├── task_router_mcp.py         ← Router (4 tools)
@@ -164,7 +164,7 @@ CHAOS TYPE ZERO/
 │   ├── App.js                     ← Dashboard, Chat, MCP, Settings
 │   ├── package.json               ← Expo dependencies
 │   └── app.json                   ← App config
-├── tests/                           ← Unit tests (88 tests) NEW
+├── tests/                           ← Unit tests (88+ tests) NEW
 │   ├── test_smart_brain.py         ← 7 tests
 │   ├── test_memory_3tier.py        ← 7 tests
 │   ├── test_heuristics.py          ← 6 tests
@@ -172,7 +172,7 @@ CHAOS TYPE ZERO/
 │   ├── test_neural.py              ← 6 tests
 │   ├── test_task_classifier.py     ← 9 tests
 │   ├── test_dashboard.py           ← 4 tests
-│   ├── test_all_mcps.py            ← 42 MCP server tests
+│   ├── test_all_mcps.py            ← 44 MCP server tests
 │   └── conftest.py                 ← Pytest config
 ├── .opencode/                       ← OpenCode integration
 │   ├── agent/ctz.md               ← Agent identity
@@ -216,7 +216,7 @@ CHAOS TYPE ZERO/
 ├── install.ps1                      ← Windows installer
 ├── install.sh                       ← Linux/Mac installer
 ├── setup_kali.sh                    ← Kali WSL2 setup
-├── opencode.json                    ← Config (6 agents, 42 MCPs)
+├── opencode.json                    ← Config (6 agents, 44 MCPs)
 ├── requirements.txt                 ← Dependencies
 ├── pytest.ini                       ← Test configuration
 ├── CONTRIBUTING.md                  ← Contributing guide
@@ -369,7 +369,7 @@ Tier 3: ChromaDB (~50ms)
 | slack_bot | — | Slack Bot Controller |
 | discord_bot | — | Discord Bot Controller |
 
-**Total: 42 servers, 316 tools**
+**Total: 44 servers, 251 tools**
 
 ---
 
@@ -696,7 +696,7 @@ Pipeline runs on push to `main` or `dev`:
 
 1. **Lint** — Ruff, Black, MyPy
 2. **Unit Tests** — 44 tests with pytest
-3. **MCP Tests** — 42 MCP server tests
+3. **MCP Tests** — 44 MCP server tests
 4. **Syntax Check** — All Python files
 5. **Docker Build** — Build and push to Docker Hub
 6. **Deploy Staging** — SSH deploy to staging server
@@ -716,7 +716,7 @@ STAGING_SSH_KEY
 
 ## Testing
 
-### Run All Tests (88 tests)
+### Run All Tests (88+ tests)
 ```bash
 # Unit tests (44 tests)
 python -m pytest tests/ -v
@@ -741,8 +741,8 @@ python -m pytest tests/ --cov=bridge_core
 | neural | 6 |
 | task_classifier | 9 |
 | dashboard | 4 |
-| **MCP Servers** | **42** |
-| **Total** | **88** |
+| **MCP Servers** | **44** |
+| **Total** | **88+** |
 
 ---
 
@@ -774,13 +774,13 @@ chmod +x setup_kali.sh
 
 | Category | v1.0 | v3.0 | Growth |
 |----------|------|------|--------|
-| MCP Servers | 9 | 42 | +367% |
-| Tools | ~30 | 316 | +953% |
+| MCP Servers | 9 | 44 | +389% |
+| Tools | ~30 | 251 | +737% |
 | Providers | 3 | 14 | +367% |
 | Agents | 2 | 6 | +200% |
 | Task Types | 4 | 12 | +200% |
 | Skills | 12 | 31 | +158% |
-| Tests | 0 | 88 | New |
+| Tests | 0 | 88+ | New |
 | Mobile App | No | Yes | New |
 | Real Browser | No | Yes (Playwright) | New |
 | Real Security | No | Yes (Nmap/Nuclei) | New |
@@ -790,7 +790,33 @@ chmod +x setup_kali.sh
 | Intelligence | 1/15 | 15/15 | +1400% |
 | UX | 0/6 | 6/6 | +infinity |
 
-**CTZ v3.0 is 800%+ more capable than v1.0.**
+**CTZ v3.3 is 700%+ more capable than v1.0.**
+
+---
+
+## Verification Status
+
+This project is a **large advanced prototype / personal platform**, not a fully production-hardened system. Here's an honest assessment:
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| MCP Architecture | **Verified** | 44 servers with tool definitions, stdio transport |
+| 251 Tools | **Verified** | Counted from TOOLS definitions across all MCP servers |
+| 14 LLM Providers | **Implemented** | Provider registry + fallback logic; live availability depends on API keys |
+| 31 Skills | **Implemented** | Skill files exist in .opencode/skills/ |
+| 88+ Unit Tests | **Passing** | pytest suite + MCP import tests |
+| Nmap/Nuclei Scanner | **Verified + Hardened** | Real subprocess calls with input validation, audit logging |
+| Playwright Browser | **Verified** | Real Playwright automation |
+| Kubernetes Manifests | **Implemented** | Not tested against a live cluster |
+| Terraform AWS | **Implemented** | Not deployed yet |
+| Prometheus Metrics | **Implemented** | /metrics endpoint; needs Prometheus scrape config |
+| Grafana Dashboard | **Implemented** | JSON model; needs Grafana instance |
+| CI/CD Pipeline | **Verified** | GitHub Actions; security gates now enforced |
+| Dashboard | **Verified** | ThreadedHTTPServer, WebSocket, 12 API endpoints |
+| Mobile App | **Implemented** | React Native/Expo; needs device build |
+| Server Auth | **Hardened** | Auto-generated API key; no default dev keys |
+| CORS | **Hardened** | Configurable origins; no wildcard |
+| Telemetry | **Runtime-based** | No hardcoded values; stored in data/telemetry.json |
 
 ---
 
@@ -809,6 +835,7 @@ chmod +x setup_kali.sh
 | **v3.1** | **Aug 20, 2026** | **Priority 1: badges, LICENSE, tests, CONTRIBUTING** |
 | **v3.2** | **Aug 20, 2026** | **Priority 2: Mobile app, Playwright, Nmap/Nuclei, Slack/Discord bots** |
 | **v3.3** | **Aug 20, 2026** | **Priority 3: Kubernetes, Terraform, Prometheus, Grafana, CI/CD** |
+| **v3.3.1** | **Aug 23, 2026** | **Security hardening: scanner input validation, no default API keys, CORS locked, runtime telemetry, CI security gates enforced, test harness exits on failure, README accuracy audit** |
 
 ---
 

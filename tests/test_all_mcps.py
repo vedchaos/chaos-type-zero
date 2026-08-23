@@ -104,3 +104,10 @@ if results["failed"]:
 total_tools = sum(p["tools"] for p in results["passed"])
 print(f"\nTotal tools found: {total_tools}")
 print(f"Success rate: {len(results['passed'])}/{len(MCP_SERVERS)} ({len(results['passed'])*100//len(MCP_SERVERS)}%)")
+
+# Exit with error code if any servers failed — ensures CI catches failures
+if results["failed"]:
+    print(f"\nERROR: {len(results['failed'])} MCP server(s) FAILED")
+    sys.exit(1)
+else:
+    print(f"\nAll {len(MCP_SERVERS)} MCP servers PASSED")
