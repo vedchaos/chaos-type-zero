@@ -19,7 +19,7 @@ data:
   CTZ_PROMETHEUS_PORT: "9090"
 
   # MCP Servers
-  CTZ_MCP_SERVERS: "42"
+  CTZ_MCP_SERVERS: "71"
   CTZ_MCP_TOOLS: "316"
 
   # Memory

@@ -280,7 +280,7 @@ jobs:
             - Runtime telemetry (no hardcoded values)
             - MCP test harness exits non-zero on failure
             - CI/CD security gates enforced
-            - 44 MCP servers, 251 tools
+            - 71 MCP servers, 414+ tools
             - 88+ tests passing
 
             ### Quick Start

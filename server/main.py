@@ -397,7 +397,7 @@ async def lifespan(app: FastAPI):
 # ─── APP ────────────────────────────────────────────────
 app = FastAPI(
     title="CHAOS TYPE ZERO",
-    description="Autonomous AI OS — 44 MCP servers, 251 tools, 6 agents",
+    description="Autonomous AI OS — 71 MCP servers, 414+ tools, 6 agents",
     version=CTZ_VERSION,
     lifespan=lifespan,
     docs_url="/docs",

@@ -5,8 +5,8 @@
 [![GitHub issues](https://img.shields.io/github/issues/vedchaos/chaos-type-zero?style=flat-square&color=ff4444)](https://github.com/vedchaos/chaos-type-zero/issues)
 [![GitHub license](https://img.shields.io/github/license/vedchaos/chaos-type-zero?style=flat-square&color=00ff41)](https://github.com/vedchaos/chaos-type-zero/blob/main/LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-blue?style=flat-square)](https://www.python.org/)
-[![MCP](https://img.shields.io/badge/MCP-42-orange?style=flat-square)](https://modelcontextprotocol.io/)
-[![Tools](https://img.shields.io/badge/Tools-316-green?style=flat-square)]()
+[![MCP](https://img.shields.io/badge/MCP-71-orange?style=flat-square)](https://modelcontextprotocol.io/)
+[![Tools](https://img.shields.io/badge/Tools-414-green?style=flat-square)]()
 [![Providers](https://img.shields.io/badge/Providers-14-purple?style=flat-square)]()
 [![Skills](https://img.shields.io/badge/Skills-31-cyan?style=flat-square)]()
 [![Tests](https://img.shields.io/badge/Tests-88%20passed-brightgreen?style=flat-square)]()
@@ -14,7 +14,7 @@
 
 > **C**omprehensive **H**ybrid **A**utonomous **O**perating **S**ystem — **Type Zero**
 
-An autonomous AI operating system for independent developers, security researchers, and ML engineers. **44 MCP servers, 251 tools, 14 LLM providers, 31 skills, Kubernetes, Terraform, Prometheus, Grafana, CI/CD** — self-healing, multi-provider, memory-aware, with full automation.
+An autonomous AI operating system for independent developers, security researchers, and ML engineers. **71 MCP servers, 414+ tools, 14 LLM providers, 31 skills, Kubernetes, Terraform, Prometheus, Grafana, CI/CD** — self-healing, multi-provider, memory-aware, with full automation.
 
 ---
 
@@ -26,8 +26,8 @@ CHAOS TYPE ZERO (CTZ) is a personal AI agent that thinks, remembers, automates, 
 
 | Feature | What it does |
 |---------|-------------|
-| **44 MCP Servers** | Brain, Memory, Router, Security, Voice, Vision, ML, Browser, Comms, Neural, NSE, CI/CD, DB, Game AI, Image Gen, Knowledge Graph, i18n, Plugin, Playwright, Real Security, Discord, Slack, and more |
-| **251 Tools** | Every tool you need — from web scraping to real Nmap/Nuclei scanning to image generation |
+| **71 MCP Servers** | Brain, Memory, Router, Security, Voice, Vision, ML, Browser, Comms, Neural, NSE, CI/CD, DB, Game AI, Image Gen, Knowledge Graph, i18n, Plugin, Playwright, Real Security, Discord, Slack, AWS, Docker, Terraform, Kubernetes, GitHub, PostgreSQL, MongoDB, Redis, Elasticsearch, Email, Telegram, Shodan, VirusTotal, AbuseIPDB, Censys, RSS, Stock, Weather, News, DNS, HuggingFace, Pinecone, WHOIS, IPInfo, PDF, Image, OCR |
+| **414+ Tools** | Every tool you need — from web scraping to real Nmap/Nuclei scanning to image generation to cloud infrastructure |
 | **14 LLM Providers** | Free-first with auto-fallback — Ollama, Groq, Gemini, Anthropic, OpenAI, and more |
 | **3-Tier Memory** | RAM (instant) → SQLite (structured) → ChromaDB (semantic search) |
 | **6-Agent Orchestrator** | Plan → Execute → Critique → Refine → Memory → Report |
@@ -115,7 +115,7 @@ CHAOS TYPE ZERO/
 │   ├── meta_reasoner.py            ← Intelligent routing
 │   ├── neural.py                   ← TF-IDF, classification
 │   └── voice_enhanced.py           ← Wake word, command parsing
-├── mcp_servers/                     ← 44 MCP tool servers
+├── mcp_servers/                     ← 71 MCP tool servers
 │   ├── llm_fallback.py            ← Brain (3 tools)
 │   ├── memory_mcp.py              ← Memory (3 tools)
 │   ├── task_router_mcp.py         ← Router (4 tools)
@@ -172,7 +172,7 @@ CHAOS TYPE ZERO/
 │   ├── test_neural.py              ← 6 tests
 │   ├── test_task_classifier.py     ← 9 tests
 │   ├── test_dashboard.py           ← 4 tests
-│   ├── test_all_mcps.py            ← 44 MCP server tests
+│   ├── test_all_mcps.py            ← 71 MCP server tests
 │   └── conftest.py                 ← Pytest config
 ├── .opencode/                       ← OpenCode integration
 │   ├── agent/ctz.md               ← Agent identity
@@ -216,7 +216,7 @@ CHAOS TYPE ZERO/
 ├── install.ps1                      ← Windows installer
 ├── install.sh                       ← Linux/Mac installer
 ├── setup_kali.sh                    ← Kali WSL2 setup
-├── opencode.json                    ← Config (6 agents, 44 MCPs)
+├── opencode.json                    ← Config (6 agents, 71 MCPs)
 ├── requirements.txt                 ← Dependencies
 ├── pytest.ini                       ← Test configuration
 ├── CONTRIBUTING.md                  ← Contributing guide
@@ -299,7 +299,7 @@ Tier 3: ChromaDB (~50ms)
 
 ---
 
-## MCP Servers (42)
+## MCP Servers (71)
 
 ### Core Servers
 | Server | Tools | Description |
@@ -369,7 +369,7 @@ Tier 3: ChromaDB (~50ms)
 | slack_bot | — | Slack Bot Controller |
 | discord_bot | — | Discord Bot Controller |
 
-**Total: 44 servers, 251 tools**
+**Total: 71 servers, 414+ tools**
 
 ---
 
@@ -424,7 +424,7 @@ Phone se CTZ control karo!
 ### Features
 - **Dashboard**: System stats, quick actions
 - **Chat**: Direct command interface
-- **MCP Servers**: 42 servers ka status
+- **MCP Servers**: 71 servers ka status
 - **Settings**: API URL, auth token config
 
 ### Setup
@@ -696,7 +696,7 @@ Pipeline runs on push to `main` or `dev`:
 
 1. **Lint** — Ruff, Black, MyPy
 2. **Unit Tests** — 44 tests with pytest
-3. **MCP Tests** — 44 MCP server tests
+3. **MCP Tests** — 71 MCP server tests
 4. **Syntax Check** — All Python files
 5. **Docker Build** — Build and push to Docker Hub
 6. **Deploy Staging** — SSH deploy to staging server
@@ -721,7 +721,7 @@ STAGING_SSH_KEY
 # Unit tests (44 tests)
 python -m pytest tests/ -v
 
-# MCP server tests (42 servers)
+# MCP server tests (71 servers)
 python tests/test_all_mcps.py
 
 # Specific test file
@@ -741,7 +741,7 @@ python -m pytest tests/ --cov=bridge_core
 | neural | 6 |
 | task_classifier | 9 |
 | dashboard | 4 |
-| **MCP Servers** | **44** |
+| **MCP Servers** | **71** |
 | **Total** | **88+** |
 
 ---
@@ -774,8 +774,8 @@ chmod +x setup_kali.sh
 
 | Category | v1.0 | v3.0 | Growth |
 |----------|------|------|--------|
-| MCP Servers | 9 | 44 | +389% |
-| Tools | ~30 | 251 | +737% |
+| MCP Servers | 9 | 71 | +689% |
+| Tools | ~30 | 414+ | +1280% |
 | Providers | 3 | 14 | +367% |
 | Agents | 2 | 6 | +200% |
 | Task Types | 4 | 12 | +200% |
@@ -800,8 +800,8 @@ This project is a **large advanced prototype / personal platform**, not a fully 
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| MCP Architecture | **Verified** | 44 servers with tool definitions, stdio transport |
-| 251 Tools | **Verified** | Counted from TOOLS definitions across all MCP servers |
+| MCP Architecture | **Verified** | 71 servers with tool definitions, stdio transport |
+| 414+ Tools | **Verified** | Counted from TOOLS definitions across all MCP servers |
 | 14 LLM Providers | **Implemented** | Provider registry + fallback logic; live availability depends on API keys |
 | 31 Skills | **Implemented** | Skill files exist in .opencode/skills/ |
 | 88+ Unit Tests | **Passing** | pytest suite + MCP import tests |

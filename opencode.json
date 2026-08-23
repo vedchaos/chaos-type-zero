@@ -399,6 +399,141 @@
       "env": {},
       "tools": ["mcp_servers/slack_bot.py"],
       "args": []
+    },
+    "ctz-aws": {
+      "type": "local",
+      "command": ["python", "mcp_servers/aws_mcp.py"],
+      "enabled": true
+    },
+    "ctz-docker": {
+      "type": "local",
+      "command": ["python", "mcp_servers/docker_mcp.py"],
+      "enabled": true
+    },
+    "ctz-terraform": {
+      "type": "local",
+      "command": ["python", "mcp_servers/terraform_mcp.py"],
+      "enabled": true
+    },
+    "ctz-kubernetes": {
+      "type": "local",
+      "command": ["python", "mcp_servers/kubernetes_mcp.py"],
+      "enabled": true
+    },
+    "ctz-github": {
+      "type": "local",
+      "command": ["python", "mcp_servers/github_mcp.py"],
+      "enabled": true
+    },
+    "ctz-postgres": {
+      "type": "local",
+      "command": ["python", "mcp_servers/postgres_mcp.py"],
+      "enabled": true
+    },
+    "ctz-mongo": {
+      "type": "local",
+      "command": ["python", "mcp_servers/mongo_mcp.py"],
+      "enabled": true
+    },
+    "ctz-redis": {
+      "type": "local",
+      "command": ["python", "mcp_servers/redis_mcp.py"],
+      "enabled": true
+    },
+    "ctz-elasticsearch": {
+      "type": "local",
+      "command": ["python", "mcp_servers/elasticsearch_mcp.py"],
+      "enabled": true
+    },
+    "ctz-email": {
+      "type": "local",
+      "command": ["python", "mcp_servers/email_mcp.py"],
+      "enabled": true
+    },
+    "ctz-telegram": {
+      "type": "local",
+      "command": ["python", "mcp_servers/telegram_mcp.py"],
+      "enabled": true
+    },
+    "ctz-shodan": {
+      "type": "local",
+      "command": ["python", "mcp_servers/shodan_mcp.py"],
+      "enabled": true
+    },
+    "ctz-virustotal": {
+      "type": "local",
+      "command": ["python", "mcp_servers/virustotal_mcp.py"],
+      "enabled": true
+    },
+    "ctz-abuseipdb": {
+      "type": "local",
+      "command": ["python", "mcp_servers/abuseipdb_mcp.py"],
+      "enabled": true
+    },
+    "ctz-censys": {
+      "type": "local",
+      "command": ["python", "mcp_servers/censys_mcp.py"],
+      "enabled": true
+    },
+    "ctz-rss": {
+      "type": "local",
+      "command": ["python", "mcp_servers/rss_mcp.py"],
+      "enabled": true
+    },
+    "ctz-stock": {
+      "type": "local",
+      "command": ["python", "mcp_servers/stock_mcp.py"],
+      "enabled": true
+    },
+    "ctz-weather": {
+      "type": "local",
+      "command": ["python", "mcp_servers/weather_mcp.py"],
+      "enabled": true
+    },
+    "ctz-news": {
+      "type": "local",
+      "command": ["python", "mcp_servers/news_mcp.py"],
+      "enabled": true
+    },
+    "ctz-dns": {
+      "type": "local",
+      "command": ["python", "mcp_servers/dns_mcp.py"],
+      "enabled": true
+    },
+    "ctz-huggingface": {
+      "type": "local",
+      "command": ["python", "mcp_servers/huggingface_mcp.py"],
+      "enabled": true
+    },
+    "ctz-pinecone": {
+      "type": "local",
+      "command": ["python", "mcp_servers/pinecone_mcp.py"],
+      "enabled": true
+    },
+    "ctz-whois": {
+      "type": "local",
+      "command": ["python", "mcp_servers/whois_mcp.py"],
+      "enabled": true
+    },
+    "ctz-ipinfo": {
+      "type": "local",
+      "command": ["python", "mcp_servers/ipinfo_mcp.py"],
+      "enabled": true
+    },
+    "ctz-pdf": {
+      "type": "local",
+      "command": ["python", "mcp_servers/pdf_mcp.py"],
+      "enabled": true
+    },
+    "ctz-image": {
+      "type": "local",
+      "command": ["python", "mcp_servers/image_mcp.py"],
+      "enabled": true
+    },
+    "ctz-ocr": {
+      "type": "local",
+      "command": ["python", "mcp_servers/ocr_mcp.py"],
+      "enabled": true
     }
   },
   "permission": {
