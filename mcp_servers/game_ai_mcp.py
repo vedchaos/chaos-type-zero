@@ -317,7 +317,7 @@ def get_history(game=None, limit=20):
 def train_patterns(game, actions, result, reward=0):
     conn = get_db()
     pattern_str = json.dumps(sorted(actions)) if isinstance(actions, list) else str(actions)
-    phash = hashlib.md5(pattern_str.encode()).hexdigest()
+    phash = hashlib.md5(pattern_str.encode(), usedforsecurity=False).hexdigest()
 
     existing = conn.execute(
         "SELECT id, success_count, fail_count FROM patterns WHERE game = ? AND pattern_hash = ?",

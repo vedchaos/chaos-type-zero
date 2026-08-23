@@ -87,7 +87,7 @@ async def handle_pw_scrape(params):
 
 async def handle_pw_screenshot(params):
     url = params.get("url", "")
-    output = params.get("output", f"screenshot_{hashlib.md5(url.encode()).hexdigest()[:8]}.png")
+    output = params.get("output", f"screenshot_{hashlib.md5(url.encode(), usedforsecurity=False).hexdigest()[:8]}.png")
     session = _sessions.get(url)
     if not session:
         browser, err = await _get_browser()

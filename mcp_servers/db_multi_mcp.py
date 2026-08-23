@@ -9,6 +9,7 @@ import os
 try:
     import psycopg2
     import psycopg2.extras
+    import psycopg2.sql
     HAS_PSYCOPG2 = True
 except ImportError:
     HAS_PSYCOPG2 = False
@@ -73,7 +74,15 @@ def pg_tables(args):
         tables = [{"name": r["table_name"], "type": r["table_type"]} for r in cur.fetchall()]
         for t in tables:
             try:
-                cur.execute("SELECT COUNT(*) as cnt FROM %s.%s" % (schema, t["name"]))
+                # SECURITY: schema/table names used to be interpolated with
+                # plain % string formatting, which let a caller inject SQL
+                # via the 'schema' argument. psycopg2.sql.Identifier quotes
+                # identifiers safely (equivalent to parameterizing a query,
+                # which Postgres doesn't allow for identifiers).
+                query = psycopg2.sql.SQL("SELECT COUNT(*) as cnt FROM {}.{}").format(
+                    psycopg2.sql.Identifier(schema), psycopg2.sql.Identifier(t["name"])
+                )
+                cur.execute(query)
                 t["row_count"] = cur.fetchone()["cnt"]
             except Exception:
                 t["row_count"] = -1

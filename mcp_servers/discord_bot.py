@@ -6,6 +6,15 @@ import json, sys, os, re, asyncio
 DISCORD_TOKEN = os.environ.get("DISCORD_BOT_TOKEN", "YOUR-DISCORD-BOT-TOKEN")
 COMMAND_PREFIX = os.environ.get("CTZ_PREFIX", "!")
 
+# SECURITY: previously any user in any server/channel the bot joined could
+# run privileged commands (!scan, !run, !browse -> security scanner,
+# orchestrator, browser automation) with zero authorization check. Set
+# CTZ_DISCORD_ALLOWED_USERS to a comma-separated list of Discord user IDs
+# who are allowed to use privileged commands. If unset, privileged commands
+# refuse to run and tell the invoker how to configure it.
+_ALLOWED_USERS_RAW = os.environ.get("CTZ_DISCORD_ALLOWED_USERS", "")
+ALLOWED_USER_IDS = {u.strip() for u in _ALLOWED_USERS_RAW.split(",") if u.strip()}
+
 # MCP server references
 MCP_SERVERS = {
     "brain": "ctz-brain",
@@ -138,7 +147,23 @@ try:
     async def on_ready():
         print(f"CTZ Discord Bot logged in as {bot.user}")
         print(f"Prefix: {COMMAND_PREFIX}")
+        if not ALLOWED_USER_IDS:
+            print("[CTZ-DISCORD] WARNING: CTZ_DISCORD_ALLOWED_USERS is not set -- "
+                  "privileged commands (scan/run/browse) are locked down for everyone "
+                  "until you set it to your Discord user ID.")
         await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name="CTZ v3.0 | !help"))
+
+    def _is_authorized(ctx) -> bool:
+        return str(ctx.author.id) in ALLOWED_USER_IDS
+
+    async def _require_authorized(ctx) -> bool:
+        if _is_authorized(ctx):
+            return True
+        await ctx.send(
+            "You're not authorized to run this command. Ask the bot owner to add your "
+            "Discord user ID to the `CTZ_DISCORD_ALLOWED_USERS` env var."
+        )
+        return False
 
     @bot.command(name="help")
     async def help_cmd(ctx):
@@ -166,6 +191,8 @@ try:
 
     @bot.command(name="scan")
     async def scan_cmd(ctx, *, target: str):
+        if not await _require_authorized(ctx):
+            return
         embed_data = await cmd_scan(ctx.message, target)
         embed = discord.Embed.from_dict(embed_data)
         await ctx.send(embed=embed)
@@ -178,12 +205,16 @@ try:
 
     @bot.command(name="run")
     async def run_cmd(ctx, *, task: str):
+        if not await _require_authorized(ctx):
+            return
         embed_data = await cmd_run(ctx.message, task)
         embed = discord.Embed.from_dict(embed_data)
         await ctx.send(embed=embed)
 
     @bot.command(name="browse")
     async def browse_cmd(ctx, url: str):
+        if not await _require_authorized(ctx):
+            return
         embed_data = await cmd_browse(ctx.message, url)
         embed = discord.Embed.from_dict(embed_data)
         await ctx.send(embed=embed)

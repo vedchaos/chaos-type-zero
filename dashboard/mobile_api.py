@@ -4,8 +4,10 @@
 import json
 import sys
 import os
+import secrets
 import time
 import hashlib
+import hmac
 import sqlite3
 import traceback
 from http.server import HTTPServer, BaseHTTPRequestHandler
@@ -13,11 +15,44 @@ from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 from datetime import datetime
 
-HOST = "0.0.0.0"
+# SECURITY: this used to default to the publicly documented string
+# "ctz-default-token-change-me" while binding to 0.0.0.0 -- meaning
+# anyone on the same network (or anyone who read this file on GitHub)
+# already knew the auth token for a server exposed on every interface.
+# We now refuse to start with a weak/default token; a random one is
+# generated on first run if CTZ_API_TOKEN isn't set, and it's printed
+# once (and saved locally) so you can put it in the mobile app.
+HOST = os.environ.get("CTZ_API_HOST", "127.0.0.1")  # bind to localhost by default
 PORT = 8081
-AUTH_TOKEN = os.environ.get("CTZ_API_TOKEN", "ctz-default-token-change-me")
 DATA_DIR = Path(__file__).parent.parent / "data"
 LOG_DB = DATA_DIR / "mobile_api.db"
+TOKEN_FILE = DATA_DIR / "mobile_api_token.txt"
+
+_INSECURE_DEFAULTS = {"", "ctz-default-token-change-me", "changeme", "default", "password", "token"}
+
+
+def _resolve_auth_token() -> str:
+    env_token = os.environ.get("CTZ_API_TOKEN", "").strip()
+    if env_token:
+        if env_token.lower() in _INSECURE_DEFAULTS:
+            raise SystemExit(
+                "[CTZ Mobile API] CTZ_API_TOKEN is set to a weak/default value. "
+                "Choose a real secret (e.g. `python -c \"import secrets; print(secrets.token_urlsafe(32))\"`)."
+            )
+        return env_token
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    if TOKEN_FILE.exists():
+        return TOKEN_FILE.read_text().strip()
+    token = secrets.token_urlsafe(32)
+    TOKEN_FILE.write_text(token)
+    try:
+        os.chmod(TOKEN_FILE, 0o600)
+    except OSError:
+        pass
+    return token
+
+
+AUTH_TOKEN = _resolve_auth_token()
 
 
 def get_log_db():
@@ -137,12 +172,9 @@ class MobileAPIHandler(BaseHTTPRequestHandler):
 
     def check_auth(self):
         auth = self.headers.get("Authorization", "")
-        if auth.startswith("Bearer "):
-            token = auth[7:]
-            return token == AUTH_TOKEN
-        if auth:
-            return auth == AUTH_TOKEN
-        return False
+        token = auth[7:] if auth.startswith("Bearer ") else auth
+        # constant-time comparison to avoid leaking the token via timing
+        return hmac.compare_digest(token, AUTH_TOKEN)
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -287,7 +319,13 @@ def main():
     log_event("info", "server", f"CTZ Mobile API started on {HOST}:{PORT}")
     print(f"[CTZ Mobile API] Serving on http://{HOST}:{PORT}")
     print(f"[CTZ Mobile API] Health: http://{HOST}:{PORT}/api/health")
-    print(f"[CTZ Mobile API] Auth token: CTZ_API_TOKEN env var (default: {AUTH_TOKEN})")
+    if not os.environ.get("CTZ_API_TOKEN"):
+        print(f"[CTZ Mobile API] No CTZ_API_TOKEN set -- generated one and saved to {TOKEN_FILE}")
+        print(f"[CTZ Mobile API] Auth token: {AUTH_TOKEN}")
+    else:
+        print("[CTZ Mobile API] Auth token: loaded from CTZ_API_TOKEN env var")
+    if HOST == "0.0.0.0":
+        print("[CTZ Mobile API] WARNING: bound to 0.0.0.0 -- reachable from your whole network.")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

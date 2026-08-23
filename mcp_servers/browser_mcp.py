@@ -226,7 +226,7 @@ def _evaluate_js(html, script):
 
 def _take_screenshot(tab, page_hash=None):
     """Save a text-based 'screenshot' (HTML snapshot) and return the path."""
-    h = page_hash or hashlib.md5(tab.url.encode()).hexdigest()[:12]
+    h = page_hash or hashlib.md5(tab.url.encode(), usedforsecurity=False).hexdigest()[:12]
     fname = f"screenshot_{tab.tab_id}_{h}.txt"
     fpath = _browser.screenshot_dir / fname
     content = f"[CTZ SCREENSHOT] {tab.url}\nTitle: {tab.title}\nStatus: {tab.status_code}\n\n{tab.text[:8000]}"

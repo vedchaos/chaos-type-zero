@@ -21,6 +21,20 @@ def _resolve_db(db_path):
         if p.exists(): return str(p)
     return db_path
 
+
+def _validate_table(cursor, table):
+    """
+    SECURITY: table names used to be string-interpolated straight into SQL
+    (e.g. f"SELECT COUNT(*) FROM [{args['table']}]"), which let a caller
+    inject arbitrary SQL via the 'table' argument (e.g.
+    "x] ; ATTACH DATABASE ... --"). We now only ever allow a value that
+    exactly matches a real table already present in sqlite_master.
+    """
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name = ?", (table,))
+    if cursor.fetchone() is None:
+        raise ValueError(f"Unknown table: {table!r}")
+    return table
+
 import os
 
 def handle_request(request):
@@ -62,12 +76,14 @@ def handle_request(request):
                 conn.close()
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(tables)}]}}
             elif name == "ctz_db_schema":
-                c.execute(f"PRAGMA table_info({args['table']})")
+                table = _validate_table(c, args["table"])
+                c.execute(f'PRAGMA table_info("{table}")')
                 cols = [{"name": r[1], "type": r[2], "notnull": bool(r[3]), "default": r[4], "pk": bool(r[5])} for r in c.fetchall()]
                 conn.close()
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(cols, indent=2)}]}}
             elif name == "ctz_db_count":
-                c.execute(f"SELECT COUNT(*) FROM [{args['table']}]")
+                table = _validate_table(c, args["table"])
+                c.execute(f'SELECT COUNT(*) FROM "{table}"')
                 count = c.fetchone()[0]
                 conn.close()
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps({"count": count})}]}}

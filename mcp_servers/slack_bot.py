@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """CHAOS TYPE ZERO — Slack Bot Controller"""
+import hmac
 import json, sys, os, hashlib, time, re
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs
@@ -96,11 +97,47 @@ def process_command(text):
     }
 
 
+def _verify_slack_signature(headers, body: bytes) -> bool:
+    """
+    SECURITY: this endpoint is bound to 0.0.0.0 and previously accepted +
+    executed ANY POST body as if it were a real Slack event, without ever
+    checking SLACK_SIGNING_SECRET -- meaning anyone who could reach the
+    port could forge Slack commands. This implements Slack's documented
+    HMAC-SHA256 request signing check.
+    https://api.slack.com/authentication/verifying-requests-from-slack
+    """
+    if SLACK_SIGNING_SECRET in ("YOUR-SIGNING-SECRET", ""):
+        return False  # refuse to trust anything until a real secret is configured
+
+    timestamp = headers.get("X-Slack-Request-Timestamp", "")
+    slack_signature = headers.get("X-Slack-Signature", "")
+    if not timestamp or not slack_signature:
+        return False
+
+    try:
+        if abs(time.time() - int(timestamp)) > 60 * 5:
+            return False  # protect against replay attacks
+    except ValueError:
+        return False
+
+    basestring = f"v0:{timestamp}:{body.decode('utf-8', errors='replace')}"
+    computed = "v0=" + hmac.new(
+        SLACK_SIGNING_SECRET.encode(), basestring.encode(), hashlib.sha256
+    ).hexdigest()
+    return hmac.compare_digest(computed, slack_signature)
+
+
 class SlackHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(content_length)
-        
+
+        if not _verify_slack_signature(self.headers, body):
+            self.send_response(401)
+            self.end_headers()
+            self.wfile.write(b'{"error": "invalid signature"}')
+            return
+
         try:
             data = json.loads(body)
         except json.JSONDecodeError:

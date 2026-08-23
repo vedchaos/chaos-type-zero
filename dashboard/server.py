@@ -612,7 +612,12 @@ def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else PORT
 
     try:
-        server = http.server.ThreadingHTTPServer(('0.0.0.0', port), CTZHandler)
+        # SECURITY: this dashboard has no authentication, so it now binds to
+        # localhost by default instead of 0.0.0.0. It previously exposed
+        # system stats/activity history to anyone on the same network.
+        # Set CTZ_DASHBOARD_HOST=0.0.0.0 explicitly if you really want that.
+        host = os.environ.get('CTZ_DASHBOARD_HOST', '127.0.0.1')
+        server = http.server.ThreadingHTTPServer((host, port), CTZHandler)
     except OSError as e:
         print(f"\033[91m[ERROR]\033[0m Port {port} unavailable: {e}")
         sys.exit(1)

@@ -261,7 +261,7 @@ class ChromaMemory:
             return None
 
         col = self.memories_col if collection == "memories" else self.findings_col
-        doc_id = hashlib.md5(content.encode()).hexdigest()[:16]
+        doc_id = hashlib.md5(content.encode(), usedforsecurity=False).hexdigest()[:16]
 
         try:
             col.add(
@@ -312,7 +312,7 @@ class ChaosMemory:
         """Save to all tiers"""
         # Tier 1: RAM (if important enough)
         if importance >= 0.7:
-            key = hashlib.md5(content.encode()).hexdigest()[:16]
+            key = hashlib.md5(content.encode(), usedforsecurity=False).hexdigest()[:16]
             self.ram.set(key, content)
 
         # Tier 2: SQLite
@@ -340,7 +340,7 @@ class ChaosMemory:
         results = []
 
         def _dedup_append(item):
-            h = hashlib.md5(str(item["content"]).encode()).hexdigest()[:16]
+            h = hashlib.md5(str(item["content"]).encode(), usedforsecurity=False).hexdigest()[:16]
             if h not in seen_hashes:
                 seen_hashes.add(h)
                 results.append(item)

@@ -264,7 +264,7 @@ class URLWatcher:
         import requests
         try:
             resp = requests.get(url, timeout=30)
-            content_hash = hashlib.md5(resp.text.encode()).hexdigest()
+            content_hash = hashlib.md5(resp.text.encode(), usedforsecurity=False).hexdigest()
             with self._lock:
                 old_hash = self._hashes.get(watch_id)
                 self._hashes[watch_id] = content_hash
@@ -555,7 +555,7 @@ class AutomationEngine:
     def create(self, name: str, trigger_type: str, trigger_config: dict,
                actions: list, description: str = "") -> dict:
         """Create a new automation."""
-        auto_id = hashlib.md5(f"{name}_{time.time()}".encode()).hexdigest()[:12]
+        auto_id = hashlib.md5(f"{name}_{time.time()}".encode(), usedforsecurity=False).hexdigest()[:12]
         auto = {
             "id": auto_id,
             "name": name,

@@ -64,3 +64,4 @@ terraform/*.auto.tfvars
 
 # AWS
 AWS_CONNECTION.md
+data/mobile_api_token.txt

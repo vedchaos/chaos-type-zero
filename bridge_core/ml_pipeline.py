@@ -84,7 +84,7 @@ class CTZMLPipeline:
             "type": model_type,
             "accuracy": accuracy,
             "timestamp": datetime.now().isoformat()
-        }).encode()).hexdigest()[:8]
+        }).encode(), usedforsecurity=False).hexdigest()[:8]
 
         model_path = MODELS_DIR / f"clf_{model_id}.pkl"
         with open(model_path, "wb") as f:
@@ -150,7 +150,7 @@ class CTZMLPipeline:
             "type": model_type,
             "r2": r2,
             "timestamp": datetime.now().isoformat()
-        }).encode()).hexdigest()[:8]
+        }).encode(), usedforsecurity=False).hexdigest()[:8]
 
         model_path = MODELS_DIR / f"reg_{model_id}.pkl"
         with open(model_path, "wb") as f:

@@ -65,7 +65,7 @@ def _save_png(data, filename):
 
 
 def _hash_prompt(prompt):
-    return hashlib.md5(prompt.encode()).hexdigest()[:8]
+    return hashlib.md5(prompt.encode(), usedforsecurity=False).hexdigest()[:8]
 
 
 def _text_to_gray_image(text, width):

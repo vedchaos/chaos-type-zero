@@ -6,7 +6,9 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-import xml.etree.ElementTree as ET
+# SECURITY: swapped stdlib ET for defusedxml to prevent XXE/billion-laughs
+# attacks from malicious RSS/Atom feeds (this parses untrusted network data)
+import defusedxml.ElementTree as ET
 from urllib.parse import urljoin
 
 SERVER_INFO = {"name": "rss-mcp", "version": "1.0.0"}

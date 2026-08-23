@@ -232,7 +232,7 @@ class CTZNeural:
             "topic_scores": {k: round(v, 3) for k, v in sorted(scores.items(), key=lambda x: -x[1])[:5]},
         }
 
-        text_hash = hashlib.md5(text.encode()).hexdigest()[:12]
+        text_hash = hashlib.md5(text.encode(), usedforsecurity=False).hexdigest()[:12]
         try:
             conn = sqlite3.connect(self._db_path)
             conn.execute(
@@ -280,7 +280,7 @@ class CTZNeural:
     # ── Embedding (TF-IDF based) ────────────────────────────────────────
 
     def _compute_idf(self, corpus: list) -> dict:
-        corpus_id = hashlib.md5(json.dumps(corpus, sort_keys=True).encode()).hexdigest()[:8]
+        corpus_id = hashlib.md5(json.dumps(corpus, sort_keys=True).encode(), usedforsecurity=False).hexdigest()[:8]
         if corpus_id in self._idf_cache:
             return self._idf_cache[corpus_id]
 
