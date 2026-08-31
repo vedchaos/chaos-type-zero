@@ -1,8 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "username": "ctz-operator",
-  "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b",
-  "small_model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b",
+  "model": "ollama/llama3",
+  "small_model": "ollama/llama3",
   "default_agent": "ctz",
   "shell": "powershell",
   "logLevel": "INFO",
@@ -20,33 +20,33 @@
     "ctz": {
       "description": "CHAOS TYPE ZERO primary agent — autonomous AI OS with 3-tier memory, multi-provider LLM, security scanning, ML pipeline, voice/vision.",
       "mode": "primary",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b",
+      "model": "ollama/llama3",
       "color": "error"
     },
     "ctz-recon": {
       "description": "Reconnaissance subagent. Passive + active recon, OSINT, subdomain enumeration.",
       "mode": "subagent",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b"
+      "model": "ollama/llama3"
     },
     "ctz-scan": {
       "description": "Vulnerability scanning subagent. Nmap, Nuclei, Nikto, Gobuster.",
       "mode": "subagent",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b"
+      "model": "ollama/llama3"
     },
     "ctz-exploit": {
       "description": "Exploitation subagent. SQLMap, Hydra, Metasploit. AUTHORIZATION REQUIRED.",
       "mode": "subagent",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b"
+      "model": "ollama/llama3"
     },
     "ctz-ml": {
       "description": "ML development subagent. Training, evaluation, deployment pipelines.",
       "mode": "subagent",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b"
+      "model": "ollama/llama3"
     },
     "ctz-code": {
       "description": "Code review and development subagent.",
       "mode": "subagent",
-      "model": "ollama/goekdenizguelmez/JOSIEFIED-Qwen3:8b"
+      "model": "ollama/llama3"
     }
   },
   "mcp": {
