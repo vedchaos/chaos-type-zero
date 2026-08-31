@@ -19,7 +19,7 @@ def _j1(city):
     url = f"https://wttr.in/{urllib.parse.quote(str(city))}?format=j1"
     req = urllib.request.Request(url, headers={"User-Agent": "curl/8.0 ctz-weather-mcp/1.0"})
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:  # nosec B310 - trusted https endpoint (wttr.in)
             return json.loads(resp.read().decode("utf-8", errors="replace"))
     except urllib.error.HTTPError as exc:
         return {"error": f"HTTP {exc.code} for '{city}'"}
@@ -97,7 +97,7 @@ def weather_alerts(city):
     url = f"https://api.weather.gov/alerts/active?point={lat},{lon}&limit=20"
     req = urllib.request.Request(url, headers={"User-Agent": "(ctz-weather-mcp, contact: local)", "Accept": "application/geo+json"})
     try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:  # nosec B310 - trusted https endpoint (api.weather.gov)
             payload = json.loads(resp.read().decode("utf-8", errors="replace"))
     except urllib.error.HTTPError as exc:
         return {"error": f"NWS returned HTTP {exc.code}", "note": "Alerts are US-only via api.weather.gov"}
