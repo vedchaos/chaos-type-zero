@@ -15,7 +15,7 @@ NC='\033[0m'
 echo ""
 echo -e "${GREEN}  ╔══════════════════════════════════════════╗"
 echo "  ║  CHAOS TYPE ZERO — Linux/Mac Installer   ║"
-echo "  ║  Version: 1.0.0                          ║"
+echo "  ║  Version: 3.3                            ║"
 echo -e "  ╚══════════════════════════════════════════╝${NC}"
 echo ""
 
