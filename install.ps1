@@ -7,7 +7,7 @@ $NEXUS_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
 Write-Host ""
 Write-Host "  ╔══════════════════════════════════════════╗" -ForegroundColor Green
 Write-Host "  ║  CHAOS TYPE ZERO — Windows Installer     ║" -ForegroundColor Green
-Write-Host "  ║  Version: 1.0.0                          ║" -ForegroundColor Green
+Write-Host "  ║  Version: 3.3                            ║" -ForegroundColor Green
 Write-Host "  ╚══════════════════════════════════════════╝" -ForegroundColor Green
 Write-Host ""
 
