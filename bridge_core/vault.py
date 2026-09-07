@@ -32,11 +32,11 @@ from pathlib import Path
 
 try:
     from cryptography.fernet import Fernet, InvalidToken
-except ImportError as e:
-    raise ImportError(
-        "The 'cryptography' package is required for the vault to store secrets "
-        "safely. Install it with: pip install cryptography --break-system-packages"
-    ) from e
+    HAS_CRYPTO = True
+except ImportError:
+    Fernet = None
+    InvalidToken = Exception
+    HAS_CRYPTO = False
 
 CTZ_ROOT = Path(__file__).parent.parent
 DATA_DIR = CTZ_ROOT / "data"
@@ -74,6 +74,8 @@ def _load_or_create_key() -> bytes:
 
 
 def _get_fernet() -> "Fernet":
+    if not HAS_CRYPTO or Fernet is None:
+        raise RuntimeError("The 'cryptography' package is required for the vault. Run: pip install cryptography")
     return Fernet(_load_or_create_key())
 
 

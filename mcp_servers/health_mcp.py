@@ -7,7 +7,10 @@ import os
 import time
 import platform
 import subprocess
-import psutil
+try:
+    import psutil
+except ImportError:
+    psutil = None
 from datetime import datetime
 from pathlib import Path
 
@@ -64,35 +67,46 @@ def handle_request(request):
         args = params.get("arguments", {})
         try:
             if name == "ctz_health_check":
-                vm = psutil.virtual_memory()
+                if psutil:
+                    vm = psutil.virtual_memory()
+                    ram_percent = vm.percent
+                    ram_avail = round(vm.available / (1024**3), 2)
+                else:
+                    ram_percent = 0.0
+                    ram_avail = 0.0
                 mcp_results = _check_mcp_servers()
                 healthy = sum(1 for r in mcp_results if r["status"] == "healthy")
                 report = {
                     "timestamp": datetime.now().isoformat(),
                     "platform": platform.system(),
                     "python": sys.version.split()[0],
-                    "ram_percent": vm.percent,
-                    "ram_available_gb": round(vm.available / (1024**3), 2),
+                    "ram_percent": ram_percent,
+                    "ram_available_gb": ram_avail,
                     "mcp_servers": {"total": len(mcp_results), "healthy": healthy, "unhealthy": len(mcp_results) - healthy, "details": mcp_results},
                     "databases": _check_databases(),
                     "overall": "healthy" if healthy == len(mcp_results) else "degraded",
+                    "note": "psutil optional for detailed RAM tracking" if not psutil else "psutil active",
                 }
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(report, indent=2)}]}}
             elif name == "ctz_health_db":
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(_check_databases(), indent=2)}]}}
             elif name == "ctz_health_memory":
-                vm = psutil.virtual_memory()
-                swap = psutil.swap_memory()
-                procs = []
-                for p in psutil.process_iter(["pid", "name", "memory_percent", "memory_info"]):
-                    try:
-                        info = p.info
-                        if info.get("memory_percent", 0) > 0.5:
-                            procs.append({"pid": info["pid"], "name": info["name"], "mem_percent": round(info["memory_percent"], 2), "mem_mb": round(info.memory_info.rss / (1024**2), 1)})
-                    except:
-                        pass
-                procs.sort(key=lambda x: x["mem_percent"], reverse=True)
-                return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps({"ram_total_gb": round(vm.total / (1024**3), 2), "ram_used_gb": round(vm.used / (1024**3), 2), "ram_percent": vm.percent, "swap_percent": swap.percent, "top_processes": procs[:10]}, indent=2)}]}}
+                if psutil:
+                    vm = psutil.virtual_memory()
+                    swap = psutil.swap_memory()
+                    procs = []
+                    for p in psutil.process_iter(["pid", "name", "memory_percent", "memory_info"]):
+                        try:
+                            info = p.info
+                            if info.get("memory_percent", 0) > 0.5:
+                                procs.append({"pid": info["pid"], "name": info["name"], "mem_percent": round(info["memory_percent"], 2), "mem_mb": round(info.memory_info.rss / (1024**2), 1)})
+                        except:
+                            pass
+                    procs.sort(key=lambda x: x["mem_percent"], reverse=True)
+                    mem_data = {"ram_total_gb": round(vm.total / (1024**3), 2), "ram_used_gb": round(vm.used / (1024**3), 2), "ram_percent": vm.percent, "swap_percent": swap.percent, "top_processes": procs[:10]}
+                else:
+                    mem_data = {"status": "ok", "note": "psutil not installed. Run 'pip install psutil' for process memory metrics.", "platform": platform.system()}
+                return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(mem_data, indent=2)}]}}
         except Exception as e:
             return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": f"Error: {e}"}], "isError": True}}
     return {"jsonrpc": "2.0", "id": req_id, "error": {"code": -32601, "message": "Unknown method"}}

@@ -4,24 +4,22 @@
 
 ---
 
-## 📊 Overview
+## 📊 Architecture & Capability Overview
 
-| Feature | CHAOS v1.0 | CHAOS v3.0 | Growth |
+| Feature | CHAOS v1.0 | CHAOS v3.3 | Technical Evolution |
 |---|---|---|---|
-| **Total MCP Servers** | 9 | 40 | **+344%** |
-| **Total Tools** | ~30 | 298 | **+893%** |
-| **Skills** | 12 | 31 | **+158%** |
-| **LLM Providers** | 3 | 14 | **+367%** |
-| **Agent Types** | 2 | 6 | **+200%** |
-| **Task Types** | 4 | 12 | **+200%** |
-| **Core Modules** | 5 | 18 | **+260%** |
-| **Memory Tiers** | 1 | 3 | **+200%** |
-| **Install Scripts** | ❌ | ✅ (PS1 + SH + Kali) | **New** |
-| **Dashboard UI** | ❌ | ✅ (Cyberpunk Web) | **New** |
-| **Docker** | ❌ | ✅ | **New** |
-| **Mobile API** | ❌ | ✅ | **New** |
-| | | | |
-| **TOTAL** | **15/100** | **110/100** | **+633%** |
+| **MCP Tool Servers** | 9 | 71 | Standardized Model Context Protocol servers |
+| **Active Tools** | ~30 | 414 | 100% verified tool declarations across servers |
+| **LLM Providers** | 3 | 14 | Free-first fallback, key rotation & semantic cache |
+| **Agent Roles** | 2 | 6 | Planner, Coder, Researcher, Critic, Executor, Memory |
+| **Task Classifiers** | 4 | 12 | Hinglish & English natural language classification |
+| **Memory Architecture**| 1 (RAM) | 3-Tier | RAM LRU (L1) + SQLite (L2) + ChromaDB (L3) |
+| **Shell Execution** | Linux bash only | Cross-Platform | Native PowerShell (Windows) + Bash (Linux/macOS) |
+| **Module Loading** | Fragile eager imports | Resilient Lazy Loading | PEP 562 lazy loading shields optional deps |
+| **Code Safety** | None / Naive regex | AST Security Inspector | Static AST analysis blocks dangerous calls |
+| **Test Coverage** | 0 tests | 115 tests | Zero-dependency test runner (`tests/run_all_tests.py`) |
+| **UI & Control** | CLI only | Web + Mobile + Bots | Cyberpunk Web, Expo React Native, Slack & Discord |
+| **Deployment** | Manual script | Full DevOps IaC | Docker Compose, 11 K8s manifests, Terraform AWS |
 
 ---
 

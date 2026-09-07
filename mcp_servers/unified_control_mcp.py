@@ -7,7 +7,10 @@ import os
 import time
 import platform
 import subprocess
-import psutil
+try:
+    import psutil
+except ImportError:
+    psutil = None
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -51,9 +54,9 @@ def handle_request(request):
         try:
             if name == "ctz_control_status":
                 servers = _check_servers()
-                vm = psutil.virtual_memory()
                 healthy = sum(1 for s in servers if s["status"] == "healthy")
-                return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps({"timestamp": datetime.now().isoformat(), "platform": platform.system(), "uptime_seconds": round(time.time() - START_TIME, 1), "ram_percent": vm.percent, "mcp_servers": {"total": len(servers), "healthy": healthy, "unhealthy": len(servers) - healthy}, "overall": "healthy" if healthy == len(servers) else "degraded"}, indent=2)}]}}
+                ram_percent = psutil.virtual_memory().percent if psutil else 0.0
+                return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps({"timestamp": datetime.now().isoformat(), "platform": platform.system(), "uptime_seconds": round(time.time() - START_TIME, 1), "ram_percent": ram_percent, "mcp_servers": {"total": len(servers), "healthy": healthy, "unhealthy": len(servers) - healthy}, "overall": "healthy" if healthy == len(servers) else "degraded"}, indent=2)}]}}
             elif name == "ctz_control_restart_mcp":
                 server = args["server"]
                 log_dir = PROJECT_ROOT / "data" / "logs"
@@ -67,13 +70,17 @@ def handle_request(request):
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps({"timestamp": datetime.now().isoformat(), "servers": servers, "total": len(servers), "healthy": sum(1 for s in servers if s["status"] == "healthy")}, indent=2)}]}}
             elif name == "ctz_control_dashboard":
                 servers = _check_servers()
-                vm = psutil.virtual_memory()
-                swap = psutil.swap_memory()
                 healthy = sum(1 for s in servers if s["status"] == "healthy")
+                if psutil:
+                    vm = psutil.virtual_memory()
+                    swap = psutil.swap_memory()
+                    mem_data = {"ram_total_gb": round(vm.total / (1024**3), 2), "ram_used_gb": round(vm.used / (1024**3), 2), "ram_percent": vm.percent, "swap_percent": swap.percent}
+                else:
+                    mem_data = {"note": "Install psutil for real-time memory stats", "ram_percent": 0.0}
                 dashboard = {
                     "timestamp": datetime.now().isoformat(),
                     "system": {"platform": platform.system(), "python": sys.version.split()[0], "uptime_seconds": round(time.time() - START_TIME, 1)},
-                    "memory": {"ram_total_gb": round(vm.total / (1024**3), 2), "ram_used_gb": round(vm.used / (1024**3), 2), "ram_percent": vm.percent, "swap_percent": swap.percent},
+                    "memory": mem_data,
                     "mcp_servers": {"total": len(servers), "healthy": healthy, "unhealthy": len(servers) - healthy, "servers": servers},
                     "overall_status": "healthy" if healthy == len(servers) else "degraded",
                 }

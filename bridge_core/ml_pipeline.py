@@ -11,7 +11,10 @@ import hashlib
 from datetime import datetime
 from pathlib import Path
 
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
 CTZ_ROOT = Path(__file__).parent.parent
 MODELS_DIR = CTZ_ROOT / "data" / "models"

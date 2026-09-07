@@ -16,7 +16,15 @@ CTZ_ROOT = Path(__file__).parent.parent
 RESULTS_DIR = CTZ_ROOT / "data" / "scan_results"
 RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-USE_WSL = True  # Use WSL2 Kali Linux
+import shutil
+
+def _detect_scanner_backend():
+    """Detect whether to use WSL2 Kali, native binaries, or none."""
+    if shutil.which("wsl"):
+        return "wsl"
+    elif shutil.which("nmap"):
+        return "native"
+    return "none"
 
 
 def sanitize_target(target):
@@ -49,14 +57,18 @@ def sanitize_target(target):
 
 
 def run_cmd(cmd, timeout=300):
-    """Run a command safely using argument lists (no shell=True injection)."""
+    """Run a command safely using argument lists and detected backend."""
     try:
-        if USE_WSL:
-            # Use argument list — no shell injection possible
+        backend = _detect_scanner_backend()
+        if backend == "wsl":
             full_cmd = ["wsl", "-d", "kali-linux", "--", "bash", "-c", cmd]
+        elif backend == "native":
+            if sys.platform == "win32":
+                full_cmd = ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", cmd]
+            else:
+                full_cmd = ["bash", "-c", cmd]
         else:
-            # On native Linux, run directly
-            full_cmd = ["bash", "-c", cmd]
+            return f"[ERROR] Neither WSL2 Kali nor native security tools (nmap) found in PATH. Install WSL2 Kali via setup_kali.sh or install nmap locally."
 
         result = subprocess.run(
             full_cmd, capture_output=True, text=True, timeout=timeout

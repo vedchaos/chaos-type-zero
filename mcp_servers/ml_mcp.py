@@ -6,7 +6,10 @@ Tools: ml_train, ml_predict, ml_evaluate, ml_list, ml_delete, ml_status
 
 import json
 import sys
-import numpy as np
+try:
+    import numpy as np
+except ImportError:
+    np = None
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))

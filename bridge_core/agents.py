@@ -4,6 +4,7 @@ CHAOS TYPE ZERO 6-Agent OMO Sisyphus Orchestrator
 Plan → Execute → Critique → Refine → Memory → Report
 """
 
+import ast
 import json
 import os
 import re
@@ -212,9 +213,14 @@ class ExecutorAgent(Agent):
                 return {"status": "blocked", "output": f"Dangerous command blocked: {blocked}"}
 
         try:
-            # Use argument list for safety
+            if os.name == "nt":
+                # Native Windows PowerShell support
+                shell_cmd = ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", cmd]
+            else:
+                shell_cmd = ["bash", "-c", cmd]
+
             result = subprocess.run(
-                ["bash", "-c", cmd],
+                shell_cmd,
                 capture_output=True, text=True, timeout=timeout
             )
             return {
@@ -291,6 +297,31 @@ class ExecutorAgent(Agent):
             "timestamp": datetime.now().isoformat(),
         }
 
+    @staticmethod
+    def _is_safe_code(code: str):
+        try:
+            tree = ast.parse(code)
+        except SyntaxError as e:
+            return False, f"SyntaxError in generated code: {e}"
+
+        forbidden_calls = {"eval", "exec", "__import__", "compile"}
+        forbidden_modules = {"shutil", "ctypes", "subprocess", "socket"}
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if alias.name in forbidden_modules:
+                        return False, f"Forbidden module import: {alias.name}"
+            elif isinstance(node, ast.ImportFrom):
+                if node.module in forbidden_modules:
+                    return False, f"Forbidden module import: {node.module}"
+            elif isinstance(node, ast.Call):
+                if isinstance(node.func, ast.Name) and node.func.id in forbidden_calls:
+                    return False, f"Forbidden function call: {node.func.id}"
+                elif isinstance(node.func, ast.Attribute) and node.func.attr in {"system", "popen", "spawn", "rmdir", "remove", "unlink"}:
+                    return False, f"Forbidden dangerous call: {node.func.attr}"
+        return True, "Safe"
+
     def _llm_execute(self, action, args, context=None):
         """Use LLM to generate and optionally run a solution."""
         prompt = (
@@ -308,8 +339,11 @@ class ExecutorAgent(Agent):
         if code_match:
             code = code_match.group(1).strip()
 
-        # Execute the generated code if it looks safe
-        if code and not any(bad in code.lower() for bad in ["os.remove", "shutil.rmtree", "subprocess", "eval(", "exec("]):
+        # Execute the generated code if it looks safe via AST inspection
+        if code:
+            is_safe, reason = self._is_safe_code(code)
+            if not is_safe:
+                return {"status": "blocked", "output": f"Code blocked by AST safety inspector: {reason}"}
             try:
                 exec_result = subprocess.run(
                     [sys.executable, "-c", code],

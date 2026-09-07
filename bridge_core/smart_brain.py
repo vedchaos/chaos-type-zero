@@ -199,7 +199,7 @@ class LRUCache:
     def _load_disk_cache(self):
         try:
             if self.disk_path.exists():
-                return json.loads(self.disk_path.read_text())
+                return json.loads(self.disk_path.read_text(encoding="utf-8", errors="replace"))
         except (json.JSONDecodeError, OSError) as e:
             print(f"[WARN] Failed to load disk cache: {e}")
         return {}
@@ -218,7 +218,7 @@ class LRUCache:
                 )
                 for k in sorted_keys[:500]:
                     del self.disk_cache[k]
-            self.disk_path.write_text(json.dumps(self.disk_cache, indent=2))
+            self.disk_path.write_text(json.dumps(self.disk_cache, indent=2), encoding="utf-8")
             self._dirty = False
         except OSError as e:
             print(f"[WARN] Failed to save disk cache: {e}")
@@ -292,7 +292,7 @@ class SmartBrain:
         """Load API keys from .env file"""
         keys = {}
         if self.keys_file.exists():
-            for line in self.keys_file.read_text().splitlines():
+            for line in self.keys_file.read_text(encoding="utf-8", errors="replace").splitlines():
                 line = line.strip()
                 if line and not line.startswith("#") and "=" in line:
                     name, value = line.split("=", 1)

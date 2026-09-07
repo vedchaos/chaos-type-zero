@@ -5,7 +5,10 @@ import json
 import sys
 import os
 import platform
-import psutil
+try:
+    import psutil
+except ImportError:
+    psutil = None
 from datetime import datetime
 from pathlib import Path
 
@@ -59,24 +62,33 @@ def handle_request(request):
                     "platform": platform.system(),
                     "platform_release": platform.release(),
                     "python_version": sys.version.split()[0],
-                    "cpu_count": psutil.cpu_count(),
-                    "cpu_percent": psutil.cpu_percent(interval=1),
-                    "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat(),
+                    "cpu_count": psutil.cpu_count() if psutil else os.cpu_count(),
+                    "cpu_percent": psutil.cpu_percent(interval=1) if psutil else 0.0,
+                    "boot_time": datetime.fromtimestamp(psutil.boot_time()).isoformat() if psutil else "unknown (install psutil)",
+                    "note": "Install psutil for accurate CPU percentages" if not psutil else "psutil active",
                 }
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(report, indent=2)}]}}
             elif name == "ctz_report_memory":
-                vm = psutil.virtual_memory()
-                swap = psutil.swap_memory()
-                report = {
-                    "timestamp": datetime.now().isoformat(),
-                    "total_ram_gb": round(vm.total / (1024**3), 2),
-                    "used_ram_gb": round(vm.used / (1024**3), 2),
-                    "available_ram_gb": round(vm.available / (1024**3), 2),
-                    "ram_percent": vm.percent,
-                    "swap_total_gb": round(swap.total / (1024**3), 2),
-                    "swap_used_gb": round(swap.used / (1024**3), 2),
-                    "swap_percent": swap.percent,
-                }
+                if psutil:
+                    vm = psutil.virtual_memory()
+                    swap = psutil.swap_memory()
+                    report = {
+                        "timestamp": datetime.now().isoformat(),
+                        "total_ram_gb": round(vm.total / (1024**3), 2),
+                        "used_ram_gb": round(vm.used / (1024**3), 2),
+                        "available_ram_gb": round(vm.available / (1024**3), 2),
+                        "ram_percent": vm.percent,
+                        "swap_total_gb": round(swap.total / (1024**3), 2),
+                        "swap_used_gb": round(swap.used / (1024**3), 2),
+                        "swap_percent": swap.percent,
+                    }
+                else:
+                    report = {
+                        "timestamp": datetime.now().isoformat(),
+                        "status": "partial",
+                        "note": "psutil not installed. Run 'pip install psutil' for detailed RAM metrics.",
+                        "platform": platform.system()
+                    }
                 return {"jsonrpc": "2.0", "id": req_id, "result": {"content": [{"type": "text", "text": json.dumps(report, indent=2)}]}}
             elif name == "ctz_report_project":
                 directory = args.get("directory", ".")
