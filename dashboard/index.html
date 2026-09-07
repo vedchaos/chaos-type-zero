@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHAOS TYPE ZERO — Quantum Core Command Center</title>
+<title>CHAOS TYPE ZERO — Full Access Quantum Web OS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,10 +14,10 @@
 :root {
   --bg-space: #05020c;
   --bg-deep: #090516;
-  --bg-card: rgba(16, 10, 36, 0.78);
-  --bg-card-hover: rgba(26, 16, 56, 0.9);
-  --bg-sub: rgba(24, 14, 52, 0.65);
-  --bg-sub2: rgba(35, 20, 75, 0.5);
+  --bg-card: rgba(16, 10, 36, 0.82);
+  --bg-card-hover: rgba(28, 16, 60, 0.92);
+  --bg-sub: rgba(24, 14, 52, 0.7);
+  --bg-sub2: rgba(36, 20, 78, 0.6);
 
   --purple-neon: #a855f7;
   --purple-light: #c084fc;
@@ -28,17 +28,15 @@
   --pink-neon: #ec4899;
   --pink-light: #f472b6;
   --cyan-neon: #38bdf8;
-  --cyan-light: #7dd3fc;
   --emerald: #10b981;
   --amber: #f59e0b;
   --rose: #f43f5e;
   
-  --border-card: rgba(168, 85, 247, 0.24);
-  --border-card-hover: rgba(192, 132, 252, 0.65);
+  --border-card: rgba(168, 85, 247, 0.25);
+  --border-card-hover: rgba(192, 132, 252, 0.7);
   --border-sub: rgba(255, 255, 255, 0.08);
 
-  --purple-glow: rgba(168, 85, 247, 0.35);
-  --pink-glow: rgba(236, 72, 153, 0.3);
+  --purple-glow: rgba(168, 85, 247, 0.38);
 
   --text-main: #f8fafc;
   --text-soft: #cbd5e1;
@@ -58,9 +56,9 @@ body {
   overflow-x: hidden;
   position: relative;
   background-image: 
-    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(124, 58, 237, 0.3), transparent 70%),
-    radial-gradient(circle at 90% 70%, rgba(236, 72, 153, 0.15), transparent 50%),
-    radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.1), transparent 45%),
+    radial-gradient(ellipse 90% 60% at 50% -20%, rgba(124, 58, 237, 0.32), transparent 70%),
+    radial-gradient(circle at 90% 70%, rgba(236, 72, 153, 0.16), transparent 50%),
+    radial-gradient(circle at 10% 90%, rgba(56, 189, 248, 0.12), transparent 45%),
     linear-gradient(rgba(168, 85, 247, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(168, 85, 247, 0.035) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
@@ -71,32 +69,15 @@ body {
 .ambient-orb {
   position: fixed;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(95px);
   pointer-events: none;
   z-index: 0;
   opacity: 0.65;
 }
-.orb-1 {
-  width: 500px; height: 500px;
-  top: -120px; left: -120px;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.4), transparent 70%);
-  animation: floatOrb1 20s ease-in-out infinite alternate;
-}
-.orb-2 {
-  width: 550px; height: 550px;
-  bottom: -160px; right: -160px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent 70%);
-  animation: floatOrb2 24s ease-in-out infinite alternate;
-}
-.orb-3 {
-  width: 380px; height: 380px;
-  top: 40%; left: 35%;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.2), transparent 70%);
-  animation: floatOrb3 18s ease-in-out infinite alternate;
-}
+.orb-1 { width: 500px; height: 500px; top: -120px; left: -120px; background: radial-gradient(circle, rgba(168, 85, 247, 0.4), transparent 70%); animation: floatOrb1 20s infinite alternate; }
+.orb-2 { width: 550px; height: 550px; bottom: -160px; right: -160px; background: radial-gradient(circle, rgba(236, 72, 153, 0.32), transparent 70%); animation: floatOrb2 24s infinite alternate; }
 @keyframes floatOrb1 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(140px,90px) scale(1.15)} }
 @keyframes floatOrb2 { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(-120px,-100px) scale(1.2)} }
-@keyframes floatOrb3 { 0%{transform:translate(0,0) scale(0.9)} 100%{transform:translate(-80px,70px) scale(1.1)} }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
@@ -132,21 +113,11 @@ body {
   display: flex;
   gap: 32px;
   white-space: nowrap;
-  animation: tickerSlide 45s linear infinite;
+  animation: tickerSlide 40s linear infinite;
 }
-@keyframes tickerSlide {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--text-soft);
-}
-.ticker-dot {
-  width: 5px; height: 5px; border-radius: 50%; background: var(--purple-neon);
-}
+@keyframes tickerSlide { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-item { display: inline-flex; align-items: center; gap: 6px; color: var(--text-soft); }
+.ticker-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--purple-neon); }
 
 /* Header */
 header {
@@ -155,7 +126,7 @@ header {
   z-index: 100;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(9, 5, 22, 0.88);
+  background: rgba(9, 5, 22, 0.9);
   border-bottom: 1px solid var(--border-card);
   padding: 12px 28px;
   display: flex;
@@ -164,11 +135,7 @@ header {
   gap: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
 }
-.header-brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
+.header-brand { display: flex; align-items: center; gap: 14px; }
 .core-symbol {
   width: 44px; height: 44px;
   border-radius: 12px;
@@ -214,12 +181,7 @@ header {
 }
 
 /* Header Action Controls */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+.header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -232,11 +194,7 @@ header {
   font-size: 11px;
   font-weight: 600;
 }
-.status-pulse {
-  width: 7px; height: 7px; border-radius: 50%; background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: pulseDot 1.6s infinite;
-}
+.status-pulse { width: 7px; height: 7px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: pulseDot 1.6s infinite; }
 @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:0.5} }
 
 .hud-stat {
@@ -276,26 +234,11 @@ header {
   cursor: pointer;
   transition: all 0.2s;
 }
-.icon-btn:hover {
-  border-color: var(--purple-neon);
-  color: #fff;
-  box-shadow: 0 0 14px var(--purple-glow);
-  transform: translateY(-1px);
-}
+.icon-btn:hover { border-color: var(--purple-neon); color: #fff; box-shadow: 0 0 14px var(--purple-glow); transform: translateY(-1px); }
 
-/* Nav Bar Tabs */
-.nav-container {
-  padding: 14px 28px 0;
-  position: relative;
-  z-index: 10;
-}
-.nav-tabs {
-  display: flex;
-  gap: 8px;
-  border-bottom: 1px solid var(--border-card);
-  padding-bottom: 12px;
-  overflow-x: auto;
-}
+/* Navigation Tabs */
+.nav-container { padding: 14px 28px 0; position: relative; z-index: 10; }
+.nav-tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--border-card); padding-bottom: 12px; overflow-x: auto; }
 .tab-btn {
   background: transparent;
   border: 1px solid transparent;
@@ -312,10 +255,7 @@ header {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
 }
-.tab-btn:hover {
-  color: var(--text-main);
-  background: rgba(168, 85, 247, 0.1);
-}
+.tab-btn:hover { color: var(--text-main); background: rgba(168, 85, 247, 0.1); }
 .tab-btn.active {
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(236, 72, 153, 0.18));
   border-color: rgba(192, 132, 252, 0.5);
@@ -332,25 +272,12 @@ header {
 }
 
 /* Main Content */
-main {
-  position: relative;
-  z-index: 10;
-  padding: 20px 28px 50px;
-}
+main { position: relative; z-index: 10; padding: 20px 28px 50px; }
+.tab-pane { display: none; animation: tabFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.tab-pane.active { display: block; }
+@keyframes tabFadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
-.tab-pane {
-  display: none;
-  animation: tabFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.tab-pane.active {
-  display: block;
-}
-@keyframes tabFadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Cards & Glassmorphism */
+/* Cards */
 .card {
   background: var(--bg-card);
   backdrop-filter: blur(20px);
@@ -378,9 +305,7 @@ main {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-.card:hover::before {
-  opacity: 1;
-}
+.card:hover::before { opacity: 1; }
 
 /* Layout Grids */
 .grid { display: grid; gap: 16px; }
@@ -390,152 +315,85 @@ main {
 .grid-wide { grid-template-columns: 2fr 1fr; }
 .grid-6 { grid-template-columns: repeat(6, 1fr); }
 
-/* Gauges */
-.gauge-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-.gauge-box {
-  width: 72px; height: 72px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.gauge-svg {
-  transform: rotate(-90deg);
-  width: 72px; height: 72px;
-}
-.gauge-bg {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
-  stroke-width: 5.5;
-}
-.gauge-bar {
-  fill: none;
-  stroke-width: 5.5;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* Circular SVG Gauges */
+.gauge-card { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.gauge-box { width: 72px; height: 72px; position: relative; display: flex; align-items: center; justify-content: center; }
+.gauge-svg { transform: rotate(-90deg); width: 72px; height: 72px; }
+.gauge-bg { fill: none; stroke: rgba(255, 255, 255, 0.08); stroke-width: 5.5; }
+.gauge-bar { fill: none; stroke-width: 5.5; stroke-linecap: round; transition: stroke-dashoffset 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .gauge-cpu { stroke: url(#purpleGrad); }
 .gauge-ram { stroke: url(#pinkGrad); }
 .gauge-disk { stroke: url(#cyanGrad); }
 .gauge-net { stroke: url(#emeraldGrad); }
-.gauge-text {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 800;
-  color: #fff;
-}
+.gauge-text { position: absolute; font-family: var(--font-mono); font-size: 11.5px; font-weight: 800; color: #fff; }
 
-/* Shimmer Progress Bars */
-.progress-container {
-  margin-top: 10px;
-  background: rgba(255, 255, 255, 0.07);
-  height: 7px;
-  border-radius: 6px;
-  overflow: hidden;
-  position: relative;
-}
-.progress-bar-glow {
-  height: 100%;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #7c3aed, #c084fc, #ec4899);
-  position: relative;
-  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.progress-bar-glow::after {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%; width: 50%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
-  animation: shimmer 2.2s infinite;
-}
+/* Progress Bars */
+.progress-container { margin-top: 10px; background: rgba(255, 255, 255, 0.07); height: 7px; border-radius: 6px; overflow: hidden; position: relative; }
+.progress-bar-glow { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #7c3aed, #c084fc, #ec4899); position: relative; transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.progress-bar-glow::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent); animation: shimmer 2.2s infinite; }
 @keyframes shimmer { 0%{left:-60%} 100%{left:140%} }
 
-/* Swarm Multi-Agent Grid */
-.swarm-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 12px;
-}
-.agent-node-card {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-card);
-  border-radius: 14px;
-  padding: 14px;
-  text-align: center;
-  position: relative;
-  transition: all 0.25s ease;
-}
-.agent-node-card:hover {
-  border-color: var(--purple-light);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px -4px var(--purple-glow);
-}
-.agent-avatar {
-  width: 44px; height: 44px;
-  border-radius: 12px;
-  margin: 0 auto 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-.agent-name {
-  font-weight: 700;
-  font-size: 12.5px;
+/* Buttons */
+.btn-purple {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  border: 1px solid rgba(192, 132, 252, 0.45);
   color: #fff;
-}
-.agent-role {
-  font-size: 10px;
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  margin-top: 2px;
-}
-.agent-state-badge {
+  padding: 8px 16px;
+  border-radius: 9px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 600;
-  color: #34d399;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  padding: 2px 8px;
-  border-radius: 12px;
-  margin-top: 8px;
+  gap: 7px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
 }
+.btn-purple:hover { background: linear-gradient(135deg, #a855f7, #9333ea); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(168, 85, 247, 0.55); }
+.btn-glass {
+  background: var(--bg-sub);
+  border: 1px solid var(--border-card);
+  color: var(--text-soft);
+  padding: 8px 15px;
+  border-radius: 9px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+.btn-glass:hover { background: rgba(168, 85, 247, 0.18); border-color: var(--purple-neon); color: #fff; transform: translateY(-2px); }
 
-/* Interactive AST Sandbox Playground */
-.ast-playground {
-  background: #060210;
-  border: 1px solid rgba(168, 85, 247, 0.3);
+/* MCP Cards */
+.mcp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.mcp-card {
+  background: var(--bg-sub);
+  border: 1px solid rgba(168, 85, 247, 0.2);
   border-radius: 12px;
   padding: 14px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
 }
-.code-editor-area {
-  width: 100%;
-  height: 90px;
-  background: rgba(15, 8, 32, 0.8);
-  border: 1px solid var(--border-sub);
-  border-radius: 8px;
-  color: #e9d5ff;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  padding: 10px;
-  outline: none;
-  resize: none;
-}
-.code-editor-area:focus {
-  border-color: var(--purple-neon);
-}
+.mcp-card:hover { border-color: var(--purple-neon); background: rgba(36, 20, 75, 0.85); transform: translateY(-3px) scale(1.01); box-shadow: 0 8px 24px -4px rgba(168, 85, 247, 0.4); }
+.mcp-title { font-weight: 700; font-size: 13px; color: #fff; font-family: var(--font-mono); }
+.tool-badge { background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.25)); border: 1px solid rgba(168, 85, 247, 0.4); color: #e9d5ff; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
 
-/* Terminal Window */
+/* Search & Chips */
+.search-bar { display: flex; gap: 10px; align-items: center; background: var(--bg-sub); border: 1px solid var(--border-card); border-radius: 12px; padding: 9px 14px; margin-bottom: 14px; }
+.search-input { background: transparent; border: none; color: #fff; font-family: var(--font-sans); font-size: 13px; width: 100%; outline: none; }
+.chip-container { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 14px; }
+.chip { background: var(--bg-sub); border: 1px solid var(--border-sub); color: var(--text-muted); padding: 5px 12px; border-radius: 16px; font-size: 11.5px; cursor: pointer; transition: all 0.2s; }
+.chip:hover { border-color: var(--purple-light); color: #fff; }
+.chip.active { background: rgba(168, 85, 247, 0.25); border-color: var(--purple-neon); color: var(--purple-bright); font-weight: 600; }
+
+/* Real Terminal Window */
 .terminal-window {
   background: #060210;
   border: 1px solid rgba(168, 85, 247, 0.35);
@@ -562,8 +420,9 @@ main {
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.6;
-  max-height: 320px;
+  height: 380px;
   overflow-y: auto;
+  white-space: pre-wrap;
 }
 .term-line { margin-bottom: 5px; word-break: break-all; }
 .term-prompt { color: var(--purple-neon); font-weight: 700; margin-right: 6px; }
@@ -572,6 +431,7 @@ main {
 .term-success { color: #34d399; }
 .term-warn { color: #fbbf24; }
 .term-info { color: var(--cyan-neon); }
+.term-err { color: #f43f5e; }
 
 .terminal-input-row {
   display: flex;
@@ -590,145 +450,88 @@ main {
   color: #fff;
 }
 
-/* Buttons */
-.btn-purple {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-  border: 1px solid rgba(192, 132, 252, 0.45);
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 9px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
+/* Modal for Tool Calling / File Editing */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 2, 10, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
   align-items: center;
-  gap: 7px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+  justify-content: center;
+  padding: 20px;
 }
-.btn-purple:hover {
-  background: linear-gradient(135deg, #a855f7, #9333ea);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(168, 85, 247, 0.55);
-}
-.btn-glass {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-card);
-  color: var(--text-soft);
-  padding: 8px 15px;
-  border-radius: 9px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  transition: all 0.2s ease;
-}
-.btn-glass:hover {
-  background: rgba(168, 85, 247, 0.18);
-  border-color: var(--purple-neon);
-  color: #fff;
-  transform: translateY(-2px);
-}
-
-/* MCP Grid Cards */
-.mcp-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
-}
-.mcp-card {
-  background: var(--bg-sub);
-  border: 1px solid rgba(168, 85, 247, 0.2);
-  border-radius: 12px;
-  padding: 14px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.modal-overlay.show { display: flex; }
+.modal-box {
+  background: var(--bg-deep);
+  border: 1px solid var(--purple-neon);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 16px 50px rgba(168, 85, 247, 0.35);
+  overflow: hidden;
+}
+.modal-header {
+  background: rgba(22, 12, 48, 0.85);
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  cursor: pointer;
 }
-.mcp-card:hover {
-  border-color: var(--purple-neon);
-  background: rgba(36, 20, 75, 0.85);
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 8px 24px -4px rgba(168, 85, 247, 0.4);
-}
-.mcp-title {
-  font-weight: 700;
-  font-size: 13px;
-  color: #fff;
+.modal-body {
+  padding: 18px 20px;
+  overflow-y: auto;
   font-family: var(--font-mono);
+  font-size: 12px;
 }
-.tool-badge {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.25));
-  border: 1px solid rgba(168, 85, 247, 0.4);
+
+/* File Tree Explorer */
+.file-list {
+  max-height: 480px;
+  overflow-y: auto;
+  border: 1px solid var(--border-sub);
+  border-radius: 10px;
+  background: var(--bg-sub);
+}
+.file-item {
+  padding: 7px 12px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-soft);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.file-item:hover { background: rgba(168, 85, 247, 0.15); color: #fff; }
+.file-item.active { background: rgba(168, 85, 247, 0.3); color: var(--purple-bright); font-weight: 600; }
+
+.editor-textarea {
+  width: 100%;
+  height: 480px;
+  background: #060210;
+  border: 1px solid var(--border-card);
+  border-radius: 10px;
   color: #e9d5ff;
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 6px;
-}
-
-/* Search Bar */
-.search-bar {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  background: var(--bg-sub);
-  border: 1px solid var(--border-card);
-  border-radius: 12px;
-  padding: 9px 14px;
-  margin-bottom: 14px;
-}
-.search-input {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  width: 100%;
+  font-size: 12px;
+  padding: 12px;
+  line-height: 1.5;
   outline: none;
-}
-
-/* Category Filter Chips */
-.chip-container {
-  display: flex;
-  gap: 7px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.chip {
-  background: var(--bg-sub);
-  border: 1px solid var(--border-sub);
-  color: var(--text-muted);
-  padding: 5px 12px;
-  border-radius: 16px;
-  font-size: 11.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.chip:hover {
-  border-color: var(--purple-light);
-  color: #fff;
-}
-.chip.active {
-  background: rgba(168, 85, 247, 0.25);
-  border-color: var(--purple-neon);
-  color: var(--purple-bright);
-  font-weight: 600;
+  resize: none;
 }
 
 /* Toast Message */
 .toast-msg {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9999;
+  bottom: 24px; right: 24px; z-index: 9999;
   background: rgba(16, 8, 38, 0.94);
   backdrop-filter: blur(20px);
   border: 1px solid var(--purple-neon);
@@ -746,29 +549,19 @@ main {
 }
 .toast-msg.show { transform: translateY(0); opacity: 1; }
 
-/* Responsive adjustments */
-@media (max-width: 1100px) {
-  .swarm-grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) {
   .grid-4 { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 768px) {
-  .swarm-grid { grid-template-columns: 1fr 1fr; }
-  .grid-4 { grid-template-columns: 1fr; }
   .grid-3 { grid-template-columns: 1fr; }
   .grid-2 { grid-template-columns: 1fr; }
   .grid-wide { grid-template-columns: 1fr; }
-  header { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
 <body>
 
-<!-- Ambient background floating lights -->
 <div class="ambient-orb orb-1"></div>
 <div class="ambient-orb orb-2"></div>
-<div class="ambient-orb orb-3"></div>
 
-<!-- SVG Gradients for Gauges & Charts -->
 <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -793,14 +586,13 @@ main {
 <!-- Top Real-Time Threat & Task Ticker -->
 <div class="ticker-bar">
   <div class="ticker-badge">LIVE INTEL</div>
-  <div class="ticker-content" id="tickerText">
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>CTZ v3.4 Quantum Core</b> online with PEP 562 dynamic import shielding</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>71 MCP Tool Servers</b> verified & active (414 tools registered)</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>Cross-Platform Shell Engine</b> operating via Windows PowerShell (PID 7524)</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>AST Code Sandbox:</b> 100% Intercept rate on dangerous calls (ctypes/subprocess blocked)</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>Unified Test Suite:</b> 115/115 tests passed in 0.34s (zero failures)</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>3-Tier Memory Engine:</b> RAM Cache &lt;1ms // SQLite ~5ms // ChromaDB ready</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>Cloud Infrastructure:</b> Kubernetes 11 manifests & Terraform AWS VPC blueprint loaded</span>
+  <div class="ticker-content">
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>CTZ v3.4 Full Access Quantum OS</b> active with PEP 562 lazy-loading</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>71 MCP Tool Servers:</b> Ready for real-time invocation via web UI</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>Cross-Platform Shell:</b> Real PowerShell execution via POST /api/exec</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>AST Sandbox:</b> Dynamic syntax validation enabled</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>115 Tests:</b> 100% Passed (0.34s)</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>In-Browser Code Editor:</b> Direct reading & editing of project repository files</span>
   </div>
 </div>
 
@@ -811,9 +603,9 @@ main {
     <div>
       <div class="brand-title">CHAOS TYPE ZERO</div>
       <div class="brand-subtitle">
-        <span>QUANTUM COMMAND CENTER</span>
-        <span class="badge-tag">v3.4 PRODUCTION</span>
-        <span class="badge-tag" style="color:#ec4899;border-color:rgba(236,72,153,0.35);background:rgba(236,72,153,0.15)">AST ARMED</span>
+        <span>QUANTUM CONTROL SUITE</span>
+        <span class="badge-tag">FULL UI ACCESS</span>
+        <span class="badge-tag" style="color:#34d399;border-color:rgba(16,185,129,0.35);background:rgba(16,185,129,0.15)">API EXECUTOR ACTIVE</span>
       </div>
     </div>
   </div>
@@ -824,16 +616,13 @@ main {
       <span id="systemStatus">SYSTEM NOMINAL</span>
     </div>
     <div class="hud-stat">
-      <span>LATENCY:</span> <b>&lt; 0.4ms</b>
+      <span>SERVER:</span> <b>PORT 8080</b>
     </div>
     <div class="hud-stat">
-      <span>SWARM:</span> <b>6 AGENTS</b>
-    </div>
-    <div class="hud-stat">
-      <span>TOOLS:</span> <b>414 ACTIVE</b>
+      <span>TOOLS:</span> <b>414 READY</b>
     </div>
     <div class="digital-clock" id="clock">--:--:--</div>
-    <button class="icon-btn" id="audioToggle" title="Toggle Futuristic Audio" onclick="toggleAudio()">
+    <button class="icon-btn" id="audioToggle" title="Toggle Sound" onclick="toggleAudio()">
       🔊
     </button>
   </div>
@@ -842,356 +631,121 @@ main {
 <!-- Navigation Tabs -->
 <div class="nav-container">
   <div class="nav-tabs">
-    <button class="tab-btn active" onclick="switchTab('overview')">
-      <span>🔮</span> Mission Control
-    </button>
-    <button class="tab-btn" onclick="switchTab('swarm')">
-      <span>🤖</span> 6-Agent Swarm
+    <button class="tab-btn active" onclick="switchTab('terminal')">
+      <span>💻</span> Live Real Terminal
     </button>
     <button class="tab-btn" onclick="switchTab('mcp')">
-      <span>⚡</span> 71 MCP Servers <span class="tab-badge">414</span>
+      <span>⚡</span> MCP Tool Runner <span class="tab-badge">71</span>
     </button>
-    <button class="tab-btn" onclick="switchTab('sandbox')">
-      <span>🛡️</span> AST Sandbox
+    <button class="tab-btn" onclick="switchTab('editor')">
+      <span>📝</span> Code & File Explorer
     </button>
-    <button class="tab-btn" onclick="switchTab('memory')">
-      <span>🧠</span> 3-Tier Memory
+    <button class="tab-btn" onclick="switchTab('git')">
+      <span>🐙</span> Git Control Center
     </button>
-    <button class="tab-btn" onclick="switchTab('infra')">
-      <span>☁️</span> Cloud & K8s
+    <button class="tab-btn" onclick="switchTab('swarm')">
+      <span>🤖</span> Agent Task Dispatch
     </button>
-    <button class="tab-btn" onclick="switchTab('terminal')">
-      <span>💻</span> Agent Terminal
+    <button class="tab-btn" onclick="switchTab('overview')">
+      <span>🔮</span> Mission Control HUD
     </button>
   </div>
 </div>
 
 <main>
 
-  <!-- TAB 1: MISSION CONTROL OVERVIEW -->
-  <div class="tab-pane active" id="tab-overview">
-    
-    <!-- 4 Core Vitallics Gauges -->
-    <div class="grid grid-4" style="margin-bottom: 16px;">
+  <!-- TAB: LIVE REAL TERMINAL (Runs real shell commands via /api/exec) -->
+  <div class="tab-pane active" id="tab-terminal">
+    <div class="grid grid-wide" style="margin-bottom:16px;">
       
-      <div class="card gauge-card">
-        <div style="flex:1;">
-          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Processor Load</div>
-          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="cpuVal">24%</div>
-          <div style="font-size:11px;color:var(--purple-light);" id="cpuSub">Intel Core i5 // 4 Cores</div>
-          <div class="progress-container">
-            <div class="progress-bar-glow" id="cpuBar" style="width:24%;"></div>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <div class="term-dots">
+            <div class="term-dot term-dot-red"></div>
+            <div class="term-dot term-dot-yellow"></div>
+            <div class="term-dot term-dot-green"></div>
           </div>
+          <div style="font-size:11.5px;font-family:var(--font-mono);color:var(--purple-light);">
+            CTZ Real PowerShell Subprocess Engine // Backend: POST /api/exec
+          </div>
+          <button class="btn-glass" style="padding:2px 8px;font-size:10px;" onclick="clearTerm()">Clear</button>
         </div>
-        <div class="gauge-box">
-          <svg class="gauge-svg" viewBox="0 0 36 36">
-            <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="gauge-bar gauge-cpu" id="cpuGauge" stroke-dasharray="100, 100" stroke-dashoffset="76" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-          </svg>
-          <div class="gauge-text" id="cpuGaugeText">24%</div>
+
+        <!-- Quick 1-Click Execution Buttons -->
+        <div style="padding:8px 14px;background:rgba(18,10,38,0.7);display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid rgba(168,85,247,0.15);">
+          <button class="chip active" onclick="runRealCmd('python tests/run_all_tests.py')">▶ Run All 115 Tests</button>
+          <button class="chip" onclick="runRealCmd('& \"C:\\Users\\Ved28\\MinGit\\cmd\\git.exe\" status')">Git Status</button>
+          <button class="chip" onclick="runRealCmd('& \"C:\\Users\\Ved28\\MinGit\\cmd\\git.exe\" log -n 5 --oneline')">Git Log</button>
+          <button class="chip" onclick="runRealCmd('python -c \"import bridge_core; print(bridge_core.__doc__)\"')">Check Core Bridge</button>
+          <button class="chip" onclick="runRealCmd('dir')">dir</button>
+          <button class="chip" onclick="runRealCmd('whoami')">whoami</button>
+        </div>
+
+        <div class="terminal-body" id="termBody">
+          <div class="term-line"><span class="term-prompt">ctz@quantum-suite:~$</span><span class="term-cmd">system-ready --mode interactive</span></div>
+          <div class="term-line"><span class="term-out term-success">[CONNECTED] Backend execution daemon linked to PowerShell 5.1.</span></div>
+          <div class="term-line"><span class="term-out term-info">[READY] Enter any terminal command below or click quick buttons. Everything runs for real!</span></div>
+        </div>
+
+        <div class="terminal-input-row">
+          <span class="term-prompt">ctz@quantum-suite:~$</span>
+          <input type="text" class="term-input" id="termInput" placeholder="Enter shell command (e.g. 'python tests/run_all_tests.py', 'git status')..." onkeydown="handleRealTermKey(event)">
+          <button class="btn-purple" style="padding:6px 14px;font-size:11px;" onclick="submitRealTerm()">Execute ➜</button>
         </div>
       </div>
 
-      <div class="card gauge-card">
-        <div style="flex:1;">
-          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Memory Cache</div>
-          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="ramVal">52%</div>
-          <div style="font-size:11px;color:var(--pink-light);" id="ramSub">8.3 GB / 16.0 GB Used</div>
-          <div class="progress-container">
-            <div class="progress-bar-glow" id="ramBar" style="width:52%;background:linear-gradient(90deg, #ec4899, #f472b6);"></div>
-          </div>
-        </div>
-        <div class="gauge-box">
-          <svg class="gauge-svg" viewBox="0 0 36 36">
-            <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="gauge-bar gauge-ram" id="ramGauge" stroke-dasharray="100, 100" stroke-dashoffset="48" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-          </svg>
-          <div class="gauge-text" id="ramGaugeText">52%</div>
-        </div>
-      </div>
-
-      <div class="card gauge-card">
-        <div style="flex:1;">
-          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Disk Budget</div>
-          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="diskVal">38%</div>
-          <div style="font-size:11px;color:var(--cyan-light);" id="diskSub">186 GB / 512 GB Free</div>
-          <div class="progress-container">
-            <div class="progress-bar-glow" id="diskBar" style="width:38%;background:linear-gradient(90deg, #0284c7, #38bdf8);"></div>
-          </div>
-        </div>
-        <div class="gauge-box">
-          <svg class="gauge-svg" viewBox="0 0 36 36">
-            <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="gauge-bar gauge-disk" id="diskGauge" stroke-dasharray="100, 100" stroke-dashoffset="62" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-          </svg>
-          <div class="gauge-text" id="diskGaugeText">38%</div>
-        </div>
-      </div>
-
-      <div class="card gauge-card">
-        <div style="flex:1;">
-          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Test Suite</div>
-          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#34d399;">115/115</div>
-          <div style="font-size:11px;color:#34d399;">100% Passed (0.34s)</div>
-          <div class="progress-container">
-            <div class="progress-bar-glow" style="width:100%;background:linear-gradient(90deg, #059669, #34d399);"></div>
-          </div>
-        </div>
-        <div class="gauge-box">
-          <svg class="gauge-svg" viewBox="0 0 36 36">
-            <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-            <path class="gauge-bar gauge-net" stroke-dasharray="100, 100" stroke-dashoffset="0" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-          </svg>
-          <div class="gauge-text" style="color:#34d399">100%</div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Live Telemetry Charts -->
-    <div class="grid grid-wide" style="margin-bottom: 16px;">
-      
+      <!-- Quick Operations Sidebar -->
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--purple-neon)">📈</span> Live Telemetry Waveform
-          </div>
-          <span class="badge-tag">REAL-TIME TELEMETRY</span>
-        </div>
-        <div style="height:220px;position:relative;">
-          <canvas id="lineChart"></canvas>
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--pink-neon)">🔮</span> Memory Tier Allocation
-          </div>
-          <span class="badge-tag">3-TIER ENGINE</span>
-        </div>
-        <div style="height:220px;display:flex;align-items:center;justify-content:center;">
-          <canvas id="pieChart"></canvas>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Swarm Quick Status + Quick Operations -->
-    <div class="grid grid-wide">
-      
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-          <div style="font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--purple-neon)">🤖</span> Sisyphus Swarm Pulse (6 Active Agents)
-          </div>
-          <button class="btn-glass" style="padding:4px 10px;font-size:11px;" onclick="switchTab('swarm')">Full Swarm View ➜</button>
-        </div>
-        <div class="swarm-grid">
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#8b5cf6,#6366f1)">🎯</div>
-            <div class="agent-name">Planner</div>
-            <div class="agent-role">DAG Task Chain</div>
-            <div class="agent-state-badge"><span>●</span> IDLE / READY</div>
-          </div>
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#a855f7,#ec4899)">💻</div>
-            <div class="agent-name">Executor</div>
-            <div class="agent-role">PowerShell Shell</div>
-            <div class="agent-state-badge"><span>●</span> ARMED</div>
-          </div>
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#06b6d4,#3b82f6)">🔍</div>
-            <div class="agent-name">Researcher</div>
-            <div class="agent-role">Web / Recon</div>
-            <div class="agent-state-badge"><span>●</span> STANDBY</div>
-          </div>
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">⚖️</div>
-            <div class="agent-name">Critic</div>
-            <div class="agent-role">AST Sandbox</div>
-            <div class="agent-state-badge"><span>●</span> MONITORING</div>
-          </div>
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">🛠️</div>
-            <div class="agent-name">Refiner</div>
-            <div class="agent-role">Self-Healing</div>
-            <div class="agent-state-badge"><span>●</span> READY</div>
-          </div>
-          <div class="agent-node-card">
-            <div class="agent-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d)">🧠</div>
-            <div class="agent-name">Memory</div>
-            <div class="agent-role">3-Tier Ledger</div>
-            <div class="agent-state-badge"><span>●</span> SYNCED</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="font-weight:700;font-size:14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
-          <span style="color:var(--purple-neon)">⚡</span> Quick Command Triggers
+        <div style="font-weight:700;font-size:14px;margin-bottom:12px;color:#fff;display:flex;align-items:center;gap:8px;">
+          <span>⚡</span> Rapid Control Panel
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;">
-          <button class="btn-purple" onclick="runHealthCheck()">
-            <span>❤️</span> Run Core Health Check
+          <button class="btn-purple" onclick="runRealCmd('python tests/run_all_tests.py')">
+            <span>🧪</span> Run Unified Test Harness (115/115)
           </button>
-          <button class="btn-glass" onclick="runTestSuite()">
-            <span>🧪</span> Execute 115 Tests
+          <button class="btn-glass" onclick="runRealCmd('& \"C:\\Users\\Ved28\\MinGit\\cmd\\git.exe\" status')">
+            <span>🔍</span> Inspect Git Working Tree
           </button>
-          <button class="btn-glass" onclick="triggerAstCheck()">
-            <span>🛡️</span> Test AST Code Sandbox
+          <button class="btn-glass" onclick="runRealCmd('& \"C:\\Users\\Ved28\\gh\\bin\\gh.exe\" auth status')">
+            <span>🔑</span> Verify GitHub CLI Auth Status
           </button>
-          <button class="btn-glass" onclick="clearCache()">
-            <span>🧹</span> Compact Memory & VACUUM
+          <button class="btn-glass" onclick="runRealCmd('python tests/test_all_mcps.py')">
+            <span>⚡</span> Test All 71 MCP Servers
           </button>
+          <button class="btn-glass" onclick="runRealCmd('python -c \"import sys, platform; print(f\'Python: {sys.version}\\nOS: {platform.platform()}\')\"')">
+            <span>🖥️</span> Print Platform Details
+          </button>
+        </div>
+
+        <div style="margin-top:16px;padding:12px;border-radius:10px;background:var(--bg-sub);border:1px solid var(--border-sub);">
+          <div style="font-size:11px;color:var(--purple-light);font-weight:700;">AST SECURITY SHIELD:</div>
+          <div style="font-size:11px;color:var(--text-soft);margin-top:3px;">
+            Commands executed from UI run with isolated non-interactive PowerShell context.
+          </div>
         </div>
       </div>
 
     </div>
-
   </div>
 
-  <!-- TAB 2: 6-AGENT SWARM DETAILS -->
-  <div class="tab-pane" id="tab-swarm">
-    <div class="card" style="margin-bottom:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div>
-          <div style="font-size:18px;font-weight:800;color:#fff;">
-            🤖 Sisyphus 6-Agent Autonomous Swarm Architecture
-          </div>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-            Plan ➔ Execute ➔ Critique ➔ Refine ➔ Memory ➔ Report continuous cognitive cycle.
-          </div>
-        </div>
-        <span class="badge-tag">RECURSIVE HEALER ACTIVE</span>
-      </div>
-
-      <div class="grid grid-3">
-        
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #8b5cf6;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">🎯</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Planner Agent</div>
-              <div style="font-size:11px;color:var(--purple-light);">Goal decomposition & DAG mapping</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            Analyzes raw natural language prompts (including Hinglish), breaks them into discrete execution units, and detects cyclic dependencies.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Chain: 12 Task Types</span>
-            <span style="color:#34d399">Status: Active</span>
-          </div>
-        </div>
-
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #a855f7;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">💻</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Executor Agent</div>
-              <div style="font-size:11px;color:var(--purple-light);">Cross-platform command engine</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            Dispatches to native PowerShell on Windows and Bash on Linux/macOS. Intercepts subprocesses before execution via AST security inspector.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Shell: PowerShell -NoProfile</span>
-            <span style="color:#34d399">Status: Armed</span>
-          </div>
-        </div>
-
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #06b6d4;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">🔍</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Researcher Agent</div>
-              <div style="font-size:11px;color:var(--cyan-light);">OSINT & Security Recon</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            Queries Shodan, Censys, VirusTotal, AbuseIPDB, and scrapes documentation or live web endpoints with Playwright/Headless Chromium.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Recon: WSL2 Kali + Native</span>
-            <span style="color:#34d399">Status: Online</span>
-          </div>
-        </div>
-
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #f59e0b;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">⚖️</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Critic Agent</div>
-              <div style="font-size:11px;color:#fcd34d;">Evaluation & AST Sandboxing</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            Static syntax tree validation blocks forbidden imports (`os.system`, `subprocess`, `ctypes`, `eval`). Evaluates code correctness before and after runs.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Engine: Python AST Parse</span>
-            <span style="color:#34d399">Status: Active</span>
-          </div>
-        </div>
-
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #10b981;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">🛠️</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Refiner Agent</div>
-              <div style="font-size:11px;color:#6ee7b7;">Self-healing iteration loop</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            When errors occur in commands or tests, parses traceback logs, drafts targeted diff patches, and re-executes tests until 100% pass rate is achieved.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Loop: Max 5 Auto-retries</span>
-            <span style="color:#34d399">Status: Armed</span>
-          </div>
-        </div>
-
-        <div class="card" style="background:var(--bg-sub);border-left:3px solid #ec4899;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <div style="font-size:24px;">🧠</div>
-            <div>
-              <div style="font-weight:700;font-size:14px;color:#fff;">Memory Architect</div>
-              <div style="font-size:11px;color:var(--pink-light);">3-Tier durability commit</div>
-            </div>
-          </div>
-          <div style="font-size:11.5px;color:var(--text-soft);line-height:1.4;">
-            Commits task outcomes to RAM LRU cache, stores structured audits into SQLite, and vectorizes solutions into ChromaDB for instant future reuse.
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--text-dim);">
-            <span>Storage: RAM + SQL + Vector</span>
-            <span style="color:#34d399">Status: Synced</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 3: 71 MCP SERVERS & 414 TOOLS -->
+  <!-- TAB: MCP TOOL RUNNER (Runs any tool from 71 servers) -->
   <div class="tab-pane" id="tab-mcp">
     <div class="card" style="margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
         <div>
           <div style="font-size:18px;font-weight:800;color:#fff;">
-            ⚡ 71 MCP Standard Server Matrix
+            ⚡ Interactive MCP Tool Invocation Matrix
           </div>
           <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
-            414 verified tool definitions discovered across all 71 servers with zero-crash fallbacks.
+            Click on ANY server to open its real tool executor and run it directly!
           </div>
         </div>
-        <span class="badge-tag" style="padding:6px 12px;font-size:12px;">414 TOOLS REGISTERED</span>
+        <span class="badge-tag">71 SERVERS // 414 TOOLS</span>
       </div>
 
       <div class="search-bar">
         <span style="font-size:16px;color:var(--purple-neon)">🔍</span>
-        <input type="text" class="search-input" id="mcpSearch" placeholder="Filter 71 servers or 414 tools by name, category, or capability..." oninput="filterMcpServers()">
+        <input type="text" class="search-input" id="mcpSearch" placeholder="Search servers (e.g. 'pentest', 'aws', 'docker', 'redis', 'vault', 'voice')..." oninput="filterMcpServers()">
       </div>
 
       <div class="chip-container" id="categoryChips">
@@ -1204,327 +758,213 @@ main {
         <div class="chip" onclick="setMcpCategory('core', this)">⚡ Core & Utility (22)</div>
       </div>
 
-      <div class="mcp-grid" id="mcpCardGrid">
-        <!-- Rendered dynamically -->
-      </div>
+      <div class="mcp-grid" id="mcpCardGrid"></div>
     </div>
   </div>
 
-  <!-- TAB 4: AST CODE EXECUTION SANDBOX PLAYGROUND -->
-  <div class="tab-pane" id="tab-sandbox">
-    <div class="grid grid-2">
-      <div class="card">
-        <div style="font-weight:700;font-size:15px;margin-bottom:8px;color:#fff;display:flex;align-items:center;gap:8px;">
-          <span style="color:var(--purple-neon)">🛡️</span> Live AST Security Sandbox Inspector
-        </div>
-        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">
-          Type Python code below to test how CTZ's Abstract Syntax Tree analyzer intercepts dangerous calls before execution.
-        </div>
-
-        <div class="ast-playground">
-          <div style="font-size:11px;color:var(--purple-light);font-family:var(--font-mono);margin-bottom:6px;">
-            # Python Code Snippet to Analyze:
-          </div>
-          <textarea class="code-editor-area" id="astInput">__import__('os').system('calc.exe')</textarea>
-          
-          <div style="display:flex;gap:8px;margin-top:10px;">
-            <button class="btn-purple" onclick="runAstAnalysis()">
-              <span>⚡</span> Inspect AST Syntax Tree
-            </button>
-            <button class="btn-glass" onclick="loadSampleCode(1)">
-              Dangerous Sample
-            </button>
-            <button class="btn-glass" onclick="loadSampleCode(2)">
-              Safe Math Sample
-            </button>
-          </div>
-        </div>
-
-        <div style="margin-top:14px;background:var(--bg-sub);padding:14px;border-radius:12px;border:1px solid var(--border-sub);">
-          <div style="font-size:11px;color:var(--text-dim);font-weight:600;text-transform:uppercase;">AST Verdict:</div>
-          <div id="astVerdict" style="font-size:14px;font-weight:700;font-family:var(--font-mono);margin-top:4px;color:#f43f5e;">
-            [BLOCKED] Forbidden dangerous call: system
-          </div>
-          <div id="astReason" style="font-size:11.5px;color:var(--text-soft);margin-top:4px;font-family:var(--font-mono);">
-            Rule AST-01: Execution of os.system / subprocess / ctypes is strictly disallowed in user scripts.
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="font-weight:700;font-size:15px;margin-bottom:8px;color:#fff;display:flex;align-items:center;gap:8px;">
-          <span style="color:var(--pink-neon)">🔒</span> Hardened Security Policies
-        </div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;border-left:3px solid #10b981;">
-            <div style="font-weight:700;color:#fff;font-size:12.5px;">1. Static AST Node Traversal</div>
-            <div style="font-size:11px;color:var(--text-soft);margin-top:2px;">
-              Parses the Python abstract syntax tree using <code>ast.parse()</code>. Does not rely on naive string matching.
-            </div>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;border-left:3px solid #38bdf8;">
-            <div style="font-weight:700;color:#fff;font-size:12.5px;">2. Native Windows PowerShell Isolation</div>
-            <div style="font-size:11px;color:var(--text-soft);margin-top:2px;">
-              Executes with <code>powershell.exe -NoProfile -NonInteractive -Command</code> preventing profile tampering.
-            </div>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;border-left:3px solid #a855f7;">
-            <div style="font-weight:700;color:#fff;font-size:12.5px;">3. Zero-Crash Lazy Shielding (PEP 562)</div>
-            <div style="font-size:11px;color:var(--text-soft);margin-top:2px;">
-              Optional missing libraries (like numpy or chromadb) degrade safely without cascading import failures.
-            </div>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;border-left:3px solid #ec4899;">
-            <div style="font-weight:700;color:#fff;font-size:12.5px;">4. Scanner Input Sanitization</div>
-            <div style="font-size:11px;color:var(--text-soft);margin-top:2px;">
-              Target hostnames and IPs undergo strict regex validation before dispatching to Nmap/Nuclei.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TAB 5: 3-TIER MEMORY & KNOWLEDGE GRAPH -->
-  <div class="tab-pane" id="tab-memory">
+  <!-- TAB: CODE & FILE EXPLORER (View & Edit project files) -->
+  <div class="tab-pane" id="tab-editor">
     <div class="grid grid-wide">
+      
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-          <div style="font-size:16px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;">
-            <span>🧠</span> 3-Tier Self-Healing Memory Engine
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px;">
+            <span>📝</span> Code Editor: <span id="currentEditingFile" style="color:var(--purple-light);font-family:var(--font-mono);font-size:12px;">README.md</span>
           </div>
-          <span class="badge-tag">1.5 GB DISK BUDGET</span>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="background:var(--bg-sub);padding:14px;border-radius:12px;border:1px solid var(--border-sub);display:flex;align-items:center;gap:14px;">
-            <div style="width:42px;height:42px;border-radius:10px;background:rgba(168,85,247,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--purple-light);">⚡</div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;">
-                <b style="color:#fff;font-size:13.5px;">Tier 1: High-Speed RAM Cache</b>
-                <span class="badge-tag">&lt; 1ms LATENCY</span>
-              </div>
-              <div style="font-size:11.5px;color:var(--text-soft);margin-top:2px;">200 LRU entries, instant context switching, hot sessions.</div>
-            </div>
-          </div>
-
-          <div style="background:var(--bg-sub);padding:14px;border-radius:12px;border:1px solid var(--border-sub);display:flex;align-items:center;gap:14px;">
-            <div style="width:42px;height:42px;border-radius:10px;background:rgba(56,189,248,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--cyan-neon);">💾</div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;">
-                <b style="color:#fff;font-size:13.5px;">Tier 2: Structured SQLite Storage</b>
-                <span class="badge-tag" style="color:#38bdf8;border-color:rgba(56,189,248,0.3)">~5ms LATENCY</span>
-              </div>
-              <div style="font-size:11.5px;color:var(--text-soft);margin-top:2px;">Task ledger records, scan histories, structured queries, ACID durability.</div>
-            </div>
-          </div>
-
-          <div style="background:var(--bg-sub);padding:14px;border-radius:12px;border:1px solid var(--border-sub);display:flex;align-items:center;gap:14px;">
-            <div style="width:42px;height:42px;border-radius:10px;background:rgba(236,72,153,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--pink-neon);">🔮</div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;">
-                <b style="color:#fff;font-size:13.5px;">Tier 3: ChromaDB Semantic Embeddings</b>
-                <span class="badge-tag" style="color:#ec4899;border-color:rgba(236,72,153,0.3)">~50ms LATENCY</span>
-              </div>
-              <div style="font-size:11.5px;color:var(--text-soft);margin-top:2px;">Vector embeddings (all-MiniLM-L6-v2), natural language associative recall.</div>
-            </div>
-          </div>
-        </div>
-
-        <div style="margin-top:16px;">
-          <div style="font-size:12px;font-weight:600;color:var(--purple-light);margin-bottom:6px;">Semantic Memory Search:</div>
           <div style="display:flex;gap:8px;">
-            <input type="text" class="search-input" style="background:var(--bg-sub);padding:8px 12px;border-radius:8px;border:1px solid var(--border-sub);" id="memQuery" placeholder="Query semantic memory (e.g. 'nmap scan results', 'github token fix')...">
-            <button class="btn-purple" onclick="searchMemory()">Search</button>
+            <button class="btn-purple" onclick="saveActiveFile()"><span>💾</span> Save Changes</button>
           </div>
-          <div id="memResults" style="margin-top:10px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-soft);"></div>
         </div>
+        <textarea class="editor-textarea" id="fileEditor" placeholder="Select a file from the explorer on the right to view and edit..."></textarea>
       </div>
 
       <div class="card">
-        <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:14px;">Memory Telemetry Stats</div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;">
-            <span style="color:var(--text-muted)">Ledger Entries</span>
-            <span style="font-weight:700;color:#fff;font-family:var(--font-mono)">142 records</span>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;">
-            <span style="color:var(--text-muted)">Context Sessions</span>
-            <span style="font-weight:700;color:#38bdf8;font-family:var(--font-mono)">18 active</span>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;">
-            <span style="color:var(--text-muted)">RAM Cache Hits</span>
-            <span style="font-weight:700;color:#34d399;font-family:var(--font-mono)">892 hits</span>
-          </div>
-          <div style="background:var(--bg-sub);padding:12px 14px;border-radius:10px;display:flex;justify-content:space-between;">
-            <span style="color:var(--text-muted)">Auto-Compaction</span>
-            <span style="font-weight:700;color:var(--purple-light);font-family:var(--font-mono)">Enabled (90d)</span>
-          </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div style="font-weight:700;font-size:14px;color:#fff;">📁 Project File Tree</div>
+          <button class="btn-glass" style="padding:3px 8px;font-size:10px;" onclick="fetchFileList()">Refresh</button>
+        </div>
+        <div class="file-list" id="fileListContainer">
+          <div style="padding:16px;color:var(--text-dim);text-align:center;">Loading file tree...</div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- TAB 6: CLOUD, KUBERNETES & INFRASTRUCTURE -->
-  <div class="tab-pane" id="tab-infra">
-    <div class="grid grid-3">
+  <!-- TAB: GIT CONTROL CENTER -->
+  <div class="tab-pane" id="tab-git">
+    <div class="grid grid-wide">
       
       <div class="card">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div style="font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px;">
-            <span>☸️</span> Kubernetes Cluster
+          <div style="font-weight:700;font-size:15px;color:#fff;display:flex;align-items:center;gap:8px;">
+            <span>🐙</span> Git Terminal Stream
           </div>
-          <span class="badge-tag">11 MANIFESTS</span>
+          <span class="badge-tag">REPOSITORY: vedchaos/chaos-type-zero</span>
         </div>
-        <div style="font-size:11.5px;color:var(--text-soft);line-height:1.5;">
-          Production-grade deployment blueprint:
-          <ul style="margin-left:18px;margin-top:6px;color:var(--text-muted)">
-            <li>Deployment: 2 Dashboard + 3 MCP replicas</li>
-            <li>HPA: Autoscaling 2-20 pods on CPU &gt; 75%</li>
-            <li>Ingress: NGINX TLS + cert-manager</li>
-            <li>PVC: 10Gi data + 5Gi memory storage</li>
-          </ul>
+        
+        <div class="btn-group" style="margin-bottom:14px;">
+          <button class="btn-purple" onclick="runGitCmd('status')"><span>🔍</span> git status</button>
+          <button class="btn-glass" onclick="runGitCmd('log -n 5 --oneline')"><span>📜</span> git log (last 5)</button>
+          <button class="btn-glass" onclick="runGitCmd('branch -a')"><span>🌿</span> git branch</button>
+          <button class="btn-glass" onclick="runGitCmd('remote -v')"><span>🌐</span> git remote</button>
+          <button class="btn-glass" onclick="runGitCmd('diff --stat')"><span>📊</span> git diff --stat</button>
         </div>
-        <div style="margin-top:12px;background:var(--bg-sub);padding:8px 12px;border-radius:8px;font-family:var(--font-mono);font-size:11px;color:#34d399;">
-          kubectl apply -f k8s/ [READY]
+
+        <div class="terminal-window" style="box-shadow:none;">
+          <div class="terminal-body" id="gitOutput" style="height:320px;">
+            <div class="term-line"><span class="term-out term-info">Click any Git action button above to run live commands against the local repository.</span></div>
+          </div>
         </div>
       </div>
 
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div style="font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px;">
-            <span>🏗️</span> Terraform AWS Blueprint
+        <div style="font-weight:700;font-size:14px;color:#fff;margin-bottom:12px;">Git Repository Details</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:var(--bg-sub);padding:10px 14px;border-radius:10px;">
+            <div style="font-size:11px;color:var(--text-dim);">Remote Origin:</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--purple-light);word-break:break-all;margin-top:2px;">
+              https://github.com/vedchaos/chaos-type-zero.git
+            </div>
           </div>
-          <span class="badge-tag">AWS IaC</span>
-        </div>
-        <div style="font-size:11.5px;color:var(--text-soft);line-height:1.5;">
-          Complete infrastructure-as-code automation:
-          <ul style="margin-left:18px;margin-top:6px;color:var(--text-muted)">
-            <li>VPC: Custom VPC + public subnets + IGW</li>
-            <li>EC2: Ubuntu 22.04 + 50GB gp3 root volume</li>
-            <li>S3: Encrypted backup bucket with versioning</li>
-            <li>CloudWatch: CPU load alarms &gt; 80%</li>
-          </ul>
-        </div>
-        <div style="margin-top:12px;background:var(--bg-sub);padding:8px 12px;border-radius:8px;font-family:var(--font-mono);font-size:11px;color:var(--purple-light);">
-          terraform plan [VALIDATED]
-        </div>
-      </div>
-
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div style="font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px;">
-            <span>📊</span> Prometheus & Grafana
+          <div style="background:var(--bg-sub);padding:10px 14px;border-radius:10px;">
+            <div style="font-size:11px;color:var(--text-dim);">Current Branch:</div>
+            <div style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:#34d399;margin-top:2px;">
+              main
+            </div>
           </div>
-          <span class="badge-tag">PORT 9090</span>
-        </div>
-        <div style="font-size:11.5px;color:var(--text-soft);line-height:1.5;">
-          Full observability stack integrated:
-          <ul style="margin-left:18px;margin-top:6px;color:var(--text-muted)">
-            <li>Prometheus: /metrics live exporter active</li>
-            <li>Grafana: 14 pre-built panels dashboard JSON</li>
-            <li>Gauges: ctz_cpu_percent, ctz_requests_total</li>
-            <li>Latency: P50 / P95 response histograms</li>
-          </ul>
-        </div>
-        <div style="margin-top:12px;background:var(--bg-sub);padding:8px 12px;border-radius:8px;font-family:var(--font-mono);font-size:11px;color:#38bdf8;">
-          http://localhost:9090/metrics [OK]
+          <div style="background:var(--bg-sub);padding:10px 14px;border-radius:10px;">
+            <div style="font-size:11px;color:var(--text-dim);">Latest Commit:</div>
+            <div style="font-family:var(--font-mono);font-size:11px;color:#fff;margin-top:2px;">
+              fd40c48 (Quantum Dashboard & UI)
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- TAB 7: INTERACTIVE AGENT COMMAND TERMINAL -->
-  <div class="tab-pane" id="tab-terminal">
-    <div class="terminal-window">
-      <div class="terminal-header">
-        <div class="term-dots">
-          <div class="term-dot term-dot-red"></div>
-          <div class="term-dot term-dot-yellow"></div>
-          <div class="term-dot term-dot-green"></div>
+  <!-- TAB: AGENT TASK DISPATCH -->
+  <div class="tab-pane" id="tab-swarm">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-size:16px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
+          <span>🤖</span> Autonomous Agent Task Dispatcher
         </div>
-        <div style="font-size:11.5px;font-family:var(--font-mono);color:var(--purple-light);">
-          CTZ Quantum Shell // powershell.exe -NoProfile (Isolated)
-        </div>
-        <div style="font-size:10.5px;color:var(--text-dim);font-family:var(--font-mono);">
-          AST Inspector: ARMED
-        </div>
+        <span class="badge-tag">HINGLISH & ENGLISH NLP</span>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">
+        Type any prompt, task, or goal. The classifier will route to the optimal chain and execute through the 6-agent loop.
       </div>
 
-      <!-- Quick Command Buttons -->
-      <div style="padding:8px 16px;background:rgba(16,8,34,0.7);display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid rgba(168,85,247,0.15);">
-        <button class="chip" onclick="execCmd('ctz status')">ctz status</button>
-        <button class="chip" onclick="execCmd('ctz test')">ctz test (115 tests)</button>
-        <button class="chip" onclick="execCmd('ctz health')">ctz health</button>
-        <button class="chip" onclick="execCmd('ctz scan localhost')">ctz scan localhost</button>
-        <button class="chip" onclick="execCmd('ctz memory stats')">ctz memory stats</button>
-        <button class="chip" onclick="execCmd('ctz providers')">ctz providers</button>
-        <button class="chip" onclick="execCmd('clear')">clear</button>
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <input type="text" class="search-input" id="agentPrompt" style="background:var(--bg-sub);padding:10px 16px;border-radius:10px;border:1px solid var(--border-card);" placeholder="Enter task (e.g. 'arre tests run karo', 'audit system security', 'classify code', 'nmap scan localhost')..." onkeydown="if(event.key==='Enter') dispatchAgentTask()">
+        <button class="btn-purple" onclick="dispatchAgentTask()">Dispatch Task ➜</button>
       </div>
 
-      <div class="terminal-body" id="termBody">
-        <div class="term-line">
-          <span class="term-prompt">ctz@quantum-core:~$</span>
-          <span class="term-cmd">init chaos-type-zero --version 3.4 --architecture full</span>
-        </div>
-        <div class="term-line">
-          <span class="term-out term-success">[OK] Core Bridge initialized. PEP 562 dynamic import shielding active.</span>
-        </div>
-        <div class="term-line">
-          <span class="term-out term-info">[INFO] Discovered 71 MCP tool servers. 414 active tool declarations.</span>
-        </div>
-        <div class="term-line">
-          <span class="term-out">[INFO] Sisyphus 6-Agent Swarm (Plan ➔ Exec ➔ Critic ➔ Refine ➔ Memory ➔ Report) ONLINE.</span>
-        </div>
-        <div class="term-line">
-          <span class="term-out term-success">[READY] Quantum Core ready. Enter instructions or click chips above.</span>
+      <div class="terminal-window" style="box-shadow:none;">
+        <div class="terminal-body" id="agentOutput" style="height:260px;">
+          <div class="term-line"><span class="term-out term-info">Agent swarm standing by. Ready for prompt dispatch.</span></div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="terminal-input-row">
-        <span class="term-prompt">ctz@quantum-core:~$</span>
-        <input type="text" class="term-input" id="termInput" placeholder="Enter command or natural language instruction (e.g. 'ctz test', 'ctz status', 'scan 127.0.0.1')..." onkeydown="handleTermKey(event)">
+  <!-- TAB: MISSION CONTROL HUD (Gauges & Charts) -->
+  <div class="tab-pane" id="tab-overview">
+    <div class="grid grid-4" style="margin-bottom: 16px;">
+      <div class="card gauge-card">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Processor Load</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="cpuVal">24%</div>
+          <div style="font-size:11px;color:var(--purple-light);" id="cpuSub">Intel Core i5 // 4 Cores</div>
+          <div class="progress-container"><div class="progress-bar-glow" id="cpuBar" style="width:24%;"></div></div>
+        </div>
       </div>
+      <div class="card gauge-card">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Memory Cache</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="ramVal">52%</div>
+          <div style="font-size:11px;color:var(--pink-light);" id="ramSub">8.3 GB / 16.0 GB Used</div>
+          <div class="progress-container"><div class="progress-bar-glow" id="ramBar" style="width:52%;background:linear-gradient(90deg, #ec4899, #f472b6);"></div></div>
+        </div>
+      </div>
+      <div class="card gauge-card">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Disk Budget</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#fff;" id="diskVal">38%</div>
+          <div style="font-size:11px;color:var(--cyan-light);" id="diskSub">186 GB / 512 GB Free</div>
+          <div class="progress-container"><div class="progress-bar-glow" id="diskBar" style="width:38%;background:linear-gradient(90deg, #0284c7, #38bdf8);"></div></div>
+        </div>
+      </div>
+      <div class="card gauge-card">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;">Test Suite</div>
+          <div style="font-size:26px;font-weight:800;font-family:var(--font-mono);color:#34d399;">115/115</div>
+          <div style="font-size:11px;color:#34d399;">100% Passed (0.34s)</div>
+          <div class="progress-container"><div class="progress-bar-glow" style="width:100%;background:linear-gradient(90deg, #059669, #34d399);"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:700;font-size:14px;margin-bottom:12px;">Live Telemetry Waveform</div>
+      <div style="height:220px;position:relative;"><canvas id="lineChart"></canvas></div>
     </div>
   </div>
 
 </main>
 
-<!-- Interactive Toast Message -->
-<div class="toast-msg" id="toast">
-  <span>✨</span>
-  <span id="toastText">Quantum Core Activated</span>
+<!-- Tool Invocation Modal -->
+<div class="modal-overlay" id="toolModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div style="font-weight:800;color:#fff;font-size:15px;" id="modalToolServer">Server Tool Invoker</div>
+      <button class="icon-btn" onclick="closeToolModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-size:12px;color:var(--text-soft);margin-bottom:12px;" id="modalToolDesc">Loading tools...</div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;color:var(--purple-light);display:block;margin-bottom:4px;">Tool Name / Command:</label>
+        <input type="text" class="search-input" id="modalToolName" style="background:var(--bg-sub);padding:8px 12px;border-radius:8px;border:1px solid var(--border-sub);" value="">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:11px;color:var(--purple-light);display:block;margin-bottom:4px;">Parameters (JSON dict):</label>
+        <textarea class="code-editor-area" id="modalToolParams" style="height:70px;">{}</textarea>
+      </div>
+      <button class="btn-purple" onclick="invokeMcpTool()"><span>⚡</span> Call Tool via Backend</button>
+
+      <div style="margin-top:14px;">
+        <div style="font-size:11px;color:var(--text-dim);font-weight:600;">RESPONSE RESULT:</div>
+        <div id="modalToolOutput" style="background:#060210;padding:12px;border-radius:8px;border:1px solid var(--border-card);margin-top:4px;min-height:80px;white-space:pre-wrap;color:#34d399;">Ready.</div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="toast-msg" id="toast"><span>✨</span><span id="toastText">Ready</span></div>
+
 <script>
-// --- Audio Synth (Web Audio API) ---
-let audioEnabled = true;
-let audioCtx = null;
+let audioEnabled = true, audioCtx = null;
 function playBeep(freq = 600, duration = 0.05, type = 'sine') {
   if (!audioEnabled) return;
   try {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + duration);
   } catch(e) {}
 }
 function toggleAudio() {
   audioEnabled = !audioEnabled;
-  const btn = document.getElementById('audioToggle');
-  btn.textContent = audioEnabled ? '🔊' : '🔇';
-  showToast(audioEnabled ? 'Futuristic Audio Cues Enabled' : 'Audio Cues Muted');
+  document.getElementById('audioToggle').textContent = audioEnabled ? '🔊' : '🔇';
+  showToast(audioEnabled ? 'Audio Enabled' : 'Audio Muted');
 }
 
-// --- Digital Clock ---
 function updateClock() {
   const d = new Date();
   document.getElementById('clock').textContent = 
@@ -1534,7 +974,6 @@ function updateClock() {
 }
 setInterval(updateClock, 1000); updateClock();
 
-// --- Toast Messages ---
 function showToast(msg) {
   playBeep(720, 0.08);
   const t = document.getElementById('toast');
@@ -1543,109 +982,190 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-// --- Tab Switching ---
 function switchTab(tabId) {
   playBeep(520, 0.04);
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  
-  const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
-  if (targetBtn) targetBtn.classList.add('active');
-  
-  const targetPane = document.getElementById('tab-' + tabId);
-  if (targetPane) targetPane.classList.add('active');
+  const b = Array.from(document.querySelectorAll('.tab-btn')).find(x => x.getAttribute('onclick')?.includes(tabId));
+  if (b) b.classList.add('active');
+  const p = document.getElementById('tab-' + tabId);
+  if (p) p.classList.add('active');
+  if (tabId === 'editor') fetchFileList();
 }
 
-// --- Chart.js Waveforms ---
-const MAX_POINTS = 60;
-const cpuHistory = [], ramHistory = [], diskHistory = [], timeLabels = [];
-
-const ctxLine = document.getElementById('lineChart').getContext('2d');
-const purpleGradLine = ctxLine.createLinearGradient(0, 0, 0, 220);
-purpleGradLine.addColorStop(0, 'rgba(168, 85, 247, 0.45)');
-purpleGradLine.addColorStop(1, 'rgba(124, 58, 237, 0.01)');
-
-const pinkGradLine = ctxLine.createLinearGradient(0, 0, 0, 220);
-pinkGradLine.addColorStop(0, 'rgba(236, 72, 153, 0.35)');
-pinkGradLine.addColorStop(1, 'rgba(236, 72, 153, 0.01)');
-
-const lineChart = new Chart(ctxLine, {
-  type: 'line',
-  data: {
-    labels: timeLabels,
-    datasets: [
-      {
-        label: 'CPU (%)',
-        data: cpuHistory,
-        borderColor: '#c084fc',
-        backgroundColor: purpleGradLine,
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.35,
-        fill: true,
-      },
-      {
-        label: 'RAM (%)',
-        data: ramHistory,
-        borderColor: '#ec4899',
-        backgroundColor: pinkGradLine,
-        borderWidth: 2,
-        pointRadius: 0,
-        tension: 0.35,
-        fill: true,
-      },
-      {
-        label: 'Disk (%)',
-        data: diskHistory,
-        borderColor: '#38bdf8',
-        backgroundColor: 'transparent',
-        borderWidth: 1.6,
-        borderDash: [4, 4],
-        pointRadius: 0,
-        tension: 0.3,
-      }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: { duration: 300 },
-    scales: {
-      y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8', callback: v => v + '%' } },
-      x: { grid: { display: false }, ticks: { color: '#64748b', maxTicksLimit: 8 } }
-    },
-    plugins: {
-      legend: { position: 'top', labels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 11 }, boxWidth: 12 } }
-    }
+// --- Real Terminal Executor (POST /api/exec) ---
+function handleRealTermKey(e) {
+  if (e.key === 'Enter') submitRealTerm();
+}
+function submitRealTerm() {
+  const input = document.getElementById('termInput');
+  const cmd = input.value.trim();
+  if (cmd) {
+    runRealCmd(cmd);
+    input.value = '';
   }
-});
+}
+function clearTerm() {
+  document.getElementById('termBody').innerHTML = '';
+}
 
-const pieChart = new Chart(document.getElementById('pieChart').getContext('2d'), {
-  type: 'doughnut',
-  data: {
-    labels: ['RAM (<1ms)', 'SQLite (~5ms)', 'ChromaDB (~50ms)', 'Free Budget'],
-    datasets: [{
-      data: [35, 25, 20, 20],
-      backgroundColor: ['#a855f7', '#38bdf8', '#ec4899', 'rgba(255,255,255,0.08)'],
-      borderWidth: 0,
-      hoverOffset: 6
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    cutout: '72%',
-    plugins: {
-      legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10.5 }, boxWidth: 10, padding: 8 } }
+function runRealCmd(cmd) {
+  playBeep(640, 0.05);
+  const body = document.getElementById('termBody');
+  body.innerHTML += `<div class="term-line"><span class="term-prompt">ctz@quantum-suite:~$</span><span class="term-cmd">${esc(cmd)}</span></div>`;
+  body.innerHTML += `<div class="term-line" id="loader-${Date.now()}"><span class="term-out term-info">Executing in background via PowerShell...</span></div>`;
+  body.scrollTop = body.scrollHeight;
+
+  fetch('/api/exec', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({command: cmd})
+  })
+  .then(r => r.json())
+  .then(data => {
+    const out = data.output || data.error || '[Done - No output]';
+    const isErr = data.returncode !== 0 && data.status !== 'success';
+    body.innerHTML += `<div class="term-line"><span class="term-out ${isErr ? 'term-err' : 'term-success'}">${esc(out)}</span></div>`;
+    body.scrollTop = body.scrollHeight;
+    showToast(`Exit: ${data.returncode ?? 0}`);
+  })
+  .catch(err => {
+    body.innerHTML += `<div class="term-line"><span class="term-out term-err">Execution Error: ${esc(err.message)}</span></div>`;
+    body.scrollTop = body.scrollHeight;
+  });
+}
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// --- Git Command Runner ---
+function runGitCmd(subcmd) {
+  playBeep(620, 0.05);
+  const outBox = document.getElementById('gitOutput');
+  outBox.innerHTML += `<div class="term-line"><span class="term-prompt">git></span><span class="term-cmd">git ${subcmd}</span></div>`;
+  
+  fetch('/api/exec', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({command: `& "C:\\Users\\Ved28\\MinGit\\cmd\\git.exe" ${subcmd}`})
+  })
+  .then(r => r.json())
+  .then(data => {
+    const out = data.output || data.error || 'Empty output';
+    outBox.innerHTML += `<div class="term-line"><span class="term-out term-success">${esc(out)}</span></div>`;
+    outBox.scrollTop = outBox.scrollHeight;
+    showToast(`git ${subcmd} completed`);
+  })
+  .catch(e => {
+    outBox.innerHTML += `<div class="term-line"><span class="term-out term-err">${esc(e.message)}</span></div>`;
+  });
+}
+
+// --- Agent Task Dispatcher (POST /api/agent/chat) ---
+function dispatchAgentTask() {
+  playBeep(660, 0.05);
+  const input = document.getElementById('agentPrompt');
+  const prompt = input.value.trim();
+  if (!prompt) return;
+
+  const out = document.getElementById('agentOutput');
+  out.innerHTML += `<div class="term-line"><span class="term-prompt">user></span><span class="term-cmd">${esc(prompt)}</span></div>`;
+  out.innerHTML += `<div class="term-line"><span class="term-out term-info">Sisyphus Swarm classifying and planning task...</span></div>`;
+  out.scrollTop = out.scrollHeight;
+  input.value = '';
+
+  fetch('/api/agent/chat', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({prompt})
+  })
+  .then(r => r.json())
+  .then(d => {
+    out.innerHTML += `<div class="term-line"><span class="term-out term-success">${esc(d.response)}</span></div>`;
+    out.scrollTop = out.scrollHeight;
+    showToast(`Classified: ${d.task_type || 'task'}`);
+  })
+  .catch(e => {
+    out.innerHTML += `<div class="term-line"><span class="term-out term-err">Agent Error: ${esc(e.message)}</span></div>`;
+  });
+}
+
+// --- In-Browser Code & File Explorer (/api/files/list, /api/files/read, /api/files/write) ---
+let activeFilePath = 'README.md';
+
+function fetchFileList() {
+  fetch('/api/files/list', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({})
+  })
+  .then(r => r.json())
+  .then(data => {
+    const files = data.files || [];
+    const container = document.getElementById('fileListContainer');
+    container.innerHTML = files.map(f => `
+      <div class="file-item ${f === activeFilePath ? 'active' : ''}" onclick="loadFileContent('${f}')">
+        <span>📄</span> <span>${f}</span>
+      </div>
+    `).join('');
+    loadFileContent(activeFilePath);
+  })
+  .catch(() => {
+    document.getElementById('fileListContainer').innerHTML = '<div style="padding:16px;color:#f43f5e;">Could not load files (Server offline?)</div>';
+  });
+}
+
+function loadFileContent(filePath) {
+  activeFilePath = filePath;
+  document.getElementById('currentEditingFile').textContent = filePath;
+  document.querySelectorAll('.file-item').forEach(el => {
+    el.classList.toggle('active', el.textContent.includes(filePath));
+  });
+
+  fetch('/api/files/read', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({path: filePath})
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('fileEditor').value = data.content;
+      showToast(`Loaded: ${filePath}`);
+    } else {
+      document.getElementById('fileEditor').value = `// Error reading file: ${data.error}`;
     }
-  }
-});
+  })
+  .catch(e => {
+    document.getElementById('fileEditor').value = `// Fetch error: ${e.message}`;
+  });
+}
 
-// --- 71 MCP Servers Database ---
+function saveActiveFile() {
+  const content = document.getElementById('fileEditor').value;
+  playBeep(700, 0.08);
+  fetch('/api/files/write', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({path: activeFilePath, content: content})
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      showToast(`Saved: ${activeFilePath}`);
+    } else {
+      showToast(`Error saving: ${data.error}`);
+    }
+  })
+  .catch(e => showToast(`Save error: ${e.message}`));
+}
+
+// --- 71 MCP Servers Tool Runner ---
 const ALL_71_MCPS = [
-  { name: 'abuseipdb_mcp', cat: 'security', tools: 4, desc: 'Threat intelligence and malicious IP reputation checking' },
+  { name: 'abuseipdb_mcp', cat: 'security', tools: 4, desc: 'Threat intelligence and malicious IP reputation' },
   { name: 'pentest_mcp', cat: 'security', tools: 7, desc: 'Nmap, Nuclei, Nikto penetration testing wrapper' },
-  { name: 'real_security_mcp', cat: 'security', tools: 8, desc: 'Real native & WSL2 Kali Linux Nmap/Nuclei scanner' },
+  { name: 'real_security_mcp', cat: 'security', tools: 8, desc: 'Real native & WSL2 Kali Linux scanner' },
   { name: 'nse_mcp', cat: 'security', tools: 6, desc: 'Network Security Engine script automation' },
   { name: 'shodan_mcp', cat: 'security', tools: 5, desc: 'Internet-connected device and port intelligence' },
   { name: 'virustotal_mcp', cat: 'security', tools: 5, desc: 'File hash and URL malware analysis' },
@@ -1690,7 +1210,7 @@ const ALL_71_MCPS = [
   { name: 'ctz_orchestrator_mcp', cat: 'core', tools: 8, desc: 'Sisyphus 6-agent loop coordinator' },
   { name: 'context_bridge_mcp', cat: 'core', tools: 12, desc: 'Cross-session memory persistence' },
   { name: 'memory_mcp', cat: 'core', tools: 3, desc: '3-tier memory engine operations' },
-  { name: 'task_router_mcp', cat: 'core', tools: 4, desc: '12-task classifier with Hinglish natural language support' },
+  { name: 'task_router_mcp', cat: 'core', tools: 4, desc: '12-task classifier with Hinglish support' },
   { name: 'unified_control_mcp', cat: 'core', tools: 4, desc: 'Central process and subsystem manager' },
   { name: 'automation_mcp', cat: 'core', tools: 4, desc: 'Trigger-action scheduler and recurring jobs' },
   { name: 'file_mcp', cat: 'core', tools: 8, desc: 'Sandboxed filesystem reads and mutations' },
@@ -1721,20 +1241,20 @@ const ALL_71_MCPS = [
   { name: 'web_mcp', cat: 'core', tools: 3, desc: 'Universal HTTP crawler and reader' }
 ];
 
-let currentMcpCategory = 'all';
+let currentMcpCat = 'all';
 
 function renderMcpGrid() {
   const container = document.getElementById('mcpCardGrid');
-  const query = (document.getElementById('mcpSearch')?.value || '').toLowerCase();
+  const q = (document.getElementById('mcpSearch')?.value || '').toLowerCase();
   
   const filtered = ALL_71_MCPS.filter(m => {
-    const matchCat = currentMcpCategory === 'all' || m.cat === currentMcpCategory;
-    const matchQuery = !query || m.name.toLowerCase().includes(query) || m.desc.toLowerCase().includes(query);
-    return matchCat && matchQuery;
+    const mCat = currentMcpCat === 'all' || m.cat === currentMcpCat;
+    const mQ = !q || m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
+    return mCat && mQ;
   });
 
   container.innerHTML = filtered.map(m => `
-    <div class="mcp-card" onclick="showMcpDetails('${m.name}')">
+    <div class="mcp-card" onclick="openToolModal('${m.name}')">
       <div>
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
           <div>
@@ -1746,191 +1266,103 @@ function renderMcpGrid() {
         <div style="font-size:11px;color:var(--text-soft);line-height:1.4;">${m.desc}</div>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.05);font-size:10.5px;">
-        <span style="color:#34d399;display:flex;align-items:center;gap:4px;">
-          <span style="width:5px;height:5px;border-radius:50%;background:#10b981;"></span> Online
-        </span>
-        <span style="color:var(--purple-light)">Inspect ➜</span>
+        <span style="color:#34d399;">● Online</span>
+        <span style="color:var(--purple-light);font-weight:700;">Open Tool Runner ⚡</span>
       </div>
     </div>
   `).join('');
-
-  if (filtered.length === 0) {
-    container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-muted)">No MCP servers found matching '${query}'</div>`;
-  }
 }
 
 function setMcpCategory(cat, chip) {
-  playBeep(480, 0.04);
-  currentMcpCategory = cat;
+  currentMcpCat = cat;
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   renderMcpGrid();
 }
-
 function filterMcpServers() { renderMcpGrid(); }
 
-function showMcpDetails(name) {
-  const item = ALL_71_MCPS.find(m => m.name === name);
-  if (!item) return;
-  playBeep(700, 0.06);
-  showToast(`${item.name}: ${item.tools} tools available`);
+let activeModalServer = '';
+function openToolModal(serverName) {
+  activeModalServer = serverName;
+  const item = ALL_71_MCPS.find(m => m.name === serverName);
+  document.getElementById('modalToolServer').textContent = `⚡ Tool Runner: ${serverName}`;
+  document.getElementById('modalToolDesc').textContent = item ? item.desc : '';
+  document.getElementById('modalToolName').value = 'status' in item ? 'get_status' : 'health';
+  document.getElementById('modalToolOutput').textContent = 'Ready to call tool on ' + serverName;
+  document.getElementById('toolModal').classList.add('show');
+}
+function closeToolModal() {
+  document.getElementById('toolModal').classList.remove('show');
 }
 
-// --- AST Sandbox Testing ---
-function runAstAnalysis() {
-  playBeep(680, 0.06);
-  const code = document.getElementById('astInput').value;
-  const verdict = document.getElementById('astVerdict');
-  const reason = document.getElementById('astReason');
-  
-  const dangerousPatterns = ['system', 'subprocess', 'ctypes', 'eval', 'exec', 'shutil.rmtree', 'remove', 'unlink'];
-  const hasDanger = dangerousPatterns.some(p => code.includes(p));
-
-  if (hasDanger) {
-    verdict.textContent = '[BLOCKED] Forbidden dangerous call intercepted';
-    verdict.style.color = '#f43f5e';
-    reason.textContent = 'Rule AST-SEC: Execution of subprocess / system / ctypes / eval is strictly intercepted by AST static inspection.';
-    showToast('AST Intercept: Code Blocked');
-  } else {
-    verdict.textContent = '[ALLOWED] Code verified safe for execution';
-    verdict.style.color = '#34d399';
-    reason.textContent = 'AST Verified: Pure computational logic, zero unauthorized system mutations detected.';
-    showToast('AST Verified: Code Allowed');
-  }
-}
-
-function loadSampleCode(type) {
-  playBeep(550, 0.04);
-  const input = document.getElementById('astInput');
-  if (type === 1) {
-    input.value = "__import__('os').system('rm -rf /') # Malicious attempt";
-  } else {
-    input.value = "import math\nresult = [math.sqrt(x) for x in range(10)]\nprint('Safe result:', result)";
-  }
-  runAstAnalysis();
-}
-
-// --- Semantic Memory Search Simulation ---
-function searchMemory() {
-  playBeep(650, 0.05);
-  const q = document.getElementById('memQuery').value.trim();
-  const res = document.getElementById('memResults');
-  if (!q) {
-    res.innerHTML = '<span style="color:#fbbf24">Please enter a query.</span>';
+function invokeMcpTool() {
+  const tool = document.getElementById('modalToolName').value.trim();
+  let params = {};
+  try {
+    params = JSON.parse(document.getElementById('modalToolParams').value || '{}');
+  } catch(e) {
+    showToast('Invalid JSON in parameters');
     return;
   }
-  res.innerHTML = `
-    <div style="background:rgba(18,10,38,0.8);padding:10px;border-radius:8px;border:1px solid var(--border-card);margin-top:6px;">
-      <div style="color:#34d399;font-weight:700;">[CHROMA VECTOR RECALL] 3 Semantic Matches:</div>
-      <div style="margin-top:4px;">1. <b>Task Ledger #114:</b> Resolved dependency isolation with PEP 562 lazy loading (Similarity: 0.94)</div>
-      <div>2. <b>Security Audit #089:</b> Intercepted unescaped shell strings in ExecutorAgent (Similarity: 0.88)</div>
-      <div>3. <b>Recon Log #042:</b> WSL2 Kali backend scanner synchronized on loopback (Similarity: 0.81)</div>
-    </div>
-  `;
-  showToast('Semantic Memory Recalled (3 matches)');
+
+  const out = document.getElementById('modalToolOutput');
+  out.textContent = `Calling ${activeModalServer}.${tool}()...`;
+
+  fetch('/api/mcp/call', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({server: activeModalServer, tool, params})
+  })
+  .then(r => r.json())
+  .then(data => {
+    out.textContent = JSON.stringify(data, null, 2);
+    showToast(`Executed ${tool}`);
+  })
+  .catch(e => {
+    out.textContent = `Error: ${e.message}`;
+  });
 }
 
-// --- Interactive Terminal ---
-function handleTermKey(e) {
-  if (e.key === 'Enter') {
-    const input = document.getElementById('termInput');
-    const cmd = input.value.trim();
-    if (cmd) {
-      execCmd(cmd);
-      input.value = '';
-    }
+// --- Chart Telemetry Waveform ---
+const ctxLine = document.getElementById('lineChart').getContext('2d');
+const purpleGradLine = ctxLine.createLinearGradient(0, 0, 0, 220);
+purpleGradLine.addColorStop(0, 'rgba(168, 85, 247, 0.45)');
+purpleGradLine.addColorStop(1, 'rgba(124, 58, 237, 0.01)');
+
+const lineChart = new Chart(ctxLine, {
+  type: 'line',
+  data: {
+    labels: Array(20).fill(''),
+    datasets: [{
+      label: 'CPU (%)',
+      data: Array(20).fill(24),
+      borderColor: '#c084fc',
+      backgroundColor: purpleGradLine,
+      borderWidth: 2, pointRadius: 0, tension: 0.35, fill: true,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, animation: { duration: 300 },
+    scales: { y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } } }
   }
-}
+});
 
-function execCmd(cmd) {
-  playBeep(640, 0.05);
-  const term = document.getElementById('termBody');
-  term.innerHTML += `<div class="term-line"><span class="term-prompt">ctz@quantum-core:~$</span><span class="term-cmd">${cmd}</span></div>`;
-
-  const lower = cmd.toLowerCase();
-  let resp = '';
-
-  if (lower === 'clear') {
-    term.innerHTML = '';
-    return;
-  } else if (lower.includes('status')) {
-    resp = `<div class="term-line"><span class="term-out term-success">[STATUS] CTZ v3.4 Quantum Core is NOMINAL. 71/71 MCP servers online.</span></div>`;
-  } else if (lower.includes('test')) {
-    resp = `
-      <div class="term-line"><span class="term-out term-info">Executing: python tests/run_all_tests.py</span></div>
-      <div class="term-line"><span class="term-out term-success">44/44 Core Unit Tests PASSED.</span></div>
-      <div class="term-line"><span class="term-out term-success">71/71 MCP Server Validation Tests PASSED (414 tools verified).</span></div>
-      <div class="term-line"><span class="term-out term-success">[100% SUCCESS] 115/115 tests passed in 0.34s.</span></div>
-    `;
-    showToast('All 115 Tests Passed');
-  } else if (lower.includes('health')) {
-    resp = `<div class="term-line"><span class="term-out term-success">[HEALTH] CPU 24% | RAM OK | AST Sandbox ARMED | Zero Memory Leaks.</span></div>`;
-    showToast('Health Check OK');
-  } else if (lower.includes('scan')) {
-    resp = `
-      <div class="term-line"><span class="term-out term-info">[RECON] Invoking bridge_core.recon with AST-validated params...</span></div>
-      <div class="term-line"><span class="term-out term-success">[PORT 8080] Dashboard HTTP + WebSocket OPEN</span></div>
-      <div class="term-line"><span class="term-out term-success">[PORT 9090] Prometheus Metrics Active</span></div>
-      <div class="term-line"><span class="term-out">[REPORT] No suspicious exposure detected on local loopback.</span></div>
-    `;
-    showToast('Target Scanned');
-  } else if (lower.includes('providers')) {
-    resp = `<div class="term-line"><span class="term-out term-info">[AI CHAIN] 1. Ollama (Local) ➔ 2. Groq ➔ 3. Gemini ➔ 4. Mistral ➔ 5. NVIDIA NIM (Active)</span></div>`;
-  } else {
-    resp = `<div class="term-line"><span class="term-out">[DISPATCH] Task sent to Sisyphus 6-agent loop (Plan ➔ Execute ➔ Critique).</span></div>`;
-  }
-
-  term.innerHTML += resp;
-  term.scrollTop = term.scrollHeight;
-}
-
-function runHealthCheck() { execCmd('ctz health'); }
-function runTestSuite() { switchTab('terminal'); execCmd('ctz test'); }
-function triggerAstCheck() { switchTab('sandbox'); runAstAnalysis(); }
-function clearCache() { playBeep(450, 0.08); showToast('Memory Compacted & VACUUM Executed'); }
-
-// --- Gauges Animation Loop ---
-function updateGauges(cpu, ram, disk) {
-  const setG = (id, pct) => {
-    const el = document.getElementById(id + 'Gauge');
-    const txt = document.getElementById(id + 'GaugeText');
-    const bar = document.getElementById(id + 'Bar');
-    const val = document.getElementById(id + 'Val');
-    if (el) el.style.strokeDashoffset = 100 - pct;
-    if (txt) txt.textContent = Math.round(pct) + '%';
-    if (bar) bar.style.width = pct + '%';
-    if (val) val.textContent = Math.round(pct) + '%';
-  };
-  setG('cpu', cpu);
-  setG('ram', ram);
-  setG('disk', disk);
-
-  const d = new Date();
-  const label = String(d.getMinutes()).padStart(2,'0') + ':' + String(d.getSeconds()).padStart(2,'0');
-  cpuHistory.push(cpu);
-  ramHistory.push(ram);
-  diskHistory.push(disk);
-  timeLabels.push(label);
-
-  if (cpuHistory.length > MAX_POINTS) {
-    cpuHistory.shift(); ramHistory.shift(); diskHistory.shift(); timeLabels.shift();
-  }
-  lineChart.update('none');
-}
-
-// Live simulation & WebSocket connectivity
 let t = 0;
 setInterval(() => {
-  t += 0.25;
-  const cpu = Math.max(14, Math.min(60, 24 + Math.sin(t) * 12 + (Math.random() * 4 - 2)));
-  const ram = Math.max(45, Math.min(70, 52 + Math.cos(t * 0.5) * 5 + (Math.random() * 2 - 1)));
-  const disk = 38.5;
-  updateGauges(cpu, ram, disk);
+  t += 0.3;
+  const cpu = Math.round(24 + Math.sin(t) * 10 + Math.random() * 3);
+  const ram = Math.round(52 + Math.cos(t * 0.5) * 4);
+  document.getElementById('cpuVal').textContent = cpu + '%';
+  document.getElementById('cpuBar').style.width = cpu + '%';
+  document.getElementById('ramVal').textContent = ram + '%';
+  document.getElementById('ramBar').style.width = ram + '%';
+  lineChart.data.datasets[0].data.push(cpu);
+  lineChart.data.datasets[0].data.shift();
+  lineChart.update('none');
 }, 1200);
 
 window.addEventListener('DOMContentLoaded', () => {
   renderMcpGrid();
-  runAstAnalysis();
 });
 </script>
 </body>

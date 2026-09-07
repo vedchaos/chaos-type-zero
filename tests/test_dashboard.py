@@ -27,14 +27,37 @@ class TestDashboardServer:
 
 
 class TestDashboardEndpoints:
-    """Test API endpoints (mock)."""
+    """Test API endpoints and data generators."""
 
-    def test_health_endpoint_exists(self):
-        """Health endpoint should be defined."""
-        # Just verify the concept exists
-        assert True
+    def test_health_endpoint_data(self):
+        """Health endpoint should return structured status."""
+        import server
+        data = server.build_health_data()
+        assert "status" in data
+        assert "timestamp" in data
 
-    def test_status_endpoint_exists(self):
-        """Status endpoint should be defined."""
-        # Just verify the concept exists
-        assert True
+    def test_system_endpoint_data(self):
+        """System endpoint should return valid CPU, memory and platform info."""
+        import server
+        data = server.build_system_data()
+        assert "hostname" in data
+        assert "cpu" in data
+        assert "ram" in data
+
+    def test_servers_endpoint_counts_all_mcps(self):
+        """Servers endpoint should detect all 71 MCP servers."""
+        import server
+        data = server.build_servers_data()
+        assert isinstance(data, list)
+        assert len(data) == 71
+        assert data[0]["name"] == "abuseipdb_mcp"
+
+    def test_ast_safety_checker(self):
+        """AST checker should validate safe Python code."""
+        from bridge_core.agents import ExecutorAgent
+        safe, reason = ExecutorAgent._is_safe_code("x = 10 + 20\nprint(x)")
+        assert safe is True
+
+        # Unsafe code with forbidden call
+        unsafe, reason = ExecutorAgent._is_safe_code("import subprocess\nsubprocess.run(['rm', '-rf'])")
+        assert unsafe is False

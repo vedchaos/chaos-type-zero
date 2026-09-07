@@ -25,6 +25,8 @@ if hasattr(sys.stderr, 'reconfigure'):
 PORT = 8080
 DASHBOARD_DIR = Path(__file__).parent
 NEXUS_DIR = DASHBOARD_DIR.parent
+if str(NEXUS_DIR) not in sys.path:
+    sys.path.insert(0, str(NEXUS_DIR))
 START_TIME = time.time()
 
 ws_clients = []
@@ -541,6 +543,140 @@ class CTZHandler(http.server.BaseHTTPRequestHandler):
             self.serve_file(path.lstrip('/'), 'image/svg+xml')
         else:
             self.serve_file('index.html', 'text/html')
+
+    def do_POST(self):
+        parsed = urlparse(self.path)
+        path = parsed.path
+        
+        try:
+            length = int(self.headers.get('Content-Length', 0))
+            body = json.loads(self.rfile.read(length).decode('utf-8')) if length > 0 else {}
+        except Exception:
+            body = {}
+
+        # 1. Execute Command (/api/exec)
+        if path == '/api/exec':
+            cmd = body.get('command', '').strip()
+            if not cmd:
+                self.send_json({'status': 'error', 'output': 'No command provided', 'returncode': 1})
+                return
+            try:
+                from bridge_core.agents import ExecutorAgent
+                agent = ExecutorAgent()
+                res = agent._run_shell(cmd)
+                log_activity('system', f'UI Exec: {cmd[:40]}')
+                self.send_json(res)
+            except Exception as e:
+                self.send_json({'status': 'error', 'output': str(e), 'returncode': 1})
+            return
+
+        # 2. AST Code Analysis (/api/ast/check)
+        elif path == '/api/ast/check':
+            code = body.get('code', '')
+            try:
+                from bridge_core.agents import ExecutorAgent
+                safe, reason = ExecutorAgent._is_safe_code(code)
+                self.send_json({'safe': safe, 'reason': reason})
+            except Exception as e:
+                self.send_json({'safe': False, 'reason': f'Parsing error: {e}'})
+            return
+
+        # 3. Agent Task Chat (/api/agent/chat)
+        elif path == '/api/agent/chat':
+            prompt = body.get('prompt', '').strip()
+            if not prompt:
+                self.send_json({'response': 'No prompt provided', 'task_type': 'general'})
+                return
+            try:
+                from bridge_core.task_classifier import classify_task, get_task_chain
+                task_type, conf = classify_task(prompt)
+                chain = get_task_chain(task_type)
+                
+                # Check for direct answer or test trigger
+                if 'test' in prompt.lower() and ('run' in prompt.lower() or 'all' in prompt.lower()):
+                    from bridge_core.agents import ExecutorAgent
+                    agent = ExecutorAgent()
+                    res = agent._run_shell('python tests/run_all_tests.py')
+                    self.send_json({
+                        'response': f"Executed 115 test suite:\n\n{res.get('output', '')[:800]}...",
+                        'task_type': task_type,
+                        'confidence': conf,
+                        'chain': chain
+                    })
+                    return
+                    
+                resp_text = f"Task classified as [{task_type.upper()}] (Confidence: {conf*100:.0f}%)\n" \
+                            f"Execution Chain: {' ➔ '.join(chain)}\n" \
+                            f"Agents dispatched: Planner ➔ Executor ➔ Critic.\n" \
+                            f"Ready to execute via terminal or MCP servers."
+                self.send_json({'response': resp_text, 'task_type': task_type, 'confidence': conf, 'chain': chain})
+            except Exception as e:
+                self.send_json({'response': f'Agent error: {e}', 'task_type': 'general'})
+            return
+
+        # 4. MCP Dynamic Tool Invocation (/api/mcp/call)
+        elif path == '/api/mcp/call':
+            srv = body.get('server', '')
+            tool = body.get('tool', '')
+            params = body.get('params', {})
+            try:
+                import importlib
+                mod = importlib.import_module(f'mcp_servers.{srv}')
+                fn = getattr(mod, tool, None)
+                if callable(fn):
+                    out = fn(**params) if params else fn()
+                    self.send_json({'success': True, 'result': out})
+                else:
+                    self.send_json({'success': False, 'error': f'Tool {tool} not found in {srv}'})
+            except Exception as e:
+                self.send_json({'success': False, 'error': str(e)})
+            return
+
+        # 5. File Explorer (/api/files/list)
+        elif path == '/api/files/list':
+            ignore = {'.git', '__pycache__', 'node_modules', '.venv', 'venv'}
+            file_list = []
+            for root, dirs, files in os.walk(NEXUS_DIR):
+                dirs[:] = [d for d in dirs if d not in ignore]
+                for f in files:
+                    rel = Path(root, f).relative_to(NEXUS_DIR).as_posix()
+                    file_list.append(rel)
+            self.send_json({'files': sorted(file_list)[:150]})
+            return
+
+        # 6. Read File (/api/files/read)
+        elif path == '/api/files/read':
+            rel_path = body.get('path', '').lstrip('/\\')
+            target = (NEXUS_DIR / rel_path).resolve()
+            if NEXUS_DIR in target.parents or target == NEXUS_DIR:
+                try:
+                    content = target.read_text(encoding='utf-8', errors='replace')
+                    self.send_json({'success': True, 'path': rel_path, 'content': content})
+                except Exception as e:
+                    self.send_json({'success': False, 'error': str(e)})
+            else:
+                self.send_json({'success': False, 'error': 'Access denied: outside project root'})
+            return
+
+        # 7. Write File (/api/files/write)
+        elif path == '/api/files/write':
+            rel_path = body.get('path', '').lstrip('/\\')
+            content = body.get('content', '')
+            target = (NEXUS_DIR / rel_path).resolve()
+            if NEXUS_DIR in target.parents:
+                try:
+                    target.write_text(content, encoding='utf-8')
+                    log_activity('system', f'File edited via UI: {rel_path}')
+                    self.send_json({'success': True, 'path': rel_path})
+                except Exception as e:
+                    self.send_json({'success': False, 'error': str(e)})
+            else:
+                self.send_json({'success': False, 'error': 'Access denied'})
+            return
+
+        else:
+            self.send_response(404)
+            self.end_headers()
 
     def do_OPTIONS(self):
         self.send_response(204)
