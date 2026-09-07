@@ -16,6 +16,12 @@ from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 from datetime import datetime, timezone
 
+# Ensure cross-platform UTF-8 terminal encoding on Windows
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'reconfigure'):
+    sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
 PORT = 8080
 DASHBOARD_DIR = Path(__file__).parent
 NEXUS_DIR = DASHBOARD_DIR.parent
@@ -232,54 +238,38 @@ def build_system_data():
 
 def build_servers_data():
     servers = []
-    modules = [
-        ('bridge_core', 'Core Bridge'),
-        ('memory_engine', 'Memory Engine'),
-        ('heuristics', 'Heuristics Engine'),
-    ]
-    for mod_name, display_name in modules:
-        mod_path = NEXUS_DIR / f'{mod_name}.py'
-        if mod_path.exists():
+    mcp_dir = NEXUS_DIR / 'mcp_servers'
+    if mcp_dir.exists():
+        for py_file in sorted(mcp_dir.glob('*.py')):
+            if py_file.name == '__init__.py':
+                continue
+            name = py_file.stem
+            tool_count = count_tools(py_file)
             servers.append({
-                'name': display_name,
+                'name': name,
                 'status': 'online',
-                'tools': count_tools(mod_path),
+                'tools': tool_count,
                 'uptime': format_uptime(time.time() - START_TIME),
+                'path': f'mcp_servers/{py_file.name}'
             })
 
-    ollama_path = None
-    for p in ['/usr/local/bin/ollama', '/usr/bin/ollama',
-              str(Path.home() / 'AppData/Local/Programs/Ollama/ollama.exe'),
-              str(Path.home() / '.local/bin/ollama')]:
-        if os.path.isfile(p):
-            ollama_path = p
-            break
-    if ollama_path:
-        servers.append({
-            'name': 'Ollama (Local LLM)',
-            'status': 'online',
-            'tools': 1,
-            'uptime': '--',
-        })
-
-    mcp_config = NEXUS_DIR / 'mcp_config.json'
-    if mcp_config.exists():
-        try:
-            with open(mcp_config, 'r', encoding='utf-8') as f:
-                cfg = json.load(f)
-                for name, info in cfg.get('servers', {}).items():
-                    if info.get('enabled', True):
-                        servers.append({
-                            'name': name,
-                            'status': 'online',
-                            'tools': info.get('tools', 0),
-                            'uptime': '--',
-                        })
-        except Exception:
-            pass
-
     if not servers:
-        servers = mock_servers_data()
+        modules = [
+            ('bridge_core', 'Core Bridge'),
+            ('memory_engine', 'Memory Engine'),
+            ('heuristics', 'Heuristics Engine'),
+        ]
+        for mod_name, display_name in modules:
+            mod_path = NEXUS_DIR / f'{mod_name}.py'
+            if mod_path.exists():
+                servers.append({
+                    'name': display_name,
+                    'status': 'online',
+                    'tools': count_tools(mod_path),
+                    'uptime': format_uptime(time.time() - START_TIME),
+                })
+        servers.extend(mock_servers_data())
+
     return servers
 
 
