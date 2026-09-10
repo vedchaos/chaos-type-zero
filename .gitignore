@@ -24,6 +24,8 @@ data/scan_results/
 data/automation/
 data/context/chromadb/
 data/vault/
+data/backups/
+data/notifications/
 *.db
 *.sqlite
 

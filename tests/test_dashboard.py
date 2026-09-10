@@ -10,7 +10,7 @@ class TestDashboardServer:
     def test_server_import(self):
         """Dashboard server should be importable."""
         try:
-            import server
+            from dashboard import server
             assert server is not None
         except ImportError:
             # Server may have dependencies that aren't installed
@@ -19,7 +19,7 @@ class TestDashboardServer:
     def test_mobile_api_import(self):
         """Mobile API should be importable."""
         try:
-            import mobile_api
+            from dashboard import mobile_api
             assert mobile_api is not None
         except ImportError:
             # API may have dependencies that aren't installed
@@ -31,14 +31,14 @@ class TestDashboardEndpoints:
 
     def test_health_endpoint_data(self):
         """Health endpoint should return structured status."""
-        import server
+        from dashboard import server
         data = server.build_health_data()
         assert "status" in data
         assert "timestamp" in data
 
     def test_system_endpoint_data(self):
         """System endpoint should return valid CPU, memory and platform info."""
-        import server
+        from dashboard import server
         data = server.build_system_data()
         assert "hostname" in data
         assert "cpu" in data
@@ -46,7 +46,7 @@ class TestDashboardEndpoints:
 
     def test_servers_endpoint_counts_all_mcps(self):
         """Servers endpoint should detect all 71 MCP servers."""
-        import server
+        from dashboard import server
         data = server.build_servers_data()
         assert isinstance(data, list)
         assert len(data) == 71
