@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Test Context Bridge module."""
 import sys
-sys.path.insert(0, r"C:\Users\Ved28\NEXUS")
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.resolve()))
 
 from bridge_core.context_bridge import get_bridge
 import json

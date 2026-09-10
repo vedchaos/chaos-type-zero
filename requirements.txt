@@ -72,3 +72,8 @@ playwright>=1.40.0
 # === ML Pipeline ===
 scikit-learn>=1.4.0
 numpy>=1.26.0
+
+
+# === API Server ===
+fastapi>=0.110.0
+uvicorn>=0.28.0

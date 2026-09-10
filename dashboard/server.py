@@ -219,14 +219,14 @@ def build_system_data():
             },
             'ram': {
                 'percent': round(mem.percent, 1),
-                'detail': f"{round(mem.used / (1024**3), 1)} GB / {round(mem.total / (1204**3), 1)} GB",
+                'detail': f"{round(mem.used / (1024**3), 1)} GB / {round(mem.total / (1024**3), 1)} GB",
                 'used_gb': round(mem.used / (1024**3), 1),
                 'total_gb': round(mem.total / (1024**3), 1),
                 'available_gb': round(mem.available / (1024**3), 1),
             },
             'disk': {
                 'percent': round(disk.percent, 1),
-                'detail': f"{round(disk.used / (1204**3), 1)} GB / {round(disk.total / (1024**3), 1)} GB",
+                'detail': f"{round(disk.used / (1024**3), 1)} GB / {round(disk.total / (1024**3), 1)} GB",
                 'used_gb': round(disk.used / (1024**3), 1),
                 'total_gb': round(disk.total / (1024**3), 1),
                 'free_gb': round(disk.free / (1024**3), 1),

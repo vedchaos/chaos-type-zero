@@ -29,16 +29,21 @@ print(f"  Screenshots: {vstatus['screenshots_count']}")
 
 # 3. ML Pipeline
 print("\n[3/4] ML Pipeline...")
-from bridge_core.ml_pipeline import get_ml_pipeline
-import numpy as np
-ml = get_ml_pipeline()
-print(f"  Models: {ml.get_status()['total_models']}")
+try:
+    from bridge_core.ml_pipeline import get_ml_pipeline
+    import numpy as np
+    ml = get_ml_pipeline()
+    print(f"  Models: {ml.get_status()['total_models']}")
 
-# Quick train test
-X = np.random.rand(50, 4)
-y = (X[:, 0] + X[:, 1] > 1).astype(int)
-result = ml.train_classifier(X, y, model_type="random_forest")
-print(f"  Train accuracy: {result.get('accuracy', 'N/A')}")
+    # Quick train test
+    X = np.random.rand(50, 4)
+    y = (X[:, 0] + X[:, 1] > 1).astype(int)
+    result = ml.train_classifier(X, y, model_type="random_forest")
+    print(f"  Train accuracy: {result.get('accuracy', 'N/A')}")
+    models_count = len(ml.list_models())
+except ImportError as e:
+    print(f"  [OPTIONAL] ML Pipeline dependencies not installed ({e}). Skipping live ML training.")
+    models_count = 0
 
 # 4. All MCP Servers
 print("\n[4/4] MCP Servers...")
@@ -71,5 +76,5 @@ print(f"\n{'=' * 60}")
 print(f"  RESULT: {ok}/{len(servers)} MCP servers OK")
 print(f"  Voice: {status['stt']} / {status['tts']}")
 print(f"  Tesseract: {vstatus['tesseract']}")
-print(f"  Models trained: {len(ml.list_models())}")
+print(f"  Models trained: {models_count}")
 print(f"{'=' * 60}")

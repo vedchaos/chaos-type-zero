@@ -32,7 +32,7 @@ def handle_request(request):
             if name == "ctz_git_status": r = _run(["git", "status", "--short"], p)
             elif name == "ctz_git_log": r = _run(["git", "log", f"--oneline", f"-{args.get('count', 10)}"], p)
             elif name == "ctz_git_diff": r = _run(["git", "diff", "--staged" if args.get("staged") else "HEAD"], p)
-            elif name == "ctz_git_commit": r = _run(["git", "add", "."], p); _run(["git", "commit", "-m", args["message"]], p) if r.get("code") == 0 else None; r = _run(["git", "commit", "-m", args["message"]], p)
+            elif name == "ctz_git_commit": add_res = _run(["git", "add", "."], p); r = _run(["git", "commit", "-m", args["message"]], p) if add_res.get("code") == 0 else add_res
             elif name == "ctz_git_push": r = _run(["git", "push", args.get("remote", "origin"), args.get("branch", "main")], p)
             elif name == "ctz_git_pull": r = _run(["git", "pull", args.get("remote", "origin")], p)
             elif name == "ctz_git_branches": r = _run(["git", "branch", "-a"], p)

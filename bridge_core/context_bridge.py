@@ -304,7 +304,20 @@ class ContextBridge:
             )
         rows = c.fetchall()
         conn.close()
-        return rows
+        output = []
+        for r in rows:
+            output.append({
+                "id": r[0],
+                "session_id": r[1],
+                "entry_type": r[2],
+                "content": r[3],
+                "importance": r[4],
+                "tags": r[5],
+                "metadata": r[6],
+                "timestamp": str(r[7]),
+                "relevance": 1.0,
+            })
+        return output
     
     # === Key Facts ===
     
@@ -416,7 +429,20 @@ class ContextBridge:
         )
         rows = c.fetchall()
         conn.close()
-        return rows
+        output = []
+        for r in rows:
+            output.append({
+                "id": r[0],
+                "fact": r[1],
+                "category": r[2],
+                "source_session": r[3],
+                "confidence": r[4],
+                "times_recalled": r[5],
+                "last_recalled": str(r[6]),
+                "created_at": str(r[7]),
+                "relevance": 1.0,
+            })
+        return output
     
     def delete_fact(self, fact_id):
         """Soft-delete a key fact."""
