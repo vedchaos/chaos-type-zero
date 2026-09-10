@@ -286,16 +286,37 @@ class ExecutorAgent(Agent):
             result = self._llm_execute(action, args, context)
 
         elapsed = round(time.time() - start, 2)
+        exec_status = result.get("status", "success")
 
-        return {
+        output_data = {
             "step_id": step_id,
             "action": action,
             "tool": tool,
-            "status": result.get("status", "success"),
+            "status": exec_status,
             "output": result.get("output", ""),
             "elapsed_seconds": elapsed,
             "timestamp": datetime.now().isoformat(),
         }
+
+        # Cryptographic provenance receipt for consequential execution
+        try:
+            from .receipts import get_provenance
+            receipt = get_provenance().create_receipt(
+                task_id=f"step-{step_id}",
+                task_desc=action,
+                agent_from="Planner",
+                agent_to="Executor",
+                action_type="tool_execution",
+                tool_name=tool,
+                inputs=args,
+                results={"output": result.get("output", "")[:500], "status": exec_status},
+                status="executed" if exec_status == "success" else exec_status
+            )
+            output_data["receipt"] = receipt
+        except Exception:
+            pass
+
+        return output_data
 
     @staticmethod
     def _is_safe_code(code: str):

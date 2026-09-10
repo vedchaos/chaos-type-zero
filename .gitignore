@@ -26,6 +26,7 @@ data/context/chromadb/
 data/vault/
 data/backups/
 data/notifications/
+data/provenance/
 *.db
 *.sqlite
 

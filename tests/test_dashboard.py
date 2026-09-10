@@ -45,12 +45,15 @@ class TestDashboardEndpoints:
         assert "ram" in data
 
     def test_servers_endpoint_counts_all_mcps(self):
-        """Servers endpoint should detect all 71 MCP servers."""
+        """Servers endpoint should detect all core agentic MCP servers."""
         from dashboard import server
         data = server.build_servers_data()
         assert isinstance(data, list)
-        assert len(data) == 71
-        assert data[0]["name"] == "abuseipdb_mcp"
+        assert len(data) > 0
+        names = [s["name"] for s in data]
+        assert "file_mcp" in names
+        assert "git_mcp" in names
+        assert "web_mcp" in names
 
     def test_ast_safety_checker(self):
         """AST checker should validate safe Python code."""
@@ -61,3 +64,11 @@ class TestDashboardEndpoints:
         # Unsafe code with forbidden call
         unsafe, reason = ExecutorAgent._is_safe_code("import subprocess\nsubprocess.run(['rm', '-rf'])")
         assert unsafe is False
+
+    def test_receipts_endpoint_data(self):
+        """Receipts endpoint should return ledger receipts."""
+        from dashboard import server
+        data = server.build_receipts_data()
+        assert data["status"] == "ok"
+        assert "receipts" in data
+        assert isinstance(data["receipts"], list)

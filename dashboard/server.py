@@ -198,6 +198,7 @@ def build_full_payload():
         'skills': build_skills_data(),
         'history': get_history_data(),
         'costs': build_costs_data(),
+        'receipts': build_receipts_data(),
     }
 
 
@@ -353,6 +354,20 @@ def build_providers_data():
             'key_configured': has_key,
         })
     return providers
+
+
+def build_receipts_data():
+    try:
+        from bridge_core.receipts import get_provenance
+        engine = get_provenance()
+        receipts = engine.list_recent_receipts(limit=50)
+        return {
+            'status': 'ok',
+            'count': len(receipts),
+            'receipts': receipts,
+        }
+    except Exception as e:
+        return {'status': 'error', 'error': str(e), 'receipts': []}
 
 
 def build_skills_data():
@@ -525,6 +540,7 @@ class CTZHandler(http.server.BaseHTTPRequestHandler):
             '/api/history': get_history_data,
             '/api/costs': build_costs_data,
             '/api/health': build_health_data,
+            '/api/receipts': build_receipts_data,
             '/api/full': build_full_payload,
         }
 
