@@ -5,12 +5,18 @@ Exposes /metrics endpoint for Prometheus scraping
 """
 
 import time
-import psutil
 import os
 import json
 import threading
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from datetime import datetime
+
+try:
+    import psutil
+    HAS_PSUTIL = True
+except ImportError:
+    psutil = None
+    HAS_PSUTIL = False
 
 # ============================================================
 # METRICS STORAGE
@@ -63,21 +69,18 @@ class MetricsCollector:
     def _collect_system_metrics(self):
         """Collect system metrics"""
         with self.lock:
-            # CPU
-            self.gauges["ctz_cpu_percent"] = psutil.cpu_percent(interval=1)
-
-            # Memory
-            mem = psutil.virtual_memory()
-            self.gauges["ctz_memory_percent"] = mem.percent
-            self.gauges["ctz_memory_used_bytes"] = mem.used
-            self.gauges["ctz_memory_total_bytes"] = mem.total
-
-            # Disk
-            disk = psutil.disk_usage("/")
-            self.gauges["ctz_disk_used_bytes"] = disk.used
-            self.gauges["ctz_disk_total_bytes"] = disk.total
-
-            # Uptime
+            if HAS_PSUTIL and psutil is not None:
+                try:
+                    self.gauges["ctz_cpu_percent"] = psutil.cpu_percent(interval=None)
+                    mem = psutil.virtual_memory()
+                    self.gauges["ctz_memory_percent"] = mem.percent
+                    self.gauges["ctz_memory_used_bytes"] = mem.used
+                    self.gauges["ctz_memory_total_bytes"] = mem.total
+                    disk = psutil.disk_usage("/")
+                    self.gauges["ctz_disk_used_bytes"] = disk.used
+                    self.gauges["ctz_disk_total_bytes"] = disk.total
+                except Exception:
+                    pass
             self.gauges["ctz_uptime_seconds"] = time.time() - self.start_time
 
     def inc_counter(self, name, value=1):

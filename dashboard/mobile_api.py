@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """CHAOS TYPE ZERO -- Mobile API Backend (REST HTTP server for React Native app)"""
 
 import json
