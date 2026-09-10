@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 CHAOS TYPE ZERO 6-Agent OMO Sisyphus Orchestrator
 Plan → Execute → Critique → Refine → Memory → Report
@@ -221,7 +220,7 @@ class ExecutorAgent(Agent):
 
             result = subprocess.run(
                 shell_cmd,
-                capture_output=True, text=True, timeout=timeout
+                capture_output=True, text=True, timeout=timeout, check=False
             )
             return {
                 "status": "success" if result.returncode == 0 else "error",

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 CHAOS TYPE ZERO — Cryptographic Provenance & Portable Signed Receipt Engine
 Generates tamper-evident cryptographic receipts for agent handoffs, consequential

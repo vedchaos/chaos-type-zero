@@ -31,6 +31,7 @@ _MODULE_EXPORTS = {
     "get_meta_reasoner": ("meta_reasoner", "get_meta_reasoner"),
     "get_neural": ("neural", "get_neural"),
     "get_voice_enhanced": ("voice_enhanced", "get_voice_enhanced"),
+    "get_provenance": ("receipts", "get_provenance"),
 }
 
 __all__ = list(_MODULE_EXPORTS.keys())
@@ -45,11 +46,12 @@ def __getattr__(name: str):
             func = getattr(mod, func_name)
             globals()[name] = func
             return func
-        except ImportError as e:
-            logger.warning(f"Optional module {mod_name} could not be loaded: {e}")
+        except ImportError as exc:
+            err_msg = str(exc)
+            logger.warning(f"Optional module {mod_name} could not be loaded: {err_msg}")
             def _stub(*args, **kwargs):
                 raise RuntimeError(
-                    f"'{name}' is unavailable because optional dependency for '{mod_name}' is missing: {e}"
+                    f"'{name}' is unavailable because optional dependency for '{mod_name}' is missing: {err_msg}"
                 )
             globals()[name] = _stub
             return _stub
