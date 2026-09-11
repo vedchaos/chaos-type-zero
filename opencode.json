@@ -18,139 +18,38 @@
   },
   "agent": {
     "ctz": {
-      "description": "CHAOS TYPE ZERO primary agent — autonomous AI OS with 3-tier memory, multi-provider LLM, security scanning, ML pipeline, voice/vision.",
+      "description": "CHAOS TYPE ZERO primary agent — autonomous AI OS with 3-tier memory, multi-provider LLM brain, multi-agent orchestration, and cryptographic provenance receipts.",
       "mode": "primary",
       "model": "ollama/llama3",
       "color": "error"
     },
-    "ctz-recon": {
-      "description": "Reconnaissance subagent. Passive + active recon, OSINT, subdomain enumeration.",
-      "mode": "subagent",
-      "model": "ollama/llama3"
-    },
-    "ctz-scan": {
-      "description": "Vulnerability scanning subagent. Nmap, Nuclei, Nikto, Gobuster.",
-      "mode": "subagent",
-      "model": "ollama/llama3"
-    },
-    "ctz-exploit": {
-      "description": "Exploitation subagent. SQLMap, Hydra, Metasploit. AUTHORIZATION REQUIRED.",
-      "mode": "subagent",
-      "model": "ollama/llama3"
-    },
-    "ctz-ml": {
-      "description": "ML development subagent. Training, evaluation, deployment pipelines.",
-      "mode": "subagent",
-      "model": "ollama/llama3"
-    },
     "ctz-code": {
-      "description": "Code review and development subagent.",
+      "description": "Code generation, review, and refactoring subagent.",
+      "mode": "subagent",
+      "model": "ollama/llama3"
+    },
+    "ctz-orchestrator": {
+      "description": "Multi-agent coordination, task breakdown, and Sisyphus feedback loop.",
+      "mode": "subagent",
+      "model": "ollama/llama3"
+    },
+    "ctz-automation": {
+      "description": "Scheduled jobs, triggers, event automations, and system workflows.",
+      "mode": "subagent",
+      "model": "ollama/llama3"
+    },
+    "ctz-reviewer": {
+      "description": "Critic and verification agent with AST safety checking and cryptographic receipt audits.",
       "mode": "subagent",
       "model": "ollama/llama3"
     }
   },
   "mcp": {
-    "ctz-brain": {
+    "ctz-file": {
       "type": "local",
       "command": [
         "python",
-        "mcp_servers/llm_fallback.py"
-      ],
-      "enabled": true
-    },
-    "ctz-memory": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/memory_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-router": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/task_router_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-security": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/pentest_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-orchestrator": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/ctz_orchestrator_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-voice": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/voice_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-vision": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/vision_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-ml": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/ml_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-automation": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/automation_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-context-bridge": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/context_bridge_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-cache": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/cache_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-game-ai": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/game_ai_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-vault": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/vault_mcp.py"
+        "mcp_servers/file_mcp.py"
       ],
       "enabled": true
     },
@@ -170,6 +69,14 @@
       ],
       "enabled": true
     },
+    "ctz-playwright": {
+      "type": "local",
+      "command": [
+        "python",
+        "mcp_servers/playwright_mcp.py"
+      ],
+      "enabled": true
+    },
     "ctz-api": {
       "type": "local",
       "command": [
@@ -178,19 +85,35 @@
       ],
       "enabled": true
     },
-    "ctz-db": {
+    "ctz-automation": {
       "type": "local",
       "command": [
         "python",
-        "mcp_servers/db_mcp.py"
+        "mcp_servers/automation_mcp.py"
       ],
       "enabled": true
     },
-    "ctz-file": {
+    "ctz-context-bridge": {
       "type": "local",
       "command": [
         "python",
-        "mcp_servers/file_mcp.py"
+        "mcp_servers/context_bridge_mcp.py"
+      ],
+      "enabled": true
+    },
+    "ctz-orchestrator": {
+      "type": "local",
+      "command": [
+        "python",
+        "mcp_servers/ctz_orchestrator_mcp.py"
+      ],
+      "enabled": true
+    },
+    "ctz-vault": {
+      "type": "local",
+      "command": [
+        "python",
+        "mcp_servers/vault_mcp.py"
       ],
       "enabled": true
     },
@@ -201,357 +124,6 @@
         "mcp_servers/monitor_mcp.py"
       ],
       "enabled": true
-    },
-    "ctz-backup": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/backup_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-notify": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/notify_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-test": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/test_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-docs": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/docs_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-deploy": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/deploy_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-report": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/report_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-translate": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/translate_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-status": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/status_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-health": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/health_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-data": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/data_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-control": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/unified_control_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-browser": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/browser_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-neural": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/neural_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-comms": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/comms_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-nse": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/nse_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-cicd": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/cicd_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-db-multi": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/db_multi_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-i18n": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/i18n_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-plugin": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/plugin_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-image-gen": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/image_gen_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-knowledge-graph": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/knowledge_graph_mcp.py"
-      ],
-      "enabled": true
-    },
-    "ctz-playwright": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/playwright_mcp.py"
-      ],
-      "args": []
-    },
-    "ctz-real-security": {
-      "type": "local",
-      "command": [
-        "python",
-        "mcp_servers/real_security_mcp.py"
-      ],
-      "args": []
-    },
-    "ctz-discord": {
-      "command": "python",
-      "cwd": ".",
-      "env": {},
-      "tools": ["mcp_servers/discord_bot.py"],
-      "args": []
-    },
-    "ctz-slack": {
-      "command": "python",
-      "cwd": ".",
-      "env": {},
-      "tools": ["mcp_servers/slack_bot.py"],
-      "args": []
-    },
-    "ctz-aws": {
-      "type": "local",
-      "command": ["python", "mcp_servers/aws_mcp.py"],
-      "enabled": true
-    },
-    "ctz-docker": {
-      "type": "local",
-      "command": ["python", "mcp_servers/docker_mcp.py"],
-      "enabled": true
-    },
-    "ctz-terraform": {
-      "type": "local",
-      "command": ["python", "mcp_servers/terraform_mcp.py"],
-      "enabled": true
-    },
-    "ctz-kubernetes": {
-      "type": "local",
-      "command": ["python", "mcp_servers/kubernetes_mcp.py"],
-      "enabled": true
-    },
-    "ctz-github": {
-      "type": "local",
-      "command": ["python", "mcp_servers/github_mcp.py"],
-      "enabled": true
-    },
-    "ctz-postgres": {
-      "type": "local",
-      "command": ["python", "mcp_servers/postgres_mcp.py"],
-      "enabled": true
-    },
-    "ctz-mongo": {
-      "type": "local",
-      "command": ["python", "mcp_servers/mongo_mcp.py"],
-      "enabled": true
-    },
-    "ctz-redis": {
-      "type": "local",
-      "command": ["python", "mcp_servers/redis_mcp.py"],
-      "enabled": true
-    },
-    "ctz-elasticsearch": {
-      "type": "local",
-      "command": ["python", "mcp_servers/elasticsearch_mcp.py"],
-      "enabled": true
-    },
-    "ctz-email": {
-      "type": "local",
-      "command": ["python", "mcp_servers/email_mcp.py"],
-      "enabled": true
-    },
-    "ctz-telegram": {
-      "type": "local",
-      "command": ["python", "mcp_servers/telegram_mcp.py"],
-      "enabled": true
-    },
-    "ctz-shodan": {
-      "type": "local",
-      "command": ["python", "mcp_servers/shodan_mcp.py"],
-      "enabled": true
-    },
-    "ctz-virustotal": {
-      "type": "local",
-      "command": ["python", "mcp_servers/virustotal_mcp.py"],
-      "enabled": true
-    },
-    "ctz-abuseipdb": {
-      "type": "local",
-      "command": ["python", "mcp_servers/abuseipdb_mcp.py"],
-      "enabled": true
-    },
-    "ctz-censys": {
-      "type": "local",
-      "command": ["python", "mcp_servers/censys_mcp.py"],
-      "enabled": true
-    },
-    "ctz-rss": {
-      "type": "local",
-      "command": ["python", "mcp_servers/rss_mcp.py"],
-      "enabled": true
-    },
-    "ctz-stock": {
-      "type": "local",
-      "command": ["python", "mcp_servers/stock_mcp.py"],
-      "enabled": true
-    },
-    "ctz-weather": {
-      "type": "local",
-      "command": ["python", "mcp_servers/weather_mcp.py"],
-      "enabled": true
-    },
-    "ctz-news": {
-      "type": "local",
-      "command": ["python", "mcp_servers/news_mcp.py"],
-      "enabled": true
-    },
-    "ctz-dns": {
-      "type": "local",
-      "command": ["python", "mcp_servers/dns_mcp.py"],
-      "enabled": true
-    },
-    "ctz-huggingface": {
-      "type": "local",
-      "command": ["python", "mcp_servers/huggingface_mcp.py"],
-      "enabled": true
-    },
-    "ctz-pinecone": {
-      "type": "local",
-      "command": ["python", "mcp_servers/pinecone_mcp.py"],
-      "enabled": true
-    },
-    "ctz-whois": {
-      "type": "local",
-      "command": ["python", "mcp_servers/whois_mcp.py"],
-      "enabled": true
-    },
-    "ctz-ipinfo": {
-      "type": "local",
-      "command": ["python", "mcp_servers/ipinfo_mcp.py"],
-      "enabled": true
-    },
-    "ctz-pdf": {
-      "type": "local",
-      "command": ["python", "mcp_servers/pdf_mcp.py"],
-      "enabled": true
-    },
-    "ctz-image": {
-      "type": "local",
-      "command": ["python", "mcp_servers/image_mcp.py"],
-      "enabled": true
-    },
-    "ctz-ocr": {
-      "type": "local",
-      "command": ["python", "mcp_servers/ocr_mcp.py"],
-      "enabled": true
-    }
-  },
-  "permission": {
-    "edit": "allow",
-    "bash": {
-      "python *": "allow",
-      "pip *": "allow",
-      "ollama *": "allow",
-      "nmap *": "ask",
-      "nuclei *": "ask",
-      "nikto *": "ask",
-      "gobuster *": "ask",
-      "sqlmap *": "ask",
-      "hydra *": "ask",
-      "git *": "allow",
-      "curl *": "allow",
-      "wsl *": "ask",
-      "*": "ask"
     }
   }
 }
