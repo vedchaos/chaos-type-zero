@@ -17,11 +17,6 @@ _MODULE_EXPORTS = {
     "get_task_chain": ("task_classifier", "get_task_chain"),
     "parse_hinglish_time": ("scheduler", "parse_hinglish_time"),
     "ChaosScheduler": ("scheduler", "ChaosScheduler"),
-    "recon_passive": ("recon", "recon_passive"),
-    "recon_active": ("recon", "recon_active"),
-    "get_voice": ("voice", "get_voice"),
-    "get_vision": ("vision", "get_vision"),
-    "get_ml_pipeline": ("ml_pipeline", "get_ml_pipeline"),
     "get_engine": ("automation", "get_engine"),
     "get_bridge": ("context_bridge", "get_bridge"),
     "get_cache": ("cache", "get_cache"),
@@ -30,7 +25,6 @@ _MODULE_EXPORTS = {
     "get_heuristics": ("heuristics", "get_heuristics"),
     "get_meta_reasoner": ("meta_reasoner", "get_meta_reasoner"),
     "get_neural": ("neural", "get_neural"),
-    "get_voice_enhanced": ("voice_enhanced", "get_voice_enhanced"),
     "get_provenance": ("receipts", "get_provenance"),
 }
 

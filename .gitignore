@@ -27,6 +27,8 @@ data/vault/
 data/backups/
 data/notifications/
 data/provenance/
+data/reports/
+scratch/
 *.db
 *.sqlite
 

@@ -117,6 +117,19 @@ class CTZHeuristics:
                 score = max(score, score + weight)
         return min(score, 100)
 
+    def assess_risk(self, task_desc):
+        """Assess task risk level on a 0-100 scale."""
+        return self._classify_risk(task_desc)
+
+    def calculate_risk(self, task_desc):
+        """Alias for assess_risk."""
+        return self._classify_risk(task_desc)
+
+    def estimate_cost(self, task_desc):
+        """Estimate execution cost in USD."""
+        tier = self._classify_tier(task_desc)
+        return COST_TIERS.get(tier, COST_TIERS["moderate"])["cost_usd"]
+
     def _classify_tier(self, task_desc):
         lower = task_desc.lower()
         word_count = len(lower.split())

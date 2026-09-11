@@ -23,6 +23,8 @@ them, and delete data/vault/vault.db before reusing the vault.
 """
 
 import base64
+import hashlib
+import hmac
 import json
 import os
 import stat
@@ -49,13 +51,10 @@ VAULT_DIR.mkdir(parents=True, exist_ok=True)
 
 def _load_or_create_key() -> bytes:
     """
-    Resolve the Fernet key used to encrypt/decrypt secrets.
-
+    Resolve the key used to encrypt/decrypt secrets.
     Priority:
-      1. CTZ_VAULT_KEY env var (lets you inject a key from a secrets
-         manager / CI instead of relying on a local file)
-      2. data/vault/vault.key (auto-generated on first run, gitignored,
-         file permissions locked to owner-read-only where supported)
+      1. CTZ_VAULT_KEY env var
+      2. data/vault/vault.key
     """
     env_key = os.environ.get("CTZ_VAULT_KEY")
     if env_key:
@@ -64,35 +63,71 @@ def _load_or_create_key() -> bytes:
     if KEY_PATH.exists():
         return KEY_PATH.read_bytes().strip()
 
-    key = Fernet.generate_key()
+    if HAS_CRYPTO and Fernet is not None:
+        key = Fernet.generate_key()
+    else:
+        key = base64.urlsafe_b64encode(os.urandom(32))
     KEY_PATH.write_bytes(key)
     try:
-        os.chmod(KEY_PATH, stat.S_IRUSR | stat.S_IWUSR)  # 0600, owner only
+        os.chmod(KEY_PATH, stat.S_IRUSR | stat.S_IWUSR)
     except OSError:
-        pass  # best-effort on platforms without POSIX permissions (e.g. Windows)
+        pass
     return key
 
 
 def _get_fernet() -> "Fernet":
-    if not HAS_CRYPTO or Fernet is None:
-        raise RuntimeError("The 'cryptography' package is required for the vault. Run: pip install cryptography")
     return Fernet(_load_or_create_key())
 
 
+def _keystream(key: bytes, nonce: bytes, length: int) -> bytes:
+    """Generate deterministic pseudorandom keystream using HMAC-SHA256 in counter mode."""
+    blocks = []
+    counter = 0
+    while len(b"".join(blocks)) < length:
+        block = hmac.new(key, nonce + counter.to_bytes(4, "big"), hashlib.sha256).digest()
+        blocks.append(block)
+        counter += 1
+    return b"".join(blocks)[:length]
+
+
 def _encrypt(plaintext: str) -> str:
-    return _get_fernet().encrypt(plaintext.encode()).decode()
+    if HAS_CRYPTO and Fernet is not None:
+        return _get_fernet().encrypt(plaintext.encode()).decode()
+    raw = plaintext.encode("utf-8")
+    key = _load_or_create_key()
+    nonce = os.urandom(16)
+    ks = _keystream(key, nonce, len(raw))
+    ciphertext = bytes(a ^ b for a, b in zip(raw, ks))
+    tag = hmac.new(key, nonce + ciphertext, hashlib.sha256).digest()
+    payload = b"STD:" + nonce + tag + ciphertext
+    return base64.urlsafe_b64encode(payload).decode("ascii")
 
 
 def _decrypt(ciphertext: str) -> str:
+    if HAS_CRYPTO and Fernet is not None:
+        try:
+            return _get_fernet().decrypt(ciphertext.encode()).decode()
+        except Exception:
+            pass
     try:
-        return _get_fernet().decrypt(ciphertext.encode()).decode()
-    except InvalidToken:
-        raise ValueError(
-            "Failed to decrypt secret: wrong/missing vault key, or the value "
-            "was encrypted with the old insecure XOR scheme. If you're "
-            "migrating from an old vault, re-run ctz_vault_set for each "
-            "secret with the new vault."
-        )
+        data = base64.urlsafe_b64decode(ciphertext.encode("ascii"))
+        if data.startswith(b"STD:"):
+            nonce = data[4:20]
+            tag = data[20:52]
+            ct = data[52:]
+            key = _load_or_create_key()
+            expected_tag = hmac.new(key, nonce + ct, hashlib.sha256).digest()
+            if not hmac.compare_digest(tag, expected_tag):
+                raise ValueError("Vault authentication tag mismatch: data corrupted or tampered.")
+            ks = _keystream(key, nonce, len(ct))
+            raw = bytes(a ^ b for a, b in zip(ct, ks))
+            return raw.decode("utf-8")
+    except Exception as e:
+        if isinstance(e, ValueError):
+            raise
+    raise ValueError(
+        "Failed to decrypt secret: wrong/missing vault key or corrupted ciphertext."
+    )
 
 
 class Vault:
