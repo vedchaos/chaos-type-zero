@@ -1,4 +1,4 @@
-"""Comprehensive MCP Server Test — All 71 Servers."""
+"""Comprehensive MCP Server Test — Core Agentic MCP Servers."""
 import sys
 import os
 import importlib

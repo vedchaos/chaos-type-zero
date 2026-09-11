@@ -33,7 +33,7 @@ def main():
 =================================================================""")
 
     suites = [
-        ("Core Unit & 71 MCP Suite", "tests/run_all_tests.py"),
+        ("Core Unit & 10 Core MCP Suite", "tests/run_all_tests.py"),
         ("Automation Engine Suite", "test_automation.py"),
         ("Context Bridge Persistence", "test_context_bridge.py"),
         ("CTZ v1 Core System Pipeline", "test_ctz.py"),

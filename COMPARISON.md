@@ -6,20 +6,23 @@
 
 ## 📊 Architecture & Capability Overview
 
-| Feature | CHAOS v1.0 | CHAOS v3.3 | Technical Evolution |
+| Feature | CHAOS v1.0 | CHAOS v3.4 (Agentic OS) | Technical Evolution |
 |---|---|---|---|
-| **MCP Tool Servers** | 9 | 71 | Standardized Model Context Protocol servers |
-| **Active Tools** | ~30 | 414 | 100% verified tool declarations across servers |
-| **LLM Providers** | 3 | 14 | Free-first fallback, key rotation & semantic cache |
-| **Agent Roles** | 2 | 6 | Planner, Coder, Researcher, Critic, Executor, Memory |
-| **Task Classifiers** | 4 | 12 | Hinglish & English natural language classification |
-| **Memory Architecture**| 1 (RAM) | 3-Tier | RAM LRU (L1) + SQLite (L2) + ChromaDB (L3) |
+| **MCP Tool Servers** | 9 | 10 Core Servers | Standardized Model Context Protocol servers (zero bloat) |
+| **Active Tools** | ~30 | 67 Verified Tools | 100% verified tool declarations across core servers |
+| **Cryptographic Receipts** | None | HMAC-SHA256 Signed | Tamper-evident portable execution provenance |
+| **LLM Providers** | 3 | 14 Providers | Free-first fallback, key rotation & semantic cache |
+| **Agent Roles** | 2 | 6 Agents | Planner, Coder, Researcher, Critic, Executor, Memory (Sisyphus) |
+| **Task Classifiers** | 4 | 12 Types | Hinglish & English natural language classification |
+| **Memory Architecture**| 1 (RAM) | 3-Tier + Self-Healing | RAM LRU (L1) + SQLite (L2) + ChromaDB (L3) + PRAGMA auto-repair |
+| **Context Bridging** | None | Cross-Session Engine | Persistent facts, session links & message snapshots |
 | **Shell Execution** | Linux bash only | Cross-Platform | Native PowerShell (Windows) + Bash (Linux/macOS) |
 | **Module Loading** | Fragile eager imports | Resilient Lazy Loading | PEP 562 lazy loading shields optional deps |
 | **Code Safety** | None / Naive regex | AST Security Inspector | Static AST analysis blocks dangerous calls |
-| **Test Coverage** | 0 tests | 115 tests | Zero-dependency test runner (`tests/run_all_tests.py`) |
+| **Credential Storage** | Plaintext / fragile | Resilient Encrypted Vault | AES-128 Fernet + Zero-dependency stdlib fallback |
+| **Test Verification** | 0 tests | 5-Suite Master Pipeline | 100% passing across Unit, MCP, Automation, Context, and OS suites |
 | **UI & Control** | CLI only | Web + Mobile + Bots | Cyberpunk Web, Expo React Native, Slack & Discord |
-| **Deployment** | Manual script | Full DevOps IaC | Docker Compose, 11 K8s manifests, Terraform AWS |
+| **Deployment** | Manual script | Full DevOps IaC | Docker Compose, 11 K8s manifests, Terraform AWS, Prometheus, Grafana |
 
 ---
 

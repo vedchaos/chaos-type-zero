@@ -34,8 +34,8 @@
 | v2.5 | Aug 19, 2026 | 28 skills, heuristics, meta-reasoner, dashboard |
 | v3.0 | Aug 20, 2026 | 40 MCP servers, 298 tools, full upgrade |
 | v3.1 | Aug 20, 2026 | Priority 1: badges, LICENSE, 88 tests, CONTRIBUTING |
-| v3.2 | Aug 20, 2026 | Priority 2: Mobile app, Playwright, Nmap/Nuclei, Slack/Discord bots |
-| **v3.3** | **Aug 20, 2026** | **Priority 3: Kubernetes, Terraform, Prometheus, Grafana, CI/CD** |
+| v3.3 | Aug 20, 2026 | Priority 3: Kubernetes, Terraform, Prometheus, Grafana, CI/CD |
+| **v3.4** | **Sep 11, 2026** | **Agentic OS Refactor: 10 Core MCPs, 67 Tools, HMAC Receipts, 5-Suite Master Verifier** |
 
 ### Before vs After
 | Component | v2.5 | v3.2 | Growth |

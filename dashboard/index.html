@@ -587,11 +587,11 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
 <div class="ticker-bar">
   <div class="ticker-badge">LIVE INTEL</div>
   <div class="ticker-content">
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>CTZ v3.4 Full Access Quantum OS</b> active with PEP 562 lazy-loading</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>71 MCP Tool Servers:</b> Ready for real-time invocation via web UI</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>CTZ v3.4 Agentic AI OS</b> active with PEP 562 lazy-loading</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>10 Core MCP Servers:</b> 67 verified tools ready for real-time invocation</span>
     <span class="ticker-item"><span class="ticker-dot"></span> <b>Cross-Platform Shell:</b> Real PowerShell execution via POST /api/exec</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>AST Sandbox:</b> Dynamic syntax validation enabled</span>
-    <span class="ticker-item"><span class="ticker-dot"></span> <b>115 Tests:</b> 100% Passed (0.34s)</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>Cryptographic Receipts:</b> HMAC-SHA256 signed tamper-evident logs</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <b>Master Audit:</b> 100% Operational across all 5 verification pipelines</span>
     <span class="ticker-item"><span class="ticker-dot"></span> <b>In-Browser Code Editor:</b> Direct reading & editing of project repository files</span>
   </div>
 </div>
@@ -619,7 +619,7 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
       <span>SERVER:</span> <b>PORT 8080</b>
     </div>
     <div class="hud-stat">
-      <span>TOOLS:</span> <b>414 READY</b>
+      <span>TOOLS:</span> <b>67 READY</b>
     </div>
     <div class="digital-clock" id="clock">--:--:--</div>
     <button class="icon-btn" id="audioToggle" title="Toggle Sound" onclick="toggleAudio()">
@@ -635,7 +635,7 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
       <span>💻</span> Live Real Terminal
     </button>
     <button class="tab-btn" onclick="switchTab('mcp')">
-      <span>⚡</span> MCP Tool Runner <span class="tab-badge">71</span>
+      <span>⚡</span> MCP Tool Runner <span class="tab-badge">10</span>
     </button>
     <button class="tab-btn" onclick="switchTab('editor')">
       <span>📝</span> Code & File Explorer
@@ -710,7 +710,7 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
             <span>🔑</span> Verify GitHub CLI Auth Status
           </button>
           <button class="btn-glass" onclick="runRealCmd('python tests/test_all_mcps.py')">
-            <span>⚡</span> Test All 71 MCP Servers
+            <span>⚡</span> Test 10 Core MCP Servers
           </button>
           <button class="btn-glass" onclick="runRealCmd('python -c \"import sys, platform; print(f\'Python: {sys.version}\\nOS: {platform.platform()}\')\"')">
             <span>🖥️</span> Print Platform Details
@@ -728,34 +728,32 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
     </div>
   </div>
 
-  <!-- TAB: MCP TOOL RUNNER (Runs any tool from 71 servers) -->
+  <!-- TAB: MCP TOOL RUNNER (Runs any tool from 10 Core servers) -->
   <div class="tab-pane" id="tab-mcp">
     <div class="card" style="margin-bottom:16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
         <div>
           <div style="font-size:18px;font-weight:800;color:#fff;">
-            ⚡ Interactive MCP Tool Invocation Matrix
+            ⚡ Interactive Core MCP Tool Invocation Matrix
           </div>
           <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
             Click on ANY server to open its real tool executor and run it directly!
           </div>
         </div>
-        <span class="badge-tag">71 SERVERS // 414 TOOLS</span>
+        <span class="badge-tag">10 SERVERS // 67 TOOLS</span>
       </div>
 
       <div class="search-bar">
         <span style="font-size:16px;color:var(--purple-neon)">🔍</span>
-        <input type="text" class="search-input" id="mcpSearch" placeholder="Search servers (e.g. 'pentest', 'aws', 'docker', 'redis', 'vault', 'voice')..." oninput="filterMcpServers()">
+        <input type="text" class="search-input" id="mcpSearch" placeholder="Search servers (e.g. 'vault', 'playwright', 'orchestrator', 'git')..." oninput="filterMcpServers()">
       </div>
 
       <div class="chip-container" id="categoryChips">
-        <div class="chip active" onclick="setMcpCategory('all', this)">All (71)</div>
-        <div class="chip" onclick="setMcpCategory('security', this)">🛡️ Security (8)</div>
-        <div class="chip" onclick="setMcpCategory('cloud', this)">☁️ Cloud & DevOps (9)</div>
-        <div class="chip" onclick="setMcpCategory('db', this)">💾 Database & Storage (8)</div>
-        <div class="chip" onclick="setMcpCategory('ai', this)">🧠 AI & Neural (7)</div>
-        <div class="chip" onclick="setMcpCategory('comms', this)">💬 Comms & Bots (7)</div>
-        <div class="chip" onclick="setMcpCategory('core', this)">⚡ Core & Utility (22)</div>
+        <div class="chip active" onclick="setMcpCategory('all', this)">All (10)</div>
+        <div class="chip" onclick="setMcpCategory('core', this)">⚡ Core OS (4)</div>
+        <div class="chip" onclick="setMcpCategory('auto', this)">🔄 Automation & Git (2)</div>
+        <div class="chip" onclick="setMcpCategory('web', this)">🌐 Web & Browser (3)</div>
+        <div class="chip" onclick="setMcpCategory('security', this)">🔐 Security (1)</div>
       </div>
 
       <div class="mcp-grid" id="mcpCardGrid"></div>
@@ -1161,84 +1159,18 @@ function saveActiveFile() {
   .catch(e => showToast(`Save error: ${e.message}`));
 }
 
-// --- 71 MCP Servers Tool Runner ---
+// --- Core MCP Servers Tool Runner (10 Core Servers / 67 Tools) ---
 const ALL_71_MCPS = [
-  { name: 'abuseipdb_mcp', cat: 'security', tools: 4, desc: 'Threat intelligence and malicious IP reputation' },
-  { name: 'pentest_mcp', cat: 'security', tools: 7, desc: 'Nmap, Nuclei, Nikto penetration testing wrapper' },
-  { name: 'real_security_mcp', cat: 'security', tools: 8, desc: 'Real native & WSL2 Kali Linux scanner' },
-  { name: 'nse_mcp', cat: 'security', tools: 6, desc: 'Network Security Engine script automation' },
-  { name: 'shodan_mcp', cat: 'security', tools: 5, desc: 'Internet-connected device and port intelligence' },
-  { name: 'virustotal_mcp', cat: 'security', tools: 5, desc: 'File hash and URL malware analysis' },
-  { name: 'censys_mcp', cat: 'security', tools: 3, desc: 'Host certificate and internet attack surface mapping' },
-  { name: 'vault_mcp', cat: 'security', tools: 5, desc: 'AES-256 secure credential encryption vault' },
-
-  { name: 'aws_mcp', cat: 'cloud', tools: 13, desc: 'AWS EC2, S3, IAM, and CloudWatch infrastructure controls' },
-  { name: 'docker_mcp', cat: 'cloud', tools: 14, desc: 'Container lifecycle, image management, and compose' },
-  { name: 'kubernetes_mcp', cat: 'cloud', tools: 13, desc: 'K8s pods, deployments, services, and HPA autoscaling' },
-  { name: 'terraform_mcp', cat: 'cloud', tools: 11, desc: 'Infrastructure-as-Code plan and apply management' },
-  { name: 'cicd_mcp', cat: 'cloud', tools: 7, desc: 'GitHub Actions and CI/CD workflow automation' },
-  { name: 'deploy_mcp', cat: 'cloud', tools: 3, desc: 'Production deployment status and rollbacks' },
-  { name: 'backup_mcp', cat: 'cloud', tools: 5, desc: 'Automated snapshots and state backup preservation' },
-  { name: 'monitor_mcp', cat: 'cloud', tools: 5, desc: 'Host metrics and resource threshold alerting' },
-  { name: 'health_mcp', cat: 'cloud', tools: 3, desc: 'Cluster and worker node health checks' },
-
-  { name: 'db_mcp', cat: 'db', tools: 6, desc: 'SQLite database querying and schema inspection' },
-  { name: 'db_multi_mcp', cat: 'db', tools: 8, desc: 'Multi-engine unified database dispatcher' },
-  { name: 'postgres_mcp', cat: 'db', tools: 5, desc: 'PostgreSQL relational database client' },
-  { name: 'mongo_mcp', cat: 'db', tools: 6, desc: 'MongoDB document collection operations' },
-  { name: 'redis_mcp', cat: 'db', tools: 13, desc: 'In-memory key-value caching and pub/sub queues' },
-  { name: 'elasticsearch_mcp', cat: 'db', tools: 6, desc: 'Full-text cluster searching and index management' },
-  { name: 'pinecone_mcp', cat: 'db', tools: 6, desc: 'Cloud vector index querying for RAG' },
-  { name: 'cache_mcp', cat: 'db', tools: 6, desc: 'Dynamic query caching and memoization' },
-
-  { name: 'llm_fallback', cat: 'ai', tools: 3, desc: '14-provider smart LLM routing and failover' },
-  { name: 'ml_mcp', cat: 'ai', tools: 5, desc: 'Local scikit-learn machine learning pipelines' },
-  { name: 'neural_mcp', cat: 'ai', tools: 6, desc: 'Text classification, embeddings, and cosine similarity' },
-  { name: 'knowledge_graph_mcp', cat: 'ai', tools: 8, desc: 'Entity-relationship graph traversing & BFS pathfinding' },
-  { name: 'huggingface_mcp', cat: 'ai', tools: 4, desc: 'HuggingFace inference API model dispatch' },
-  { name: 'image_gen_mcp', cat: 'ai', tools: 7, desc: 'AI image generation and meme formatting' },
-  { name: 'game_ai_mcp', cat: 'ai', tools: 6, desc: 'Agent strategic heuristics and game simulation' },
-
-  { name: 'browser_mcp', cat: 'comms', tools: 10, desc: 'Lightweight web navigation and DOM scraping' },
-  { name: 'playwright_mcp', cat: 'comms', tools: 10, desc: 'Full Chromium headless automation and screenshots' },
-  { name: 'comms_mcp', cat: 'comms', tools: 9, desc: 'Unified notification dispatcher for multi-channel' },
-  { name: 'discord_bot', cat: 'comms', tools: 9, desc: 'Discord bot gateway and interactive embeds' },
-  { name: 'slack_bot', cat: 'comms', tools: 6, desc: 'Slack workspace bot controller and webhooks' },
-  { name: 'telegram_mcp', cat: 'comms', tools: 5, desc: 'Telegram bot API alerts and remote commands' },
-  { name: 'email_mcp', cat: 'comms', tools: 4, desc: 'SMTP and IMAP mail transmission' },
-
-  { name: 'ctz_orchestrator_mcp', cat: 'core', tools: 8, desc: 'Sisyphus 6-agent loop coordinator' },
-  { name: 'context_bridge_mcp', cat: 'core', tools: 12, desc: 'Cross-session memory persistence' },
-  { name: 'memory_mcp', cat: 'core', tools: 3, desc: '3-tier memory engine operations' },
-  { name: 'task_router_mcp', cat: 'core', tools: 4, desc: '12-task classifier with Hinglish support' },
-  { name: 'unified_control_mcp', cat: 'core', tools: 4, desc: 'Central process and subsystem manager' },
-  { name: 'automation_mcp', cat: 'core', tools: 4, desc: 'Trigger-action scheduler and recurring jobs' },
-  { name: 'file_mcp', cat: 'core', tools: 8, desc: 'Sandboxed filesystem reads and mutations' },
-  { name: 'git_mcp', cat: 'core', tools: 7, desc: 'Local Git operations and branch management' },
-  { name: 'github_mcp', cat: 'core', tools: 10, desc: 'GitHub API issues, PRs, and commits' },
-  { name: 'api_mcp', cat: 'core', tools: 5, desc: 'REST API testing and webhook payload execution' },
-  { name: 'data_mcp', cat: 'core', tools: 4, desc: 'CSV, JSON, and dataframe numerical analysis' },
-  { name: 'docs_mcp', cat: 'core', tools: 3, desc: 'Documentation vector lookup and indexing' },
-  { name: 'report_mcp', cat: 'core', tools: 3, desc: 'Markdown audit and system summary generation' },
-  { name: 'test_mcp', cat: 'core', tools: 3, desc: 'Unit test execution and pytest runner' },
-  { name: 'status_mcp', cat: 'core', tools: 3, desc: 'Subsystem heartbeat and uptime polling' },
-  { name: 'i18n_mcp', cat: 'core', tools: 6, desc: '28-language localization and translation' },
-  { name: 'translate_mcp', cat: 'core', tools: 2, desc: 'Real-time text translation engine' },
-  { name: 'vision_mcp', cat: 'core', tools: 6, desc: 'Computer vision and screenshot analysis' },
-  { name: 'voice_mcp', cat: 'core', tools: 5, desc: 'Whisper STT and speech synthesis' },
-  { name: 'ocr_mcp', cat: 'core', tools: 3, desc: 'Tesseract optical character recognition' },
-  { name: 'pdf_mcp', cat: 'core', tools: 4, desc: 'PDF text extraction and document parsing' },
-  { name: 'image_mcp', cat: 'core', tools: 5, desc: 'Image resizing, filtering, and metadata analysis' },
-  { name: 'dns_mcp', cat: 'core', tools: 5, desc: 'DNS record lookup and DNSSEC verification' },
-  { name: 'ipinfo_mcp', cat: 'core', tools: 3, desc: 'IP geolocation and ASN lookup' },
-  { name: 'whois_mcp', cat: 'core', tools: 2, desc: 'Domain registrar and expiration querying' },
-  { name: 'weather_mcp', cat: 'core', tools: 3, desc: 'Meteorological telemetry and forecasts' },
-  { name: 'stock_mcp', cat: 'core', tools: 5, desc: 'Financial equity data and crypto rates' },
-  { name: 'news_mcp', cat: 'core', tools: 3, desc: 'Live news feed aggregator' },
-  { name: 'rss_mcp', cat: 'core', tools: 3, desc: 'Atom & RSS feed subscriber' },
-  { name: 'plugin_mcp', cat: 'core', tools: 8, desc: 'Dynamic agent extension marketplace' },
-  { name: 'notify_mcp', cat: 'core', tools: 2, desc: 'Native OS desktop notifications' },
-  { name: 'web_mcp', cat: 'core', tools: 3, desc: 'Universal HTTP crawler and reader' }
+  { name: 'ctz_orchestrator_mcp', cat: 'core', tools: 8, desc: 'Sisyphus 6-agent loop coordinator and adaptive planning' },
+  { name: 'context_bridge_mcp', cat: 'core', tools: 12, desc: 'Cross-session memory persistence, facts, and session linking' },
+  { name: 'file_mcp', cat: 'core', tools: 8, desc: 'Sandboxed filesystem reads, writes, searches, and mutations' },
+  { name: 'monitor_mcp', cat: 'core', tools: 5, desc: 'System telemetry, CPU, RAM, disk, and process monitoring' },
+  { name: 'automation_mcp', cat: 'auto', tools: 4, desc: 'Interval, cron, file watcher, and webhook automation engine' },
+  { name: 'git_mcp', cat: 'auto', tools: 7, desc: 'Local Git operations, commits, branch management, and logs' },
+  { name: 'playwright_mcp', cat: 'web', tools: 10, desc: 'Full Chromium headless automation, scraping, and screenshots' },
+  { name: 'api_mcp', cat: 'web', tools: 5, desc: 'REST API testing, HTTP client, and webhook payload execution' },
+  { name: 'web_mcp', cat: 'web', tools: 3, desc: 'Web search, URL scraping, and markdown content extraction' },
+  { name: 'vault_mcp', cat: 'security', tools: 5, desc: 'Encrypted credential vault with stdlib fallback' }
 ];
 
 let currentMcpCat = 'all';

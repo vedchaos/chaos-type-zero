@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 CHAOS TYPE ZERO - Unified Zero-Dependency Test Suite Runner
-Runs all unit test classes and all 71 MCP server tool definitions.
+Runs all unit test classes and 10 core MCP server tool definitions.
 """
 
 import sys
