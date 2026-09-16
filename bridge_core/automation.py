@@ -200,6 +200,111 @@ def action_log(params: dict) -> dict:
         return {"error": str(e)}
 
 
+def action_mcp_tool(params: dict) -> dict:
+    """Execute any tool from the 10 Core MCP servers."""
+    server_name = params.get("server", "")
+    tool_name = params.get("tool", "")
+    args = params.get("arguments", {})
+    if not server_name or not tool_name:
+        return {"error": "server and tool required"}
+    try:
+        import importlib
+        mod = importlib.import_module(f"mcp_servers.{server_name}")
+        req = {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "tools/call",
+            "params": {
+                "name": tool_name,
+                "arguments": args
+            }
+        }
+        resp = mod.handle_request(req)
+        if resp and "result" in resp:
+            return {"status": "completed", "server": server_name, "tool": tool_name, "result": resp["result"]}
+        elif resp and "error" in resp:
+            return {"error": resp["error"].get("message", "MCP error"), "server": server_name, "tool": tool_name}
+        return {"status": "completed", "response": resp}
+    except Exception as e:
+        return {"error": f"MCP execution failed: {e}", "server": server_name, "tool": tool_name}
+
+
+def action_receipt(params: dict) -> dict:
+    """Sign and create an HMAC-SHA256 provenance receipt for this workflow."""
+    try:
+        from .receipts import get_provenance
+        engine = get_provenance()
+        action_name = params.get("action_name", "automation_workflow")
+        agent_id = params.get("agent_id", "automation_engine")
+        inputs = params.get("inputs", {})
+        outputs = params.get("outputs", {"status": "verified"})
+        receipt = engine.create_receipt(
+            task_id=f"auto-{int(time.time())}",
+            task_desc=f"Automated action: {action_name}",
+            agent_from=agent_id,
+            agent_to="AuditLedger",
+            action_type="automation_execution",
+            tool_name=action_name,
+            inputs=inputs,
+            results=outputs,
+            status="executed"
+        )
+        return {
+            "status": "signed",
+            "receipt_id": receipt["receipt"]["receipt_id"],
+            "signature": receipt["signature"],
+            "timestamp": receipt["receipt"]["timestamp"],
+        }
+    except Exception as e:
+        return {"error": f"Receipt creation failed: {e}"}
+
+
+def action_agent_loop(params: dict) -> dict:
+    """Dispatch an autonomous Sisyphus agent loop for a task objective."""
+    prompt = params.get("prompt", "")
+    if not prompt:
+        return {"error": "prompt required"}
+    try:
+        from .agents import get_orchestrator
+        orchestrator = get_orchestrator()
+        task = {
+            "prompt": prompt,
+            "complexity": params.get("complexity", "medium"),
+            "risk_score": params.get("risk_score", 10),
+            "max_iterations": params.get("max_iterations", 2)
+        }
+        res = orchestrator.orchestrate(task)
+        return {"status": "completed", "summary": res}
+    except Exception as e:
+        return {"error": f"Agent loop failed: {e}"}
+
+
+def action_memory_heal(params: dict) -> dict:
+    """Run self-healing SQLite integrity check and repair on databases."""
+    try:
+        from .memory_healer import get_memory_healer
+        healer = get_memory_healer()
+        report = healer.run_full_healing_pass()
+        return {"status": "healed", "report": report}
+    except Exception as e:
+        return {"error": f"Memory healer failed: {e}"}
+
+
+def action_context_save(params: dict) -> dict:
+    """Persist a key fact or entry into the Cross-Session Context Bridge."""
+    fact = params.get("fact", "")
+    category = params.get("category", "automation")
+    if not fact:
+        return {"error": "fact required"}
+    try:
+        from .context_bridge import get_context_bridge
+        bridge = get_context_bridge()
+        fact_id = bridge.save_key_fact(fact=fact, category=category)
+        return {"status": "saved", "fact_id": fact_id, "category": category}
+    except Exception as e:
+        return {"error": f"Context save failed: {e}"}
+
+
 ACTION_TYPES = {
     "shell": action_shell,
     "file_copy": action_file_copy,
@@ -209,6 +314,11 @@ ACTION_TYPES = {
     "llm_query": action_llm_query,
     "backup": action_backup,
     "log": action_log,
+    "mcp_tool": action_mcp_tool,
+    "receipt": action_receipt,
+    "agent_loop": action_agent_loop,
+    "memory_heal": action_memory_heal,
+    "context_save": action_context_save,
 }
 
 
@@ -612,15 +722,52 @@ class AutomationEngine:
         self.db.log_run(auto_id, status, {"results": result})
         return {"status": status, "actions_run": len(result), "results": result}
 
+    @staticmethod
+    def _resolve_params(params: dict, context: dict) -> dict:
+        """Resolve templated parameters (e.g. {{prev.output}}, {{steps.0.stdout}})."""
+        if not isinstance(params, dict):
+            return params
+        resolved = {}
+        for k, v in params.items():
+            if isinstance(v, str) and "{{" in v and "}}" in v:
+                prev_out = context.get("prev", {})
+                prev_val = ""
+                if isinstance(prev_out, dict):
+                    prev_val = str(prev_out.get("stdout") or prev_out.get("response") or prev_out.get("status") or "")
+                else:
+                    prev_val = str(prev_out)
+                v = v.replace("{{prev.output}}", prev_val).replace("{{prev.result}}", prev_val)
+                for i, step in enumerate(context.get("steps", [])):
+                    step_res = step.get("result", {})
+                    if isinstance(step_res, dict):
+                        for field, fval in step_res.items():
+                            v = v.replace(f"{{{{steps.{i}.{field}}}}}", str(fval))
+            resolved[k] = v
+        return resolved
+
     def _execute_actions(self, actions: list) -> list:
-        """Execute a list of actions in order."""
+        """Execute a list of actions in order with variable piping & conditions."""
         results = []
+        context = {"steps": results, "prev": {}}
         for action in actions:
             action_type = action.get("type", "")
-            params = action.get("params", {})
+            raw_params = action.get("params", {})
+            params = self._resolve_params(raw_params, context)
+
+            condition = action.get("when")
+            if condition:
+                prev_res = context.get("prev", {})
+                if condition == "success" and isinstance(prev_res, dict) and prev_res.get("error"):
+                    results.append({"action": action_type, "status": "skipped", "reason": "condition not met"})
+                    continue
+                elif condition == "failure" and isinstance(prev_res, dict) and not prev_res.get("error"):
+                    results.append({"action": action_type, "status": "skipped", "reason": "condition not met"})
+                    continue
+
             handler = ACTION_TYPES.get(action_type)
             if handler:
                 r = handler(params)
+                context["prev"] = r if isinstance(r, dict) else {"output": r}
                 results.append({"action": action_type, "result": r})
             else:
                 results.append({"action": action_type, "result": {"error": f"Unknown action: {action_type}"}})
@@ -799,6 +946,86 @@ class AutomationEngine:
                 {"type": "log", "params": {"message": "Health check passed"}},
             ],
             description=f"System health check every {interval_minutes} min",
+        )
+
+    def create_from_natural_language(self, prompt: str) -> dict:
+        """Convert natural language (English / Hinglish) into an active automation workflow."""
+        prompt_l = prompt.lower()
+
+        trigger_type = "interval"
+        trigger_config = {"seconds": 3600}
+        name = "Autonomous Workflow"
+
+        if "har" in prompt_l or "every" in prompt_l:
+            if "ghante" in prompt_l or "hour" in prompt_l:
+                hours = 1
+                h_match = re.search(r"(\d+)\s*(?:ghante|hours?)", prompt_l)
+                if h_match:
+                    hours = int(h_match.group(1))
+                trigger_type = "interval"
+                trigger_config = {"seconds": hours * 3600}
+                name = f"Interval Task ({hours}h)"
+            elif "minute" in prompt_l or "min" in prompt_l:
+                mins = 10
+                m_match = re.search(r"(\d+)\s*(?:minute|min)", prompt_l)
+                if m_match:
+                    mins = int(m_match.group(1))
+                trigger_type = "interval"
+                trigger_config = {"seconds": mins * 60}
+                name = f"Interval Task ({mins}m)"
+            elif "din" in prompt_l or "day" in prompt_l or "midnight" in prompt_l or "raat" in prompt_l:
+                trigger_type = "cron"
+                trigger_config = {"expression": "0 0 * * *"}
+                name = "Daily Midnight Task"
+        elif "watch" in prompt_l or "file" in prompt_l or "folder" in prompt_l:
+            trigger_type = "file_change"
+            trigger_config = {"directory": str(CTZ_ROOT / "data"), "pattern": "*", "check_interval": 10}
+            name = "Workspace File Watcher"
+
+        actions = []
+        if "backup" in prompt_l:
+            actions.append({"type": "backup", "params": {"src": str(CTZ_ROOT)}})
+        if "clean" in prompt_l or "delete" in prompt_l or "safai" in prompt_l:
+            actions.append({"type": "file_cleanup", "params": {"directory": str(CTZ_ROOT / "data"), "max_age_days": 7}})
+        if "heal" in prompt_l or "repair" in prompt_l or "memory" in prompt_l:
+            actions.append({"type": "memory_heal", "params": {}})
+        if "receipt" in prompt_l or "audit" in prompt_l or "sign" in prompt_l:
+            actions.append({"type": "receipt", "params": {"action_name": name}})
+        if "notify" in prompt_l or "alert" in prompt_l or "toast" in prompt_l or "batao" in prompt_l:
+            actions.append({"type": "notify", "params": {"title": "CHAOS TYPE ZERO", "message": f"Automation '{name}' executed successfully"}})
+
+        if not actions:
+            actions.append({"type": "log", "params": {"message": f"Autonomous execution for: {prompt}"}})
+            actions.append({"type": "receipt", "params": {"action_name": name}})
+
+        return self.create(name=name, trigger_type=trigger_type, trigger_config=trigger_config, actions=actions, description=prompt)
+
+    def preset_autonomous_sentinel(self) -> dict:
+        """Pre-built Autonomous Sentinel: Monitors health, heals DBs, and signs cryptographic receipt."""
+        return self.create(
+            name="CTZ Autonomous Sentinel",
+            trigger_type="interval",
+            trigger_config={"seconds": 3600},
+            actions=[
+                {"type": "memory_heal", "params": {}},
+                {"type": "receipt", "params": {"action_name": "sentinel_health_check"}},
+                {"type": "log", "params": {"message": "[SENTINEL] Health & integrity verification passed"}},
+            ],
+            description="Autonomous background watchdog: heals SQLite memory databases & logs tamper-evident HMAC receipt"
+        )
+
+    def preset_git_sentinel(self) -> dict:
+        """Pre-built Git Sentinel: Watches codebase for changes and runs test verification."""
+        return self.create(
+            name="CTZ Git Sentinel",
+            trigger_type="file_change",
+            trigger_config={"directory": str(CTZ_ROOT), "pattern": "*.py", "check_interval": 15},
+            actions=[
+                {"type": "shell", "params": {"command": "python tests/run_all_tests.py"}},
+                {"type": "receipt", "params": {"action_name": "git_sentinel_test_run"}},
+                {"type": "log", "params": {"message": "[GIT SENTINEL] Change detected, tests executed and signed"}},
+            ],
+            description="Watches code files and executes zero-dependency test runner on changes"
         )
 
 

@@ -56,15 +56,6 @@ cryptography>=42.0.0
 defusedxml>=0.7.1
 
 
-# === Monitoring ===
-prometheus-client>=0.20.0
-
-
-# === Communications ===
-discord.py>=2.3.0
-slack-sdk>=3.27.0
-
-
 # === Browser Automation ===
 playwright>=1.40.0
 

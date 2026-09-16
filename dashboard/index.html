@@ -637,6 +637,9 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
     <button class="tab-btn" onclick="switchTab('mcp')">
       <span>⚡</span> MCP Tool Runner <span class="tab-badge">10</span>
     </button>
+    <button class="tab-btn" onclick="switchTab('automation')">
+      <span>⏰</span> Automations Suite
+    </button>
     <button class="tab-btn" onclick="switchTab('editor')">
       <span>📝</span> Code & File Explorer
     </button>
@@ -757,6 +760,73 @@ main { position: relative; z-index: 10; padding: 20px 28px 50px; }
       </div>
 
       <div class="mcp-grid" id="mcpCardGrid"></div>
+    </div>
+  </div>
+
+  <!-- TAB: AUTONOMOUS AUTOMATIONS SUITE -->
+  <div class="tab-pane" id="tab-automation">
+    <div class="grid grid-wide">
+      
+      <!-- Natural Language Deployment & Presets -->
+      <div class="card">
+        <div style="font-weight:700;font-size:16px;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+          <span>🤖</span> Autonomous Agentic Automations Engine
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;">
+          Deploy background triggers, cron expressions, file watchers, and self-healing sentinels with HMAC-SHA256 provenance receipts.
+        </div>
+
+        <!-- Natural Language Deployer -->
+        <div style="background:var(--bg-sub);border:1px solid var(--border-sub);padding:14px;border-radius:10px;margin-bottom:16px;">
+          <div style="font-size:12px;font-weight:700;color:var(--purple-light);margin-bottom:8px;">
+            ⚡ NATURAL LANGUAGE AUTOMATION DEPLOYER (English / Hinglish):
+          </div>
+          <div style="display:flex;gap:10px;">
+            <input type="text" id="nlAutoInput" class="search-input" placeholder="e.g. 'Har 2 ghante me database ka backup lo aur receipt sign karo'..." style="margin-bottom:0;" onkeydown="if(event.key==='Enter')deployNlAuto()">
+            <button class="btn-purple" onclick="deployNlAuto()"><span>🚀</span> Deploy</button>
+          </div>
+        </div>
+
+        <!-- Quick 1-Click Sentinel Presets -->
+        <div style="font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;margin-bottom:8px;">
+          One-Click Sentinel Presets:
+        </div>
+        <div class="grid grid-4" style="gap:10px;">
+          <button class="btn-glass" onclick="deployPresetAuto('autonomous_sentinel')">
+            <span>🛡️</span> <b>Autonomous Sentinel</b>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Heals DB & logs signed receipt (1h)</div>
+          </button>
+          <button class="btn-glass" onclick="deployPresetAuto('git_sentinel')">
+            <span>🐙</span> <b>Git Sentinel</b>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Watches code & runs tests on change</div>
+          </button>
+          <button class="btn-glass" onclick="deployPresetAuto('backup')">
+            <span>💾</span> <b>Auto Backup</b>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Full workspace backup snapshot (24h)</div>
+          </button>
+          <button class="btn-glass" onclick="deployPresetAuto('cleanup')">
+            <span>🧹</span> <b>Log & Cache Cleanup</b>
+            <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">Purges old files in data/ directory</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Automations Table -->
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div style="font-weight:700;font-size:14px;color:#fff;display:flex;align-items:center;gap:8px;">
+            <span>📋</span> Active Background Automations
+          </div>
+          <button class="btn-glass" onclick="fetchAutomationsList()" style="padding:4px 10px;font-size:11px;">
+            <span>🔄</span> Refresh
+          </button>
+        </div>
+
+        <div id="automationsListContainer" style="font-family:var(--font-mono);font-size:12px;">
+          <div style="color:var(--text-dim);text-align:center;padding:20px;">Loading automations from SQLite engine...</div>
+        </div>
+      </div>
+
     </div>
   </div>
 

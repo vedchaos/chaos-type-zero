@@ -213,8 +213,19 @@ def handle_request(req: dict) -> dict:
                 result = engine.preset_daily_report()
             elif preset == "health_check":
                 result = engine.preset_health_check(p.get("interval_minutes", 5))
+            elif preset == "autonomous_sentinel":
+                result = engine.preset_autonomous_sentinel()
+            elif preset == "git_sentinel":
+                result = engine.preset_git_sentinel()
             else:
                 result = {"error": f"Unknown preset: {preset}"}
+            return {"jsonrpc": "2.0", "id": req_id, "result": {
+                "content": [{"type": "text", "text": json.dumps(result, indent=2, default=str)}],
+            }}
+
+        elif tool_name == "ctz_auto_nl_create":
+            prompt = args.get("prompt", "")
+            result = engine.create_from_natural_language(prompt)
             return {"jsonrpc": "2.0", "id": req_id, "result": {
                 "content": [{"type": "text", "text": json.dumps(result, indent=2, default=str)}],
             }}

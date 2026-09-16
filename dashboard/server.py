@@ -299,32 +299,30 @@ def build_memory_data():
 
 
 def build_automations_data():
-    auto_dir = NEXUS_DIR / 'data' / 'automation'
-    automations = []
-    if auto_dir.exists():
-        for f in sorted(auto_dir.glob('*.json')):
-            try:
-                with open(f, 'r', encoding='utf-8') as fp:
-                    data = json.load(fp)
-                    automations.append({
-                        'name': data.get('name', f.stem),
-                        'schedule': data.get('schedule', 'unknown'),
-                        'active': data.get('active', True),
-                        'last_run': data.get('last_run', now_ts()),
-                        'run_count': data.get('run_count', 0),
-                    })
-            except (json.JSONDecodeError, OSError):
-                continue
-
-    if not automations:
-        automations = [
-            {'name': 'Memory Consolidation', 'schedule': 'Every 6h', 'active': True, 'last_run': '12:00:00', 'run_count': 142},
-            {'name': 'Log Rotation', 'schedule': 'Daily 03:00', 'active': True, 'last_run': '03:00:00', 'run_count': 47},
-            {'name': 'Health Ping', 'schedule': 'Every 5m', 'active': True, 'last_run': now_ts(), 'run_count': 2880},
-            {'name': 'Backup Vault', 'schedule': 'Daily 04:00', 'active': False, 'last_run': '04:00:00', 'run_count': 47},
-            {'name': 'Session Sync', 'schedule': 'Every 15m', 'active': True, 'last_run': now_ts(), 'run_count': 960},
-        ]
-    return automations
+    try:
+        from bridge_core.automation import get_engine
+        engine = get_engine()
+        items = engine.list_all()
+        stats = engine.db.stats()
+        out = []
+        for a in items:
+            out.append({
+                'id': a['id'],
+                'name': a['name'],
+                'trigger_type': a['trigger_type'],
+                'schedule': str(a.get('trigger_config', {})),
+                'active': a.get('enabled', True),
+                'last_run': a.get('last_run') or 'Never',
+                'last_status': a.get('last_status') or 'idle',
+                'actions_count': len(a.get('actions', [])),
+            })
+        return {
+            'status': 'ok',
+            'stats': stats,
+            'automations': out,
+        }
+    except Exception as e:
+        return {'status': 'error', 'error': str(e), 'automations': []}
 
 
 def build_providers_data():
@@ -688,6 +686,69 @@ class CTZHandler(http.server.BaseHTTPRequestHandler):
                     self.send_json({'success': False, 'error': str(e)})
             else:
                 self.send_json({'success': False, 'error': 'Access denied'})
+            return
+
+        # 8. Automations Run Now (/api/automations/run)
+        elif path == '/api/automations/run':
+            auto_id = body.get('id', '')
+            try:
+                from bridge_core.automation import get_engine
+                engine = get_engine()
+                res = engine.run_now(auto_id)
+                log_activity('auto', f"Automation '{auto_id}' triggered: {res.get('status')}")
+                self.send_json({'success': True, 'result': res})
+            except Exception as e:
+                self.send_json({'success': False, 'error': str(e)})
+            return
+
+        # 9. Automations Toggle (/api/automations/toggle)
+        elif path == '/api/automations/toggle':
+            auto_id = body.get('id', '')
+            enabled = body.get('enabled', True)
+            try:
+                from bridge_core.automation import get_engine
+                engine = get_engine()
+                res = engine.enable(auto_id) if enabled else engine.disable(auto_id)
+                self.send_json({'success': True, 'result': res})
+            except Exception as e:
+                self.send_json({'success': False, 'error': str(e)})
+            return
+
+        # 10. Automations Preset (/api/automations/preset)
+        elif path == '/api/automations/preset':
+            preset = body.get('preset', 'autonomous_sentinel')
+            try:
+                from bridge_core.automation import get_engine
+                engine = get_engine()
+                if preset == 'autonomous_sentinel':
+                    res = engine.preset_autonomous_sentinel()
+                elif preset == 'git_sentinel':
+                    res = engine.preset_git_sentinel()
+                elif preset == 'backup':
+                    res = engine.preset_auto_backup(str(NEXUS_DIR))
+                elif preset == 'cleanup':
+                    res = engine.preset_file_cleanup(str(NEXUS_DIR / 'data'))
+                elif preset == 'health':
+                    res = engine.preset_health_check()
+                else:
+                    res = {'error': f'Unknown preset: {preset}'}
+                log_activity('auto', f"Created preset automation: {preset}")
+                self.send_json({'success': True, 'result': res})
+            except Exception as e:
+                self.send_json({'success': False, 'error': str(e)})
+            return
+
+        # 11. Automations Natural Language Create (/api/automations/nl_create)
+        elif path == '/api/automations/nl_create':
+            prompt = body.get('prompt', '')
+            try:
+                from bridge_core.automation import get_engine
+                engine = get_engine()
+                res = engine.create_from_natural_language(prompt)
+                log_activity('auto', f"Created NL automation: {prompt[:40]}")
+                self.send_json({'success': True, 'result': res})
+            except Exception as e:
+                self.send_json({'success': False, 'error': str(e)})
             return
 
         else:

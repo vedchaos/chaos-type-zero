@@ -96,7 +96,71 @@ print(f"  History entries: {len(history)}")
 stats = engine.db.stats()
 print(f"  Stats: {json.dumps(stats, indent=2)}")
 
-# 7. Cron parser
+# 7. Advanced Agentic Actions & Variable Piping
+print("\n[7/10] Advanced Agentic Actions & Variable Piping...")
+piping_auto = engine.create(
+    name="Piping Workflow",
+    trigger_type="interval",
+    trigger_config={"seconds": 3600},
+    actions=[
+        {"type": "shell", "params": {"command": "echo verified_agentic_pipeline"}},
+        {"type": "log", "params": {"message": "Piped output: {{prev.output}}"}},
+        {"type": "receipt", "params": {"action_name": "piped_workflow_execution"}},
+        {"type": "context_save", "params": {"fact": "Automation piping test passed", "category": "automation"}},
+    ],
+    description="Test variable piping and provenance receipt signing",
+)
+pipe_res = engine.run_now(piping_auto["id"])
+print(f"  Piping Workflow status: {pipe_res['status']}")
+assert pipe_res["status"] == "success"
+assert pipe_res["actions_run"] == 4
+# Check receipt action produced receipt_id
+receipt_step = pipe_res["results"][2]["result"]
+assert "receipt_id" in receipt_step, "Receipt step should contain receipt_id"
+assert receipt_step["status"] == "signed"
+print(f"  Receipt ID generated: {receipt_step['receipt_id']}")
+print("  Agentic Actions & Piping: OK")
+
+# 8. MCP Tool Action Execution
+print("\n[8/10] Direct MCP Tool Action...")
+mcp_auto = engine.create(
+    name="Direct MCP Action",
+    trigger_type="interval",
+    trigger_config={"seconds": 3600},
+    actions=[
+        {"type": "mcp_tool", "params": {
+            "server": "git_mcp",
+            "tool": "ctz_git_status",
+            "arguments": {"path": "."}
+        }},
+    ],
+    description="Invoke git_mcp directly from automation engine",
+)
+mcp_res = engine.run_now(mcp_auto["id"])
+print(f"  MCP Tool Action status: {mcp_res['status']}")
+assert mcp_res["status"] == "success"
+print("  Direct MCP Tool Action: OK")
+
+# 9. Natural Language Automation Creator
+print("\n[9/10] Natural Language Automation Creator...")
+nl_auto = engine.create_from_natural_language("har 2 ghante me data backup aur receipt sign karo")
+print(f"  NL Auto created: {nl_auto['id']} — {nl_auto['name']} ({nl_auto['trigger_type']})")
+assert nl_auto["trigger_type"] == "interval"
+assert nl_auto["trigger_config"]["seconds"] == 7200
+nl_res = engine.run_now(nl_auto["id"])
+assert nl_res["status"] == "success"
+print("  Natural Language Automation: OK")
+
+# 10. Agentic Sentinel Presets
+print("\n[10/10] Agentic Sentinel Presets...")
+sentinel = engine.preset_autonomous_sentinel()
+print(f"  Autonomous Sentinel: {sentinel['id']} — {sentinel['name']}")
+assert sentinel["trigger_type"] == "interval"
+git_sentinel = engine.preset_git_sentinel()
+print(f"  Git Sentinel: {git_sentinel['id']} — {git_sentinel['name']}")
+assert git_sentinel["trigger_type"] == "file_change"
+
+# 11. Cron parser
 print("\n  Cron parser test:")
 assert _cron_matches(["0", "22", "*", "*", "*"],
                       __import__("datetime").datetime(2026, 1, 1, 22, 0))
@@ -111,7 +175,7 @@ assert _cron_matches(["0", "9", "*", "*", "1-5"],
                       __import__("datetime").datetime(2026, 1, 5, 9, 0))  # Monday
 print("    0 9 * * 1-5 on Monday 09:00: MATCH")
 
-# 8. File watcher
+# 12. File watcher
 print("\n  File watcher test:")
 fw = FileWatcher()
 r1 = fw.snapshot("test_watch", str(CTZ_ROOT), "*.py")
@@ -121,13 +185,13 @@ r2 = fw.snapshot("test_watch", str(CTZ_ROOT), "*.py")
 print(f"    Second: changes={r2.get('has_changes', False)}")
 assert not r2.get("has_changes", True), "Should be no changes"
 
-# 9. Cleanup
+# Cleanup
 print("\n  Cleanup test automations...")
-for a in [auto1, auto2, auto_backup, auto_cleanup, auto_report, auto_health]:
+for a in [auto1, auto2, auto_backup, auto_cleanup, auto_report, auto_health, piping_auto, mcp_auto, nl_auto, sentinel, git_sentinel]:
     engine.delete(a["id"])
 final = engine.list_all()
 print(f"  Remaining: {len(final)} automations")
 
 print("\n" + "=" * 60)
-print("  ALL TESTS PASSED!")
+print("  ALL TESTS PASSED! 100% OPERATIONAL")
 print("=" * 60)
