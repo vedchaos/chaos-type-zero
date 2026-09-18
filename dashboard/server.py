@@ -636,12 +636,44 @@ class CTZHandler(http.server.BaseHTTPRequestHandler):
             try:
                 import importlib
                 mod = importlib.import_module(f'mcp_servers.{srv}')
+                
+                # Check for standard MCP JSON-RPC handler first
+                if hasattr(mod, 'handle_request'):
+                    req = {
+                        "jsonrpc": "2.0",
+                        "id": 1,
+                        "method": "tools/call",
+                        "params": {"name": tool, "arguments": params}
+                    }
+                    mcp_res = mod.handle_request(req)
+                    if mcp_res and "result" in mcp_res:
+                        content = mcp_res["result"].get("content", [])
+                        if content and isinstance(content, list) and "text" in content[0]:
+                            try:
+                                parsed_res = json.loads(content[0]["text"])
+                            except Exception:
+                                parsed_res = content[0]["text"]
+                            self.send_json({'success': True, 'result': parsed_res})
+                            return
+                        self.send_json({'success': True, 'result': mcp_res["result"]})
+                        return
+                    elif mcp_res and "error" in mcp_res:
+                        self.send_json({'success': False, 'error': mcp_res["error"]})
+                        return
+
+                # Fallback to direct function invocation if present
                 fn = getattr(mod, tool, None)
                 if callable(fn):
                     out = fn(**params) if params else fn()
                     self.send_json({'success': True, 'result': out})
                 else:
-                    self.send_json({'success': False, 'error': f'Tool {tool} not found in {srv}'})
+                    # Provide tool list if tool wasn't found
+                    tools = getattr(mod, 'TOOLS', [])
+                    tool_names = [t.get('name') for t in tools if isinstance(t, dict)]
+                    self.send_json({
+                        'success': False,
+                        'error': f'Tool "{tool}" not found in {srv}. Available tools: {", ".join(tool_names) if tool_names else "none"}'
+                    })
             except Exception as e:
                 self.send_json({'success': False, 'error': str(e)})
             return

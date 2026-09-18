@@ -1,4 +1,5 @@
- ZERO (CTZ) - AUTONOMOUS TASK-EXECUTOR & SELF-LEARNING DECK
+"""
+CHAOS TYPE ZERO (CTZ) - AUTONOMOUS TASK-EXECUTOR & SELF-LEARNING DECK
 Dedicated to Ved | 100% Loyalty Protocol | Real-time SSE Streaming
 Capabilities:
 - Autonomous Self-Learning (Wikipedia/Web synthesis & disk persistence)
