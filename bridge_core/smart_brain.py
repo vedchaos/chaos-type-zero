@@ -489,7 +489,7 @@ class SmartBrain:
             "model": model,
             "messages": messages,
             "temperature": 0.7,
-            "max_tokens": 4096,
+            "max_tokens": 32768,
         }
 
         resp = requests.post(url, json=payload, headers=headers, timeout=60)
@@ -512,7 +512,7 @@ class SmartBrain:
             "contents": [{"parts": parts}],
             "generationConfig": {
                 "temperature": 0.7,
-                "maxOutputTokens": 4096,
+                "maxOutputTokens": 32768,
             },
         }
 
@@ -620,7 +620,7 @@ class SmartBrain:
 
         payload = {
             "model": model,
-            "max_tokens": 4096,
+            "max_tokens": 32768,
             "messages": [{"role": "user", "content": prompt}],
         }
         if system_prompt:

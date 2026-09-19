@@ -602,7 +602,7 @@ async def websocket_endpoint(ws: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
-        "server.main:app",
+        app,
         host=HOST,
         port=PORT,
         reload=os.environ.get("CTZ_DEV", "0") == "1",
